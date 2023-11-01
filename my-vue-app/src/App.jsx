@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+
 function App() {
   const [formData, setFormData] = useState({
     username: "",
@@ -54,8 +55,6 @@ function App() {
                   value={formData.username}
                   onChange={handleInputChange}
                 />
-                <div className="input-group-prepend">
-                </div>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Password</Form.Label>
