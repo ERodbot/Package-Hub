@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import userIcon from "../../Package-Hub/imagenes/PSWLogo.svg";
 
 function App() {
   const [formData, setFormData] = useState({
@@ -40,11 +39,6 @@ function App() {
                   value={formData.username}
                   onChange={handleInputChange}
                 />
-                <div className="input-group-prepend">
-                  <span className="input-group-text">
-                    <img src={userIcon} alt="User Icon" />
-                  </span>
-                </div>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Password</Form.Label>
