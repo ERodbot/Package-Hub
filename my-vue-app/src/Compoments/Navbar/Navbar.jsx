@@ -13,10 +13,10 @@ import { useState, useEffect } from "react";
 import "./Navbar.css";
 
 /*Imagenes*/
-import logo from "../../assets/logotype.svg";
-import shopping_cart from "../../assets/shoes.png";
-import profile from "../../assets/profile.jpg";
-import cr from "../../assets/cr.jpg";
+import logo from "../../assets/Logos/logotype.svg";
+import shopping_cart from "../../assets/Links/shopping_cart.png";
+import profile from "../../assets/Links/profile.jpg";
+import cr from "../../assets/Links/cr.jpg";
 
 const NavbarPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
