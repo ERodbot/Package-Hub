@@ -1,5 +1,5 @@
 #root {
-  font-family: 'Sedgwick Ave Display', cursive;
+  font-family: "Sedgwick Ave Display", cursive;
 
   max-width: 1280px;
   margin: 0 auto;
@@ -41,4 +41,9 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.icono-usuario {
+  width: 100px; /* Puedes ajustar el valor según tus necesidades */
+  height: auto; /* Esto mantiene la proporción original */
 }

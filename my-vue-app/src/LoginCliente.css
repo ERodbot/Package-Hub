@@ -1,0 +1,204 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,600&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --accentColorBG: #f2f6f9;
+  --accentColorBD: #c2c2c2;
+  --color-fondo: #f2f2f2;
+}
+
+.title {
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.7;
+  margin-top: 40px;
+}
+
+.subtitle {
+  margin-top: 3px;
+  padding-top: 10px;
+  font-size: 28px;
+  font-style: small;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerh2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerh2 h1 {
+  font-size: 26px;
+  font-style: normal;
+  margin-top: 0px;
+}
+.container2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 20px;
+}
+
+.formulario input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  outline: none;
+  font-size: 16;
+}
+
+.formulario form {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+form .inputT1 {
+  position: relative;
+  margin: 10px 0;
+}
+
+.inputT1 input,
+select {
+  width: 30%;
+  padding: 10px 3px 10px 36px;
+  /*mover donde se escribe*/
+  border-radius: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  outline: none;
+  font-size: 20px;
+  background-repeat: no-repeat;
+  background-position: 8px center;
+  /* posicion imagen */
+  background-size: 25px;
+  /* Tamaño imagen */
+  border: none;
+  height: 40%;
+}
+
+.usernameA input {
+  background-image: url("../images/asoLogo.svg");
+}
+
+.usernameE input {
+  background-image: url("../images/userLogo.svg");
+}
+
+.password input {
+  background-image: url("../images/PSWLogo.svg");
+}
+
+.descripcionID input {
+  height: 80%;
+}
+
+.phone input {
+  background-image: url("../images/phoneLogo.svg");
+}
+
+.email input {
+  background-image: url("../images/emailLogo.svg");
+}
+.paisOrigen input {
+  background-image: url("../images/map.svg");
+}
+
+.rol input {
+  background-image: url("../images/carreerLogo.svg");
+}
+
+.sede select {
+  background-image: url("../images/sedeLogo.svg");
+}
+
+#asociacionColReg::placeholder {
+  font-size: 12px;
+}
+
+.image-button {
+  border: none;
+  margin-right: 15px;
+  margin-left: 15px;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: 3px 3px 8px 3px rgba(0, 0, 0, 0.25);
+}
+
+.image-button.pressed {
+  background-color: var(--accentColorBG);
+  box-shadow: inset 3px 3px 8px 3px rgba(0, 0, 0, 0.25);
+}
+
+.image-button img {
+  width: 250px;
+  height: auto;
+}
+
+.buttonT1 {
+  width: 30%;
+  border-radius: 10px;
+  padding: 13px 0px 13px 0px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: border-color 0.8s;
+  background-color: var(--accentColorBG);
+  border-color: var(--accentColorBD);
+  margin-bottom: 10px;
+}
+
+.buttonT1:hover {
+  border-color: lightskyblue;
+}
+
+.errorContainer {
+  text-align: center;
+  position: absolute;
+  background-color: white;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 260px;
+  padding: 10px 36px 10px 36px;
+  border-radius: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  outline: none;
+  font-size: 20px;
+  border: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: -1;
+}
+
+.errorText {
+  padding: 10px;
+  padding-bottom: 20px;
+}
+
+.errorButton {
+  margin-left: 0px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
