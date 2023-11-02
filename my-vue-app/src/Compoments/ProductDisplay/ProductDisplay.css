@@ -1,0 +1,85 @@
+#card-style {
+    width: 40vh;
+    height: 28.3vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 0% 6% 0 6%;
+}
+  
+#image-container {
+    width: 50%;
+    height: 80%;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+  
+#custom-image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.custom-card-body {
+    /* Set the maximum height to 20% of the card height */
+    max-height: 20%;
+    overflow: hidden;
+  }
+  
+.title-container {
+    padding: 10px 15%; /* Añade espacio alrededor del título */
+    text-align: center; /* Centra el título */
+  }
+  
+.price-style {
+    position: absolute;
+    bottom:0;
+    text-align: center;
+    color: #EFEBE2;
+    left:7rem;
+    width: 40%;
+    height: 15%;
+    border-radius: .8rem .8rem 0rem 0rem;
+    padding: 1%;
+}
+  
+
+
+
+  
+
+
+.category-style {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width:28%;
+    height: 9%;
+    border-radius: .1rem .8rem .1rem .8rem; 
+    color: #EFEBE2;
+    padding: 1%;
+}
+
+.category-style p {
+    font-size: small;
+}
+
+.Snacks {
+    background-color: #865B8E;
+}
+  
+ .Skate{
+    background-color: #62B18B;
+}
+
+.Ropa{
+    background-color: #3FA4CA;
+}
+
+.Bebidas {
+    background-color: #D9434E;
+}

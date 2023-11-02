@@ -3,6 +3,9 @@ import {
   Nav,
   Navbar,
   Container,
+  Row,
+  Col,
+  Card,
   InputGroup,
   FormControl,
   NavDropdown,
@@ -14,26 +17,34 @@ import "./MainPage.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
 /*Imagenes*/
-import snaksmenu from "../../../assets/";
-clothesmenu;
-skatemenu;
-drinksmenu;
+import snacksmenu from "../../../assets/Menus/snacks.svg";
+import drinks from "../../../assets/Menus/drinks.svg";
+import clothesmenu from "../../../assets/Menus/clothes.svg";
+import skatemenugit from "../../../assets/Menus/skate.svg";
 
-const items = [];
+const menus = [snacksmenu, drinks, clothesmenu, skatemenugit];
+const menu_names = ["Snacks", "Drinks", "Clothes", "Skate"];
+import { Link } from "react-router-dom";
 
 const MainPage = () => {
   return (
     <PaginaBase>
-      <Container>
-        <h1 className="text-center">Títulos Principales</h1>
+      <Container id="custom-container">
+        <h1 className="text-center">Package Hub</h1>
         <Row>
-          {["snaks", "bebidad", "ropa", "skate"].map((item, index) => (
-            <Col key={index} xs={6} sm={3}>
-              <Card>
-                <Card.Img src={item.imageSrc} alt={item} />
+          {menus.map((item, index) => (
+            <Col key={index} xs={6} sm={3} id="custom-col">
+              <Card id="custom-card">
+                <Link to={"/" + menu_names[index]}>
+                  <Card.Img
+                    src={menus[index]}
+                    alt={menu_names[index]}
+                    id="custom-card-img"
+                  />
+                </Link>
+
                 <Card.Body>
-                  <Card.Title>{item.title}</Card.Title>
-                  <Card.Text>{item.subtitle}</Card.Text>
+                  <Card.Title>{menu_names[index]}</Card.Title>
                 </Card.Body>
               </Card>
             </Col>

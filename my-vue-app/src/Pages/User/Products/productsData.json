@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Product 1",
+    "image": "image1.jpg",
+    "price": "$10.00",
+    "category": "Snacks"
+  },
+  {
+    "name": "Product 2",
+    "image": "image2.jpg",
+    "price": "$15.00",
+    "category": "Snacks"
+  },
+  {
+    "name": "Product 3",
+    "image": "image3.jpg",
+    "price": "$20.00",
+    "category": "Snacks"
+  }
+]
