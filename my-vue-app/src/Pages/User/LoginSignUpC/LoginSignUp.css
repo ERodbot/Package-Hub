@@ -16,6 +16,7 @@ body {
   font-weight: 700;
   line-height: 0.7;
   margin-top: 40px;
+  color: #3793ff;
 }
 
 .subtitle {
@@ -86,12 +87,13 @@ select {
   padding: 10px 3px 10px 36px;
   /*mover donde se escribe*/
   border-radius: 20px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   outline: none;
   font-size: 20px;
   background-repeat: no-repeat;
   background-position: 8px center;
-  /* posicion imagen */
+  color: black;
+  background-color: white;
+  border-color: black;
   background-size: 25px;
   /* Tamaño imagen */
   border: none;
@@ -99,7 +101,7 @@ select {
 }
 
 .usernameA input {
-  background-image: url("../images/asoLogo.svg");
+  background-image: url("./");
 }
 
 .usernameE input {
@@ -112,25 +114,6 @@ select {
 
 .descripcionID input {
   height: 80%;
-}
-
-.phone input {
-  background-image: url("../images/phoneLogo.svg");
-}
-
-.email input {
-  background-image: url("../images/emailLogo.svg");
-}
-.paisOrigen input {
-  background-image: url("../images/map.svg");
-}
-
-.rol input {
-  background-image: url("../images/carreerLogo.svg");
-}
-
-.sede select {
-  background-image: url("../images/sedeLogo.svg");
 }
 
 #asociacionColReg::placeholder {
@@ -166,10 +149,13 @@ select {
   background-color: var(--accentColorBG);
   border-color: var(--accentColorBD);
   margin-bottom: 10px;
+  color: white;
+  background-color: #f58071;
 }
 
 .buttonT1:hover {
-  border-color: lightskyblue;
+  border-color: #c26559;
+  background-color: #c26559;
 }
 
 .errorContainer {

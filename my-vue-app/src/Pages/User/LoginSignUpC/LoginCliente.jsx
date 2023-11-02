@@ -1,15 +1,15 @@
 import React from "react";
-import "./LoginCliente.css";
+import './LoginSignUp.css';
 
 const LoginCliente = () => {
   return (
     <div className="formulario">
       <p className="title">Inicio de Sesión</p>
-      <p className="subtitle">Cliente</p>
+      
       <form id="loginEstudianteForm" method="post">
         <div className="inputT1 usernameE">
           <input
-            id="usernameEstLog"
+            id="usernameA"
             type="text"
             placeholder="Username"
             required

@@ -3,6 +3,8 @@ import App from "./App";
 import NavbarPage from "./Compoments/Navbar/Navbar.jsx";
 import MainPage from "./Pages/User/Main/MainPage";
 import Products from "./Pages/User/Products/Products";
+import LoginC from "./Pages/User/LoginSignUpC/LoginCliente.jsx";
+import SignC from "./Pages/User/LoginSignUpC/SignUpCliente.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const Router = createBrowserRouter([
   {
     path: "/products",
     element: <Products />,
+  },
+  {
+    path: "/inicioSesionCliente",
+    element: <LoginC />,
+  },
+  {
+    path: "/registroCliente",
+    element: <SignC />,
   },
 ]);
 
