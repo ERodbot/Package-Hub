@@ -8,10 +8,10 @@ import "./PaginaBase.css";
 const PaginaBase = ({ children, isadmin = false }) => {
   return (
     <>
-      {/* navbar se incluye como componente, "children son los "
-       componentes hijos (el front end de cada pagina individual)*/}
-      <NavbarPage />
       <div>
+        {/* navbar se incluye como componente, "children son los "
+       componentes hijos (el front end de cada pagina individual)*/}
+        <NavbarPage />
         <div>{children}</div>
       </div>
     </>

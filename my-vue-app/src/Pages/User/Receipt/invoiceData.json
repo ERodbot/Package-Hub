@@ -1,0 +1,10 @@
+{
+    "factura": "12345",
+    "emision": "2023-11-01",
+    "orden": "67890",
+    "cliente": "John Doe",
+    "direccionFacturacion": "123 Main St",
+    "email": "john@example.com",
+    "direccionEnvio": "456 Shipping St"
+  }
+  

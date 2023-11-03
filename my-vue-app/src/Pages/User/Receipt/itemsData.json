@@ -1,0 +1,19 @@
+{
+    "items": [
+      {
+        "articulo": "Producto 1",
+        "precio": 50
+      },
+      {
+        "articulo": "Producto 2",
+        "precio": 30
+      },
+      {
+        "articulo": "Producto 3",
+        "precio": 20
+      }
+    ],
+    "subtotal": 100, 
+    "total": 110 
+  }
+  

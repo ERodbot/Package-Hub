@@ -3,9 +3,20 @@ import { Card } from "react-bootstrap";
 
 import "./ProductDisplay.css";
 
-const ProductDisplay = ({ price, image, name, categorystyle, category }) => {
+const ProductDisplay = ({
+  price,
+  image,
+  name,
+  categorystyle,
+  category,
+  url,
+}) => {
+  const handleRedirection = () => {
+    window.open("/");
+  };
+
   return (
-    <Card id="card-style">
+    <Card id="card-style" onClick={handleRedirection}>
       <div id="image-container">
         <div className="title-container">
           <Card.Title>
