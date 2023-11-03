@@ -1,0 +1,65 @@
+/* body {
+  background-image: url("../../assets/Background/sale_info_bg.jpg");
+  background-size: cover;
+} */
+
+.title2 {
+  font-size: 46px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.7;
+  margin-top: 40px;
+  color: #000000;
+  margin-top: 0px;
+}
+
+.mainPage {
+  padding-top: 60px;
+}
+
+.vertical-scroll-container {
+  max-height: 500px; /* Ajusta la altura máxima según tus necesidades */
+  max-height: auto; /* Ajusta la altura máxima según tus necesidades */
+  overflow-y: auto;
+  overflow-x: hidden; /* Oculta la barra de desplazamiento horizontal */
+  padding-right: 20px;
+}
+
+/* Opcional: Para evitar el desbordamiento vertical */
+.vertical-scroll-container > .no-gutters {
+  flex-wrap: nowrap;
+}
+
+.vertical-scroll-container::-webkit-scrollbar {
+  width: 16px; /* Ancho de la barra de desplazamiento */
+}
+
+.vertical-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #eb9f0b; /* Color del pulgar de la barra de desplazamiento */
+}
+
+.vertical-scroll-container::-webkit-scrollbar-track {
+  background-color: #f5e1cd; /* Color de la pista de la barra de desplazamiento */
+}
+
+.columnaOrden {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 0px;
+  height: 60px;
+  overflow: hidden;
+}
+
+.odd-row {
+  background-color: #bbbbbb; /* Color para filas impares */
+  border-radius: 10px;
+  margin-left: 2px;
+  margin-bottom: 4px;
+}
+
+.even-row {
+  background-color: #e1b765; /* Color para filas pares */
+  border-radius: 10px;
+  margin-left: 2px;
+  margin-bottom: 4px;
+}

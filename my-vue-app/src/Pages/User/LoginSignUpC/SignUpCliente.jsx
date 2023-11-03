@@ -7,11 +7,29 @@ const SignUpCliente = () => {
       <p className="title">Registro de Cliente</p>
       
       <form id="loginEstudianteForm" method="post">
-        <div className="inputT1 usernameE">
+        <div className="inputT1 usernameC">
           <input
-            id="usernameA"
+            id="usernameC"
             type="text"
             placeholder="Username"
+            required
+          />
+        </div>
+
+        <div className="inputT1 correo">
+          <input
+            id="correoC"
+            type="correo"
+            placeholder="Correo"
+            required
+          />
+        </div>
+
+        <div className="inputT1 telefono">
+          <input
+            id="telefonoC"
+            type="telefono"
+            placeholder="Telefono"
             required
           />
         </div>
@@ -31,6 +49,11 @@ const SignUpCliente = () => {
           </button>
         </div>
       </form>
+      <div>
+      <img
+        src="trevol_skate.jpg"
+        alt="Logo del packageHub"/>
+      </div>
     </div>
   );
 };

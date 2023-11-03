@@ -3,7 +3,7 @@ import React from "react";
 /*Navbar para usuario sin permisos admin*/
 import NavbarPage from "../../../Compoments/Navbar/Navbar";
 /*Custom css*/
-import "./PB.css";
+import "./PaginaBase.css";
 
 const PaginaBase = ({ children, isadmin = false }) => {
   return (
