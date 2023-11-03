@@ -1,0 +1,16 @@
+#custom-card {
+    padding: 0;
+    margin:0;
+    background-color: #EFEBE2;
+    border: none;
+}
+
+#custom-col {
+    padding: 0;
+    margin:0;
+}
+
+#custom-container {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}

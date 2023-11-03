@@ -35,8 +35,8 @@ const NavbarPage = () => {
       fixed="top"
       id="custom-navbar"
     >
-      <Container>
-        <Navbar.Brand href="/Principal" className="mr-4">
+      <Container id="custom-container">
+        <Navbar.Brand href="/Principal">
           <img src={logo} alt="ucr logo" id="custom-brand" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
