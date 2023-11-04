@@ -1,4 +1,7 @@
-.pagina-base {
-    width: 100%;
-    height: 100%;
+h1 {
+    font-size: 4rem;
+}
+
+div {
+    height: fit-content;
 }

@@ -1,0 +1,51 @@
+.custom-main-container{
+    min-width: 100%;
+    position: absolute;
+    left:0;
+    top:0;
+    padding:10%;
+
+}
+
+.main-div{
+    width:70%;
+}
+
+.sizing-container{
+  min-height: fit-content;
+}
+  
+  .custom-card {
+    background-color: #F5E1CD;
+    border: 3px solid #D1E4FB;
+    border-top-right-radius: 10px;
+    margin: 1rem 0 1rem 0 ;
+    padding: 0 5% 0 5%;
+    font-family: 'Courier New', Courier, monospace;
+    width: 100%;
+  }
+  
+  .card-header {
+    border-bottom: 3px solid #D1E4FB;
+  }
+  
+  .custom-total-card {
+    background-color: #F58071;
+    border: 3px solid #D1E4FB;
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    margin: 0 3rem;
+    padding: 0;
+  }
+  
+  .custom-text-price {
+    color: white;
+  }
+  
+  .custom-button {
+    background-color: #F5E1CD;
+    border-radius: 10px;
+    color: black;
+  }
+  

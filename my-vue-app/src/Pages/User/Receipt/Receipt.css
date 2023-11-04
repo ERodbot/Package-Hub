@@ -1,0 +1,58 @@
+.background {
+    background-image: url('../../../assets/Background/sale_info_bg.jpg');
+    background-size: cover;
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    max-height: fit-content;
+}
+
+
+.card {
+    background-color: hsla(0, 100%, 100%, 0.5);
+    padding: 5%; 
+    border-radius: 1.5rem;
+}
+
+
+
+.custom-text {
+    color: #EB9F0B;
+    -webkit-text-stroke: 3px black;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+
+
+.custom-card {
+    height: 100%;
+    width: 100%;
+    max-height: fit-content;
+}
+
+.custom-text-p {
+    color: #EB9F0B;
+    -webkit-text-stroke: 1px black;
+}
+
+.custom-text-h2{
+    color: #EB9F0B;
+    -webkit-text-stroke: 1.5px black;   
+}
+
+.custom-text-h3{
+    color: #EB9F0B;
+    -webkit-text-stroke: 1px black;   
+}
+
+.custom-text {
+    opacity: 100%;
+}
+
+.custom-container {
+    margin-top: 0;
+}
