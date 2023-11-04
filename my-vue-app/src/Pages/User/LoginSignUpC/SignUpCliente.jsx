@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import './LoginSignUp.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col, Dropdown } from "react-bootstrap";
+import trevolImage from '../../../assets/Decorations/trevol_skate.png';
+import trevolImage2 from '../../../assets/Logos/logotype.svg';
 
 const SignUpCliente = () => {
+  const [selectedOption, setSelectedOption] = useState("Dropdown button");
+
+  const handleDropdownSelect = (option) => {
+    setSelectedOption(option);
+  };
+
   return (
+    <div className="mainContainer">
     <div className="formulario">
       <p className="title">Registro de Cliente</p>
       
@@ -41,19 +52,28 @@ const SignUpCliente = () => {
             placeholder="Password"
             required
           />
-        </div>
+          <Dropdown onSelect={(eventKey) => handleDropdownSelect(eventKey)}>
+            <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
+              {selectedOption}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item eventKey="Action">Action</Dropdown.Item>
+              <Dropdown.Item eventKey="Another action">Another action</Dropdown.Item>
+              <Dropdown.Item eventKey="Something else here">Something else here</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
 
-        <div>
           <button className="buttonT1" type="submit">
             Iniciar Sesión
           </button>
         </div>
       </form>
-      <div>
-      <img
-        src="trevol_skate.jpg"
-        alt="Logo del packageHub"/>
-      </div>
+      
+    </div>
+    <div className="contenedor-imagenes">
+        <img class = "imagen imagen-headder" src={trevolImage2} alt="LogoPackage" />
+        <img class = "imagen" src={trevolImage} alt="LogoPackage" />
+    </div>
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import React from "react";
 import './LoginSignUp.css';
 import trevolImage from '../../../assets/Decorations/trevol_skate.png';
-
+import trevolImage2 from '../../../assets/Logos/logotype.svg';
 
 const LoginCliente = () => {
   return (
+    <div className="mainContainer">
     <div className="formulario">
       <p className="title">Inicio de Sesión</p>
     
@@ -33,9 +34,12 @@ const LoginCliente = () => {
           </button>
         </div>
       </form>
-      <div className="imagenInicio">
-        <img src={trevolImage} alt="LogoPackage" />
-      </div>
+      
+    </div>
+    <div className="contenedor-imagenes">
+        <img class = "imagen imagen-headder" src={trevolImage2} alt="LogoPackage" />
+        <img class = "imagen" src={trevolImage} alt="LogoPackage" />
+    </div>
     </div>
   );
 };
