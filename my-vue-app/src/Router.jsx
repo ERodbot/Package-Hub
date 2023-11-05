@@ -11,7 +11,9 @@ import BuyingPage from "./Pages/User/BuyingPage/BuyingPage";
 import Ordenes from "./Pages/Facturacion/Ordenes.jsx";
 import Profile from "./Pages/User/Profile/ProfileC.jsx";
 import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
-
+import ShoppingCart from "./Pages/User/ShoppingCart/ShoppingCart.jsx";
+import ProductDetails from "./Pages/User/ProductDitails/ProductDitails.jsx";
+import SalesFormReportConsult from "./Pages/Admin/SalesInfoRequest/SalesInfoRequest.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -54,6 +56,21 @@ const Router = createBrowserRouter([
   {
     path: "/busqueda",
     element: <Busqueda />,
+
+  },
+
+  {
+    path: "/shoppingCart",
+    element: <ShoppingCart />,
+  },
+
+  {
+    path: "/productDetail",
+    element: <ProductDetails />,
+  },
+  {
+    path: "/SalesReport",
+    element: <SalesFormReportConsult />,
   },
 ]);
 

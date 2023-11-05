@@ -27,8 +27,9 @@ const ProductDisplay = ({
       </div>
       <Card.Body className="custom-card-body">
         <div className={`price-style ${categorystyle}`}>
-          <p>{price}</p>
+          <p className="price-style-p">{price}</p>
         </div>
+
         <div className={`category-style ${categorystyle}`}>{category}</div>
       </Card.Body>
     </Card>

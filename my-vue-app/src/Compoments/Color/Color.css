@@ -1,0 +1,57 @@
+.circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid black;
+    display: inline-block;
+    margin-right: 5px; /* Optional margin to separate circles */
+    margin-left: 5px; /* Optional margin to separate circles */
+    padding: 2px;
+  }
+
+
+
+  .red {
+    background-color: red;
+  }
+  
+  .blue {
+    background-color: blue;
+  }
+  
+  .green {
+    background-color: green;
+  }
+  
+  .yellow {
+    background-color: yellow;
+  }
+  
+  .orange {
+    background-color: orange;
+  }
+  
+  .purple {
+    background-color: purple;
+  }
+  
+  .pink {
+    background-color: pink;
+  }
+  
+  .brown {
+    background-color: brown;
+  }
+  
+  .gray {
+    background-color: gray;
+  }
+  
+  .black {
+    background-color: black;
+  }
+  
+  .white {
+    background-color: white;
+  }
+  

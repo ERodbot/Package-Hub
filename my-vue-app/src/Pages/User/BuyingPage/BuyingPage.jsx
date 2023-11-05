@@ -18,11 +18,6 @@ const BuyingPage = () => {
     <PaginaBase>
       <Container className="d-flex justify-content-center align-items-center custom-main-container">
         <Container className="sizing-container">
-          <h1>{address}</h1>
-          <h1>{cardNumber}</h1>
-          <h1>{cardHolder}</h1>
-          <h1>{expiration}</h1>
-          <h1>{cvc}</h1>
           <div className="main-div">
             <Card className="custom-card">
               <Card.Header className="card-header">

@@ -1,0 +1,49 @@
+/* Add this CSS in your stylesheet or style tag */
+.scrollable {
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 80dvh; /* Set a maximum height for the scrollable area */
+  padding-right: 15px; /* Add some right padding to avoid overlap with scrollbar */
+
+  /* Customize the scrollbar */
+  scrollbar-color: #eb9f0b #f5e1cd;
+  margin-right: 5%;
+}
+
+/* Customize the Webkit scrollbar (Chrome, Safari) */
+.scrollable::-webkit-scrollbar {
+  width: 15px; /* Set the width of the scrollbar */
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: #F58071; /* Color of the scrollbar thumb */
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background-color: #F5E1CD; /* Color of the scrollbar track */
+}
+
+.cart-decoration {
+  max-width: 100%;
+  margin-top: 5%
+  
+}
+
+.row-content-shopping-cart {
+  margin-top: 15%
+}
+
+.custom-card-shopping-cart {
+  background-color: #F58071;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 1.2rem;
+}
+
+
+.custom-button-shopping-cart {
+  background-color: #F5E1CD;
+  color: black;
+  border-radius: 3rem;
+  width: 100%;
+  border: 1px solid black;
+  font-weight: bold;
+}
