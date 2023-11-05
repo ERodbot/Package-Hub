@@ -37,12 +37,12 @@ const Receipt = () => {
   const { items, subtotal, total } = itemsData;
 
   return (
-    <Container className="background">
+    <Container className="background-receipt">
       <PaginaBase>
-        <Container>
+        <Container className="receipt-page">
           <h1 className="text-center custom-text my-5">Package Hub</h1>
           <Container>
-            <Card className="card custom-card">
+            <Card className="card-receipt custom-card-receipt">
               <Card.Body>
                 <Row>
                   <Col>

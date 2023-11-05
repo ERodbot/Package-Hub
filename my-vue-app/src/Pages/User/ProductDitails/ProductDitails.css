@@ -1,0 +1,45 @@
+img-display-product {
+
+}
+
+.custom-col-product-display {
+    
+}
+
+.units-to-buy-button {
+    width: 50%;
+    padding-left: 1%;
+    padding-right: 1%;
+    border-radius: 4rem;
+    background-color: #E896CB;
+    border: none;
+}
+
+.custom-product-detail-button-add {
+    background-color: #4EA97F;
+   
+}
+
+.custom-product-detail-button-buy {
+    background-color: #3FA4CA;
+
+}
+
+.custom-product-detail-button-buy, .custom-product-detail-button-add {
+    border-radius: 5rem;
+    border: none;
+}
+
+.buy-options-display {
+    min-width: 100%;
+}
+
+.buy-options-display {
+    border-radius: 1rem;
+    background-color: #EB9F0B;
+}
+
+.product-detail-main-card {
+    border-radius: 1rem;
+    background-color: hsla(0, 0%, 100%, 0.5);
+}
