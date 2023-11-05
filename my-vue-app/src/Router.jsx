@@ -10,6 +10,8 @@ import Receipt from "./Pages/User/Receipt/Receipt";
 import BuyingPage from "./Pages/User/BuyingPage/BuyingPage";
 import Ordenes from "./Pages/Facturacion/Ordenes.jsx";
 import Profile from "./Pages/User/Profile/ProfileC.jsx";
+import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
+
 
 const Router = createBrowserRouter([
   {
@@ -48,6 +50,10 @@ const Router = createBrowserRouter([
   {
     path: "/profileCliente",
     element: <Profile />,
+  },
+  {
+    path: "/busqueda",
+    element: <Busqueda />,
   },
 ]);
 
