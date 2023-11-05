@@ -4,10 +4,11 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-:root {
-  --accentColorBG: #f2f6f9;
-  --accentColorBD: #c2c2c2;
-  --color-fondo: #f2f2f2;
+.mainContainer {
+  display: flex;
+  flex-direction: wrap;
+  padding-bottom: 100px;
+  margin: 0px;
 }
 
 .title {
@@ -19,46 +20,12 @@ body {
   color: #3793ff;
 }
 
-.subtitle {
-  margin-top: 3px;
-  padding-top: 10px;
-  font-size: 28px;
-  font-style: small;
-  font-weight: 400;
-  margin-bottom: 20px;
-}
-
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
-
-.containerh2 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
-
-.containerh2 h1 {
-  font-size: 26px;
-  font-style: normal;
-  margin-top: 0px;
-}
-.container2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
 .formulario {
   display: flex;
   flex-direction: column;
   align-items: left;
-  padding: 20px;
+  padding-left: 0%;
+  padding-top: 120px;
 }
 
 .formulario input {
@@ -83,7 +50,7 @@ form .inputT1 {
 
 .inputT1 input,
 select {
-  width: 30%;
+  width: 200px;
   padding: 10px 3px 10px 36px;
   /*mover donde se escribe*/
   border-radius: 20px;
@@ -116,12 +83,24 @@ select {
   background-image: url("../../../assets/Logos/emailLogo.svg");
 }
 
-.descripcionID input {
-  height: 80%;
+.contenedor-imagenes {
+  display: wrap;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 20%;
+  width: 60%;
+  height: auto;
 }
 
-#asociacionColReg::placeholder {
-  font-size: 12px;
+.imagen {
+  max-width: 100%;
+  height: auto;
+}
+
+.imagen-headder {
+  max-width: 100%;
+  height: auto;
+  margin-left: 130%;
 }
 
 .image-button {
@@ -188,7 +167,35 @@ select {
 }
 
 .errorButton {
+  padding-top: 10px;
   margin-left: 0px;
   margin-bottom: 10px;
   display: inline-block;
+}
+
+.btn-secondary {
+  background-color: #3793ff;
+  color: #fff;
+  border: 1px solid #007bff;
+  margin-top: 12px;
+  width: 200px;
+  height: 40px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* Estilos del menú del dropdown */
+.dropdown-menu {
+  background-color: #007bff;
+  padding-top: 10px;
+}
+
+/* Estilos de las opciones del dropdown */
+.dropdown-item {
+  color: #fff;
+}
+
+/* Cambiar color al pasar el ratón sobre las opciones */
+.dropdown-item:hover {
+  background-color: #0056b3;
 }

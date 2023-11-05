@@ -1,10 +1,12 @@
 import React from "react";
 import "./ProfileC.css";
-import userImg from "../../../assets/Logos/userLogo.svg";
+import userImg from "../../../assets/Links/profileFlower.svg";
+import { Container } from "react-bootstrap";
 
 const PerfilCliente = () => {
   return (
-    <div>
+    <div className="background">
+     
       <p className="pageTitle">Perfil</p>
       <div className="content">
         <div className="profile-container">
@@ -75,7 +77,7 @@ const PerfilCliente = () => {
 
             <button
               type="submit"
-              className="btn btn-success"
+              className="buttonT1 btnsucces"
               id="saveProfileButton"
               disabled
             >
@@ -84,27 +86,11 @@ const PerfilCliente = () => {
           </form>
         </div>
       </div>
-
-      <div className="errorContainer">
-        <p className="title errorTitle">Alerta</p>
-        <p className="errorText"></p>
-        <button className="btn btn-danger errorButton">Cerrar</button>
-      </div>
-
-      <div className="deleteContainer">
-        <p className="title deleteText">Alerta</p>
-        <p className="deleteText">
-          ¿Está seguro que desea borrar su cuenta? Esta acción no puede ser
-          revertida.
-        </p>
-        <button className="btn btn-danger deleteButton" id="confirmDelButton">
-          Confirmar
-        </button>
-        <button className="btn btn-secondary deleteButton" id="cancelDelButton">
-          Cancelar
-        </button>
-      </div>
     </div>
+
+
+
+
   );
 };
 
