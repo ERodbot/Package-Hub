@@ -1,6 +1,6 @@
 .background {
   background: linear-gradient(rgba(245, 63, 63, 0.5), rgba(75, 75, 244, 0.5)),
-    url("../../../assets/Background/profile_bg.jpg");
+    url("../../../assets/Background/profile_bg.jpg"); /* Fondo difuminado e imagen */
   background-size: cover;
   min-width: 100%;
   min-height: 100%;
@@ -16,7 +16,7 @@
   line-height: 0.7;
   margin-top: 40px;
   color: #f2f2f2;
-  -webkit-text-stroke: 2px black; /* Ancho y color del borde (para navegadores basados en WebKit) */
+  -webkit-text-stroke: 2px black; /* Ancho y color del borde */
 }
 
 .content {
