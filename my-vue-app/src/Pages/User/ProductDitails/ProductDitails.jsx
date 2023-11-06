@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Card, Carousel, Container, Row, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 import Color from "../../../Compoments/Color/Color";
 import "./ProductDitails.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
@@ -118,9 +120,11 @@ const ProductDetails = () => {
               <hr />
               <Row>
                 <Col md={12}>
-                  <Button className="m-1 w-100 custom-product-detail-button-add">
-                    Agregar al carrito
-                  </Button>
+                  <Link to="/shoppingCart">
+                    <Button className="m-1 w-100 custom-product-detail-button-add">
+                      Agregar al carrito
+                    </Button>
+                  </Link>
                   <Button className="m-1 w-100 custom-product-detail-button-buy">
                     Comprar Ahora
                   </Button>

@@ -137,6 +137,7 @@ const SalesFormReportConsult = () => {
             </Button>
           </Form>
         </Card.Body>
+        <h1>{endDate}</h1>
       </Card>
     </PaginaBase>
   );
