@@ -1,14 +1,14 @@
 import React, { useState} from "react";
 import { Link } from "react-router-dom";
-import './LoginSignUp.css';
+import './LoginEmpleadoE.css';
 import trevolImage from '../../../assets/Decorations/trevol_skate.png';
 import trevolImage2 from '../../../assets/Logos/logotype.svg';
 
-const LoginCliente = () => {
+const LoginEmpleado = () => {
   return (
     <div className="mainContainer">
     <div className="formulario">
-      <p className="title">Inicio de Sesión</p>
+      <p className="title">Inicio de Sesión Empleado</p>
 
       <form id="loginEstudianteForm" method="post">
         <div className="inputT1 usernameC">
@@ -50,4 +50,4 @@ const LoginCliente = () => {
   );
 };
 
-export default LoginCliente;
+export default LoginEmpleado;

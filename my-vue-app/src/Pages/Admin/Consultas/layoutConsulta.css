@@ -1,20 +1,41 @@
-/* body {
-  background-image: url("../../assets/Background/sale_info_bg.jpg");
-  background-size: cover;
-} */
-
-.title2 {
-  font-size: 46px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 0.7;
-  margin-top: 40px;
-  color: #000000;
-  margin-top: 0px;
+.contenedorFormulario {
+  flex-direction: column;
+  display: flex;
+  margin-top: 20px;
+  width: 800px;
+  background-color: #f5e1cd;
+  padding: 20px 30px 1dvb 30px;
 }
 
-.mainPage {
-  padding-top: 60px;
+.labelWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.labelContainer {
+  text-align: left;
+  width: 580px;
+  max-width: 480px;
+  word-wrap: break-word;
+}
+
+.contenedorFormularioProdu {
+  margin-bottom: 10px;
+  margin-left: 20px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.buscarBtn {
+  background-color: #f58071;
+  border-radius: 12px;
+  border: none;
+  margin-left: 84%;
+  margin-top: 10px;
+  height: 40px;
+  width: 100px;
 }
 
 .vertical-scroll-container {
@@ -40,33 +61,4 @@
 
 .vertical-scroll-container::-webkit-scrollbar-track {
   background-color: #f5e1cd; /* Color de la pista de la barra de desplazamiento */
-}
-
-.columnaOrden {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 0px;
-  height: 60px;
-  overflow: hidden;
-}
-
-.odd-row {
-  background-color: #bbbbbb; /* Color para filas impares */
-  border-radius: 10px;
-  margin-left: 2px;
-  margin-bottom: 4px;
-}
-
-.even-row {
-  background-color: #e1b765; /* Color para filas pares */
-  border-radius: 10px;
-  margin-left: 2px;
-  margin-bottom: 4px;
-}
-
-.popOver-content {
-  background-color: aqua;
-  width: 200px;
-  height: 400px;
-  margin-right: 10px;
 }

@@ -1,24 +1,28 @@
 import React, { useState} from "react";
 import { Link } from "react-router-dom";
-import './LoginSignUp.css';
+import './LoginEmpleadoE.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Dropdown } from "react-bootstrap";
+import {Dropdown} from "react-bootstrap";
 import trevolImage from '../../../assets/Decorations/trevol_skate.png';
 import trevolImage2 from '../../../assets/Logos/logotype.svg';
 
-const SignUpCliente = () => {
+const SignUpEmpleado = () => {
   const [selectedOption, setSelectedOption] = useState("Pais de origen");
+  const [selectedOption2, setSelectedOption2] = useState("Rol en empresa");
+
 
   const handleDropdownSelect = (option) => {
     setSelectedOption(option);
   };
 
   const dropdownOptions = ["Costa rica", "Venezuela"];
+  const dropdownOptions2 = ["Admin", "Employee"];
+
 
   return (
     <div className="mainContainer">
       <div className="formulario">
-        <p className="title">Registro de Cliente</p>
+        <p className="title">Registro de Empleado</p>
 
         <form id="loginEstudianteForm" method="post">
           <div className="inputT1 usernameC">
@@ -47,6 +51,19 @@ const SignUpCliente = () => {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
+
+            <Dropdown onSelect={(eventKey) => handleDropdownSelect2(eventKey)}>
+              <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
+                {selectedOption2}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {dropdownOptions2.map((option, index) => (
+                  <Dropdown.Item key={index} eventKey={option}>
+                    {option}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
           <Link to="/main">
             <button className="buttonT1" type="submit">
               Iniciar Sesión
@@ -63,4 +80,4 @@ const SignUpCliente = () => {
   );
 };
 
-export default SignUpCliente;
+export default SignUpEmpleado;
