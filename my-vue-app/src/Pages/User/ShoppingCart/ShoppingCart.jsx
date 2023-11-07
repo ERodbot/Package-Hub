@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 import ProductDisplay from "../../../Compoments/ProductDisplay/ProductDisplay";
 import jsonData from "./data.json";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
@@ -51,7 +53,9 @@ const ShoppingCart = () => {
               <Card.Text>
                 <h3>${totalPrice.toFixed(2)}</h3>
               </Card.Text>
-              <Button className="custom-button-shopping-cart">Comprar</Button>
+              <Link to="/Buying">
+                <Button className="custom-button-shopping-cart">Comprar</Button>
+              </Link>
             </Card.Body>
           </Card>
           <img

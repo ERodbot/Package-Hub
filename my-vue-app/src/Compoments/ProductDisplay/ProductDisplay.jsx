@@ -11,12 +11,12 @@ const ProductDisplay = ({
   category,
   url,
 }) => {
-  const handleRedirection = () => {
-    window.open("/");
+  const handleRedirection = (url) => {
+    window.open(url);
   };
 
   return (
-    <Card id="card-style" onClick={handleRedirection}>
+    <Card id="card-style" onClick={() => handleRedirection(url)}>
       <div id="image-container">
         <div className="title-container">
           <Card.Title>

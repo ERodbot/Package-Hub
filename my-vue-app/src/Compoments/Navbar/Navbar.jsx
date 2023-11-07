@@ -8,6 +8,7 @@ import {
   NavDropdown,
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 /*Custom css*/
 import "./Navbar.css";
@@ -36,8 +37,8 @@ const NavbarPage = () => {
       id="custom-navbar"
     >
       <Container id="custom-container">
-        <Navbar.Brand href="/Principal">
-          <img src={logo} alt="ucr logo" id="custom-brand" />
+        <Navbar.Brand href="/main">
+          <img src={logo} alt="Logo marca" id="custom-brand" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -45,8 +46,8 @@ const NavbarPage = () => {
             {["Inicio", "Acerca", "Otros"].map((val) => {
               return (
                 <Nav.Link
-                  href={"/" + val}
-                  className="mx-4 "
+                  href={val === "Inicio" ? "/main" : undefined}
+                  className="mx-4 mt-3"
                   id="custom-navlink"
                 >
                   {val}
@@ -54,12 +55,16 @@ const NavbarPage = () => {
               );
             })}
             <NavDropdown id="custom-dropdown">
-              <NavDropdown.Item href="/ordenes">Ordenes</NavDropdown.Item>
-              <NavDropdown.Item href="/facturas">Facturas</NavDropdown.Item>
-              <NavDropdown.Item href="/servicio-cliente">
+              <NavDropdown.Item href="/ordenesCliente">
+                Ordenes
+              </NavDropdown.Item>
+              <NavDropdown.Item href="/receipt">Facturas</NavDropdown.Item>
+              <NavDropdown.Item href="/servicioCliente">
                 Servicio al Cliente
               </NavDropdown.Item>
-              <NavDropdown.Item href="/salir">Salir</NavDropdown.Item>
+              <NavDropdown.Item href="/inicioSesionCliente">
+                Salir
+              </NavDropdown.Item>
             </NavDropdown>
             <InputGroup className="search-input">
               <FormControl
@@ -71,10 +76,16 @@ const NavbarPage = () => {
               />
             </InputGroup>
             <Container>
-              <img src={shopping_cart} id="custom-img" />
+              <Link to="/shoppingCart">
+                <img src={shopping_cart} id="custom-img" />
+              </Link>
+              <p>Carrito</p>
             </Container>
             <Container>
-              <img src={profile} id="custom-img" />
+              <Link to="/profileCliente">
+                <img src={profile} id="custom-img" />
+              </Link>
+              <p>Perfil</p>
             </Container>
             <Container>
               <img src={cr} id="custom-img" />

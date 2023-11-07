@@ -10,63 +10,65 @@ import Receipt from "./Pages/User/Receipt/Receipt";
 import BuyingPage from "./Pages/User/BuyingPage/BuyingPage";
 import Ordenes from "./Pages/Facturacion/Ordenes.jsx";
 import Profile from "./Pages/User/Profile/ProfileC.jsx";
-import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
 import ShoppingCart from "./Pages/User/ShoppingCart/ShoppingCart.jsx";
 import ProductDetails from "./Pages/User/ProductDitails/ProductDitails.jsx";
 import SalesFormReportConsult from "./Pages/Admin/SalesInfoRequest/SalesInfoRequest.jsx";
+import Drinks from "./Pages/User/Drinks/Drinks.jsx";
+import Skate from "./Pages/User/Skate/Skate.jsx";
+import Snacks from "./Pages/User/Snacks/Snacks.jsx";
 
 const Router = createBrowserRouter([
   {
-    path: "/navbar",
-    element: <NavbarPage />,
-  },
-  {
-    path: "/main",
-    element: <MainPage />,
-  },
-  {
-    path: "/clothes",
-    element: <Clothes />,
+    path: "/registroCliente",
+    element: <SignC />,
   },
   {
     path: "/inicioSesionCliente",
     element: <LoginC />,
   },
   {
-    path: "/registroCliente",
-    element: <SignC />,
-  },
-  {
-    path: "/Receipt",
-    element: <Receipt />,
-  },
-  {
-    path: "/Buying",
-    element: <BuyingPage />,
-  },
-
-  {
-    path: "/ordenesCliente",
-    element: <Ordenes />,
+    path: "/main",
+    element: <MainPage />,
   },
   {
     path: "/profileCliente",
     element: <Profile />,
   },
   {
-    path: "/busqueda",
-    element: <Busqueda />,
-
+    path: "/clothes",
+    element: <Clothes />,
   },
-
+  {
+    path: "/snacks",
+    element: <Snacks />,
+  },
+  {
+    path: "/drinks",
+    element: <Drinks />,
+  },
+  {
+    path: "/skate",
+    element: <Skate />,
+  },
+  {
+    path: "/Buying",
+    element: <BuyingPage />,
+  },
+  {
+    path: "/productDetail",
+    element: <ProductDetails />,
+  },
   {
     path: "/shoppingCart",
     element: <ShoppingCart />,
   },
-
   {
-    path: "/productDetail",
-    element: <ProductDetails />,
+    path: "/Receipt",
+    element: <Receipt />,
+  },
+  {
+    path: "/ordenesCliente",
+    element: <Ordenes />,
   },
   {
     path: "/SalesReport",

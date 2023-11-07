@@ -63,3 +63,7 @@
   margin-left: 2px;
   margin-bottom: 4px;
 }
+
+.link-no-highlight:focus, .link-no-highlight:active {
+  outline: none; /* Remove the blue outline on focus and active state */
+}

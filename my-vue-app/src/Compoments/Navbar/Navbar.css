@@ -1,6 +1,6 @@
 #custom-navbar {
     background-color: white;
-    height: 11vh;
+    height: 12vh;
     border: #BBBBBB;
     padding: 0; /* Elimina el padding */
     margin:0;
@@ -30,11 +30,14 @@
 #custom-searchbar {
     border-radius: 5rem;
     width: 80vh;
-    height: 70%;
+    height: auto;
     border: 3px solid black;
-    margin: 0 1rem 0rem 1rem;
+    margin-left: 1rem;
+    margin-left: 1rem;
+    margin-top: -3rem;
 }
 
 #custom-dropdown {
     margin-right: 15%;
+    margin-top:100%;
 }

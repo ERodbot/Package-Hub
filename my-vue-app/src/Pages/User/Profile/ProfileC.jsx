@@ -6,7 +6,6 @@ import { Container } from "react-bootstrap";
 const PerfilCliente = () => {
   return (
     <div className="background">
-     
       <p className="pageTitle">Perfil</p>
       <div className="content">
         <div className="profile-container">
@@ -27,7 +26,6 @@ const PerfilCliente = () => {
                 type="text"
                 className="form-control"
                 placeholder=""
-                disabled
               />
             </div>
 
@@ -38,7 +36,6 @@ const PerfilCliente = () => {
                 type="text"
                 className="form-control"
                 placeholder=""
-                disabled
               />
             </div>
 
@@ -49,7 +46,6 @@ const PerfilCliente = () => {
                 type="text"
                 className="form-control"
                 placeholder=""
-                disabled
               />
             </div>
 
@@ -60,7 +56,7 @@ const PerfilCliente = () => {
                 type="text"
                 className="form-control"
                 placeholder=""
-                disabled
+                x
               />
             </div>
 
@@ -71,7 +67,6 @@ const PerfilCliente = () => {
                 type="text"
                 className="form-control"
                 placeholder=""
-                disabled
               />
             </div>
 
@@ -79,7 +74,6 @@ const PerfilCliente = () => {
               type="submit"
               className="buttonT1 btnsucces"
               id="saveProfileButton"
-              disabled
             >
               Guardar cambios
             </button>
@@ -87,10 +81,6 @@ const PerfilCliente = () => {
         </div>
       </div>
     </div>
-
-
-
-
   );
 };
 
