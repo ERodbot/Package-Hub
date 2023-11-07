@@ -1,10 +1,10 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import './LoginSignUp.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Dropdown } from "react-bootstrap";
-import trevolImage from '../../../assets/Decorations/trevol_skate.png';
-import trevolImage2 from '../../../assets/Logos/logotype.svg';
+import "./LoginSignUp.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Dropdown } from "react-bootstrap";
+import trevolImage from "../../../assets/Decorations/trevol_skate.png";
+import trevolImage2 from "../../../assets/Logos/logotype.svg";
 
 const SignUpCliente = () => {
   const [selectedOption, setSelectedOption] = useState("Pais de origen");
@@ -30,11 +30,21 @@ const SignUpCliente = () => {
           </div>
 
           <div className="inputT1 telefono">
-            <input id="telefonoC" type="telefono" placeholder="Telefono" required />
+            <input
+              id="telefonoC"
+              type="telefono"
+              placeholder="Telefono"
+              required
+            />
           </div>
 
           <div className="inputT1 password">
-            <input id="passwordEstLog" type="password" placeholder="Password" required />
+            <input
+              id="passwordEstLog"
+              type="password"
+              placeholder="Password"
+              required
+            />
             <Dropdown onSelect={(eventKey) => handleDropdownSelect(eventKey)}>
               <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
                 {selectedOption}
@@ -47,16 +57,20 @@ const SignUpCliente = () => {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
-          <Link to="/main">
-            <button className="buttonT1" type="submit">
-              Iniciar Sesión
-            </button>
-          </Link>
+            <Link to="/main">
+              <button className="buttonT1" type="submit">
+                Iniciar Sesión
+              </button>
+            </Link>
           </div>
         </form>
       </div>
       <div className="contenedor-imagenes">
-        <img className="imagen imagen-headder" src={trevolImage2} alt="LogoPackage" />
+        <img
+          className="imagen imagen-headder"
+          src={trevolImage2}
+          alt="LogoPackage"
+        />
         <img className="imagen" src={trevolImage} alt="LogoPackage" />
       </div>
     </div>

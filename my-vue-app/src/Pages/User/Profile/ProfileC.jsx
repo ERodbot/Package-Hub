@@ -17,7 +17,7 @@ const PerfilCliente = () => {
       <div className="background">
         <p className="pageTitle">Perfil</p>
         <div className="content">
-          <div className="profile-container"> 
+          <div className="profile-container">
             <img className="imageUserContainer" src={userImg} alt="User" />
             <Button className="buttonT1 greenBtn" id="editarProfileButton">
               Editar

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Container, Card, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 import "./BuyingPage.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
@@ -89,7 +91,9 @@ const BuyingPage = () => {
             <Card.Body>
               <h3>Total a pagar</h3>
               <p className="custom-text-price">${price.toFixed(2)}</p>
-              <Button className="custom-button">Continuar Compra</Button>
+              <Link to="/main">
+                <Button className="custom-button">Continuar Compra</Button>
+              </Link>
             </Card.Body>
           </Card>
         </Container>

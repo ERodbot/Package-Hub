@@ -6,7 +6,7 @@
         "name": "Product 1",
         "categorystyle": "Snacks",
         "category": "Snacks",
-        "url": "/product1",
+        "url": "/productDetail",
         "unitsPurchased": 2
       },
       {
@@ -15,7 +15,7 @@
         "name": "Product 2",
         "categorystyle": "Skate",
         "category": "Skate",
-        "url": "/product2",
+        "url": "/productDetail",
         "unitsPurchased": 3
       },
       {
@@ -24,7 +24,7 @@
         "name": "Product 3",
         "categorystyle": "Ropa",
         "category": "Ropa",
-        "url": "/product3",
+        "url": "/productDetail",
         "unitsPurchased": 1
       },
       {
@@ -33,7 +33,7 @@
         "name": "Product 3",
         "categorystyle": "Ropa",
         "category": "Ropa",
-        "url": "/product3",
+        "url": "/productDetail",
         "unitsPurchased": 1
       },       {
         "price": 25.99,
@@ -41,7 +41,7 @@
         "name": "Product 1",
         "categorystyle": "Snacks",
         "category": "Snacks",
-        "url": "/product1",
+        "url": "/productDetail",
         "unitsPurchased": 2
       },
       {
@@ -50,7 +50,7 @@
         "name": "Product 2",
         "categorystyle": "Skate",
         "category": "Skate",
-        "url": "/product2",
+        "url": "/productDetail",
         "unitsPurchased": 3
       },
       {
@@ -59,7 +59,7 @@
         "name": "Product 3",
         "categorystyle": "Ropa",
         "category": "Ropa",
-        "url": "/product3",
+        "url": "/productDetail",
         "unitsPurchased": 1
       },
       {
@@ -68,7 +68,7 @@
         "name": "Product 3",
         "categorystyle": "Ropa",
         "category": "Ropa",
-        "url": "/product3",
+        "url": "/productDetail",
         "unitsPurchased": 1
       }
     ]

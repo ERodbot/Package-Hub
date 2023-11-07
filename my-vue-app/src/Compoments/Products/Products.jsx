@@ -7,7 +7,7 @@ import productsData from "./productsData";
 /*Css*/
 import "./Products.css";
 
-const Products = ({ category }) => {
+const Products = ({ category, url }) => {
   // Use useState to store the product data
   const [products, setProducts] = useState(productsData);
 
@@ -26,6 +26,7 @@ const Products = ({ category }) => {
               image={product.image}
               categorystyle={category}
               category={category}
+              url={url}
             />
           </Col>
         ))}

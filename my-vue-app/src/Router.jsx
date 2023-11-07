@@ -11,33 +11,29 @@ import BuyingPage from "./Pages/User/BuyingPage/BuyingPage";
 import Ordenes from "./Pages/Facturacion/Ordenes.jsx";
 import OrdenesEmpleado from "./Pages/Facturacion/OrdenEmpleado.jsx";
 import Profile from "./Pages/User/Profile/ProfileC.jsx";
-import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
 import ShoppingCart from "./Pages/User/ShoppingCart/ShoppingCart.jsx";
 import ProductDetails from "./Pages/User/ProductDitails/ProductDitails.jsx";
 import SalesFormReportConsult from "./Pages/Admin/SalesInfoRequest/SalesInfoRequest.jsx";
+import Drinks from "./Pages/User/Drinks/Drinks.jsx";
+import Skate from "./Pages/User/Skate/Skate.jsx";
+import Snacks from "./Pages/User/Snacks/Snacks.jsx";
 import LayoutConsulta from "./Pages/Admin/Consultas/layoutConsulta.jsx";
 import SignE from "./Pages/Admin/LoginSignUpE/SignUpEmpleado.jsx";
 import LoginE from "./Pages/Admin/LoginSignUpE/LoginEmpleado.jsx";
 import Complaints from "./Pages/Admin/CustomerService/AnswerComplaints.jsx";
 
-
-
 const Router = createBrowserRouter([
   {
-    path: "/navbar",
-    element: <NavbarPage />,
-  },
-  {
-    path: "/main",
-    element: <MainPage />,
-  },
-  {
-    path: "/clothes",
-    element: <Clothes />,
+    path: "/registroCliente",
+    element: <SignC />,
   },
   {
     path: "/inicioSesionCliente",
     element: <LoginC />,
+  },
+  {
+    path: "/main",
+    element: <MainPage />,
   },
   {
     path: "/registroCliente",
@@ -80,16 +76,41 @@ const Router = createBrowserRouter([
     element: <Profile />,
   },
   {
-    path: "/busqueda",
-    element: <Busqueda />,
+    path: "/clothes",
+    element: <Clothes />,
   },
+  {
+    path: "/snacks",
+    element: <Snacks />,
+  },
+  {
+    path: "/drinks",
+    element: <Drinks />,
+  },
+  {
+    path: "/skate",
+    element: <Skate />,
+  },
+  {
+    path: "/Buying",
+    element: <BuyingPage />,
+  },
+  {
+    path: "/productDetail",
+    element: <ProductDetails />,
+  },
+  
   {
     path: "/shoppingCart",
     element: <ShoppingCart />,
   },
   {
-    path: "/productDetail",
-    element: <ProductDetails />,
+    path: "/Receipt",
+    element: <Receipt />,
+  },
+  {
+    path: "/ordenesCliente",
+    element: <Ordenes />,
   },
   {
     path: "/SalesReport",

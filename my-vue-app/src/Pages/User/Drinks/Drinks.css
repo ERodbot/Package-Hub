@@ -1,10 +1,16 @@
-.custom-container-box{
+.custom-container-box {
     margin-top: 10%;
-    overflow-y: auto;
-}
+
+  }
+  
+  .custom-container {
+    max-height: fit-content; /* Set a max height for the container, adjust as needed */
+    padding-right: 15px; /* Add some padding for the scrollbar */
+  }
+
+  .custom-title-image{
+    width: 20%;
+  }
 
 
-.custom-container-box h1{
-    font-size: 6rem;
-}
-
+  

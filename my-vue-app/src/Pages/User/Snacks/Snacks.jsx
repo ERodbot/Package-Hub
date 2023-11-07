@@ -1,20 +1,27 @@
 import { Container, Col, Row } from "react-bootstrap";
 import Products from "../../../Compoments/Products/Products";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
-import clothes_icon from "../../../assets/Links/clothing_title.jpg";
-import "./Clothes.css";
+import snacks_title from "../../../assets/Decorations/food_title.jpg";
+import "./Snacks.css";
 
-const Clothes = () => {
+const Snacks = () => {
   return (
     <PaginaBase>
       <Container className="custom-container-box">
         <Container className="custom-container">
-          <h1 className="mb-5">Ropa</h1>
-          <img src="clothes_icon" alt="menú ropa" />
-          <Products category={"Ropa"} />
+          <div className="align-content-center mb-5">
+            <h1>Snacks</h1>
+            <img
+              src={snacks_title}
+              alt="menú snacks"
+              className="custom-title-image"
+            />
+          </div>
+
+          <Products category={"Snacks"} url={"/productDetail"} />
         </Container>
       </Container>
     </PaginaBase>
   );
 };
-export default Clothes;
+export default Snacks;

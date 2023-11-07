@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from "react-bootstrap";
-import './Ordenes.css';
+import "./Ordenes.css";
 import PaginaBase from "../General/PaginaBase/PaginaBase";
 
 const dataObject = [
