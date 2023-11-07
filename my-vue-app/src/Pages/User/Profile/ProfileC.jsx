@@ -13,89 +13,11 @@ const PerfilCliente = () => {
   const [ubicacion, setUbicacion] = useState("");
 
   return (
-<<<<<<< HEAD
-    <div className="background">
-      <p className="pageTitle">Perfil</p>
-      <div className="content">
-        <div className="profile-container">
-          <img className="imageUserContainer" src={userImg} alt="User" />
-          <button className="buttonT1 greenBtn" id="editarProfileButton">
-            Editar
-          </button>
-          <button className="buttonT1 redBtn" id="eliminarProfileButton">
-            Eliminar
-          </button>
-        </div>
-        <div className="contact-container">
-          <form id="modificarPerfilForm" method="post">
-            <div className="profile-attribute">
-              <p>Nombre:</p>
-              <input
-                id="nameProfile"
-                type="text"
-                className="form-control"
-                placeholder=""
-              />
-            </div>
-
-            <div className="profile-attribute">
-              <p>Usuario:</p>
-              <input
-                id="usernameProfile"
-                type="text"
-                className="form-control"
-                placeholder=""
-              />
-            </div>
-
-            <div className="profile-attribute">
-              <p>Telefono:</p>
-              <input
-                id="telefonoProfile"
-                type="text"
-                className="form-control"
-                placeholder=""
-              />
-            </div>
-
-            <div className="profile-attribute">
-              <p>Correo:</p>
-              <input
-                id="correoProfile"
-                type="text"
-                className="form-control"
-                placeholder=""
-                x
-              />
-            </div>
-
-            <div className="profile-attribute">
-              <p>Ubicacion:</p>
-              <input
-                id="ubicacionProfile"
-                type="text"
-                className="form-control"
-                placeholder=""
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="buttonT1 btnsucces"
-              id="saveProfileButton"
-            >
-              Guardar cambios
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-=======
     <PaginaBase>
       <div className="background">
         <p className="pageTitle">Perfil</p>
         <div className="content">
-          <div className="profile-container"> 
+          <div className="profile-container">
             <img className="imageUserContainer" src={userImg} alt="User" />
             <Button className="buttonT1 greenBtn" id="editarProfileButton">
               Editar
@@ -184,7 +106,6 @@ const PerfilCliente = () => {
         </div>
       </div>
     </PaginaBase>
->>>>>>> e97d82d49a815b1e333c3fac15798ac0b13b3f8b
   );
 };
 

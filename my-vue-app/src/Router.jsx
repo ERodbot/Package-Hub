@@ -20,6 +20,7 @@ import Snacks from "./Pages/User/Snacks/Snacks.jsx";
 import LayoutConsulta from "./Pages/Admin/Consultas/layoutConsulta.jsx";
 import SignE from "./Pages/Admin/LoginSignUpE/SignUpEmpleado.jsx";
 import LoginE from "./Pages/Admin/LoginSignUpE/LoginEmpleado.jsx";
+import Busqueda from "./Pages/Admin/Consultas/layoutConsulta.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -33,6 +34,8 @@ const Router = createBrowserRouter([
   {
     path: "/main",
     element: <MainPage />,
+  },
+  {
     path: "/registroCliente",
     element: <SignC />,
   },
@@ -89,6 +92,8 @@ const Router = createBrowserRouter([
   {
     path: "/productDetail",
     element: <ProductDetails />,
+  },
+  {
     path: "/busqueda",
     element: <Busqueda />,
   },
