@@ -18,7 +18,7 @@ import SalesFormReportConsult from "./Pages/Admin/SalesInfoRequest/SalesInfoRequ
 import LayoutConsulta from "./Pages/Admin/Consultas/layoutConsulta.jsx";
 import SignE from "./Pages/Admin/LoginSignUpE/SignUpEmpleado.jsx";
 import LoginE from "./Pages/Admin/LoginSignUpE/LoginEmpleado.jsx";
-
+import Complaints from "./Pages/Admin/CustomerService/AnswerComplaints.jsx";
 
 
 
@@ -69,6 +69,12 @@ const Router = createBrowserRouter([
     path: "/ordenesEmpleado",
     element: <OrdenesEmpleado />,
   },
+
+  {
+    path: "/answerComplaints",
+    element: <Complaints />,
+  },
+
   {
     path: "/profileCliente",
     element: <Profile />,
