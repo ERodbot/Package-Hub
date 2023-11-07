@@ -9,6 +9,7 @@ import Clothes from "./Pages/User/Clothes/Clothes";
 import Receipt from "./Pages/User/Receipt/Receipt";
 import BuyingPage from "./Pages/User/BuyingPage/BuyingPage";
 import Ordenes from "./Pages/Facturacion/Ordenes.jsx";
+import OrdenesEmpleado from "./Pages/Facturacion/OrdenEmpleado.jsx";
 import Profile from "./Pages/User/Profile/ProfileC.jsx";
 import ShoppingCart from "./Pages/User/ShoppingCart/ShoppingCart.jsx";
 import ProductDetails from "./Pages/User/ProductDitails/ProductDitails.jsx";
@@ -16,6 +17,9 @@ import SalesFormReportConsult from "./Pages/Admin/SalesInfoRequest/SalesInfoRequ
 import Drinks from "./Pages/User/Drinks/Drinks.jsx";
 import Skate from "./Pages/User/Skate/Skate.jsx";
 import Snacks from "./Pages/User/Snacks/Snacks.jsx";
+import LayoutConsulta from "./Pages/Admin/Consultas/layoutConsulta.jsx";
+import SignE from "./Pages/Admin/LoginSignUpE/SignUpEmpleado.jsx";
+import LoginE from "./Pages/Admin/LoginSignUpE/LoginEmpleado.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -29,6 +33,34 @@ const Router = createBrowserRouter([
   {
     path: "/main",
     element: <MainPage />,
+    path: "/registroCliente",
+    element: <SignC />,
+  },
+  {
+    path: "/inicioSesionEmpleado",
+    element: <LoginE />,
+  },
+  {
+    path: "/registroEmpleado",
+    element: <SignE />,
+  },
+  {
+    path: "/Receipt",
+    element: <Receipt />,
+  },
+  {
+    path: "/Buying",
+    element: <BuyingPage />,
+  },
+
+  {
+    path: "/ordenesCliente",
+    element: <Ordenes />,
+  },
+
+  {
+    path: "/ordenesEmpleado",
+    element: <OrdenesEmpleado />,
   },
   {
     path: "/profileCliente",
@@ -57,6 +89,8 @@ const Router = createBrowserRouter([
   {
     path: "/productDetail",
     element: <ProductDetails />,
+    path: "/busqueda",
+    element: <Busqueda />,
   },
   {
     path: "/shoppingCart",
@@ -73,6 +107,10 @@ const Router = createBrowserRouter([
   {
     path: "/SalesReport",
     element: <SalesFormReportConsult />,
+  },
+  {
+    path: "/Consulta",
+    element: <LayoutConsulta />,
   },
 ]);
 

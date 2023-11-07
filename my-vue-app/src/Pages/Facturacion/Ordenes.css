@@ -1,7 +1,12 @@
-/* body {
+.background2 {
   background-image: url("../../assets/Background/sale_info_bg.jpg");
   background-size: cover;
-} */
+  min-width: 100%;
+  min-height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
 
 .title2 {
   font-size: 46px;
@@ -11,35 +16,38 @@
   margin-top: 40px;
   color: #000000;
   margin-top: 0px;
+  padding-bottom: 10px;
 }
 
 .mainPage {
-  padding-top: 60px;
+  padding-top: 160px;
+  padding-left: 300px;
+  padding-right: 300px;
 }
 
 .vertical-scroll-container {
-  max-height: 500px; /* Ajusta la altura máxima según tus necesidades */
-  max-height: auto; /* Ajusta la altura máxima según tus necesidades */
+  max-height: 500px;
+  max-height: auto;
   overflow-y: auto;
-  overflow-x: hidden; /* Oculta la barra de desplazamiento horizontal */
+  overflow-x: hidden; /* Oculta scroll horizontal */
   padding-right: 20px;
 }
 
-/* Opcional: Para evitar el desbordamiento vertical */
+/* Evitar el desbordamiento vertical */
 .vertical-scroll-container > .no-gutters {
   flex-wrap: nowrap;
 }
 
 .vertical-scroll-container::-webkit-scrollbar {
-  width: 16px; /* Ancho de la barra de desplazamiento */
+  width: 16px; /* Ancho del scroll */
 }
 
 .vertical-scroll-container::-webkit-scrollbar-thumb {
-  background-color: #eb9f0b; /* Color del pulgar de la barra de desplazamiento */
+  background-color: #eb9f0b; /* Color del scroll */
 }
 
 .vertical-scroll-container::-webkit-scrollbar-track {
-  background-color: #f5e1cd; /* Color de la pista de la barra de desplazamiento */
+  background-color: #f5e1cd; /* Color de la pista de scroll*/
 }
 
 .columnaOrden {
@@ -51,19 +59,22 @@
 }
 
 .odd-row {
-  background-color: #bbbbbb; /* Color para filas impares */
+  background-color: #bbbbbb;
   border-radius: 10px;
   margin-left: 2px;
   margin-bottom: 4px;
 }
 
 .even-row {
-  background-color: #e1b765; /* Color para filas pares */
+  background-color: #e1b765;
   border-radius: 10px;
   margin-left: 2px;
   margin-bottom: 4px;
 }
 
-.link-no-highlight:focus, .link-no-highlight:active {
-  outline: none; /* Remove the blue outline on focus and active state */
+.popOver-content {
+  background-color: rgb(204, 255, 0);
+  width: 200px;
+  height: 200px;
+  margin-right: 10px;
 }

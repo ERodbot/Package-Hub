@@ -38,11 +38,13 @@ function renderRows(data) {
 const OrdenesClientes = () => {
   return (
     <PaginaBase>
-      <Container fluid className="mainPage">
-        <p className="title2">Registro de Ordenes</p>
-        <div className="vertical-scroll-container">
-          {renderRows(dataObject)};
-        </div>
+      <Container className="background2">
+        <Container fluid className="mainPage ">
+          <p className="title2">Registro de Ordenes</p>
+          <div className="vertical-scroll-container">
+            {renderRows(dataObject)};
+          </div>
+        </Container>
       </Container>
     </PaginaBase>
   );

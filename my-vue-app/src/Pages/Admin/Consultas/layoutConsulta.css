@@ -1,0 +1,64 @@
+.contenedorFormulario {
+  flex-direction: column;
+  display: flex;
+  margin-top: 20px;
+  width: 800px;
+  background-color: #f5e1cd;
+  padding: 20px 30px 1dvb 30px;
+}
+
+.labelWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.labelContainer {
+  text-align: left;
+  width: 580px;
+  max-width: 480px;
+  word-wrap: break-word;
+}
+
+.contenedorFormularioProdu {
+  margin-bottom: 10px;
+  margin-left: 20px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.buscarBtn {
+  background-color: #f58071;
+  border-radius: 12px;
+  border: none;
+  margin-left: 84%;
+  margin-top: 10px;
+  height: 40px;
+  width: 100px;
+}
+
+.vertical-scroll-container {
+  max-height: 500px; /* Ajusta la altura máxima según tus necesidades */
+  max-height: auto; /* Ajusta la altura máxima según tus necesidades */
+  overflow-y: auto;
+  overflow-x: hidden; /* Oculta la barra de desplazamiento horizontal */
+  padding-right: 20px;
+}
+
+/* Opcional: Para evitar el desbordamiento vertical */
+.vertical-scroll-container > .no-gutters {
+  flex-wrap: nowrap;
+}
+
+.vertical-scroll-container::-webkit-scrollbar {
+  width: 16px; /* Ancho de la barra de desplazamiento */
+}
+
+.vertical-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #eb9f0b; /* Color del pulgar de la barra de desplazamiento */
+}
+
+.vertical-scroll-container::-webkit-scrollbar-track {
+  background-color: #f5e1cd; /* Color de la pista de la barra de desplazamiento */
+}
