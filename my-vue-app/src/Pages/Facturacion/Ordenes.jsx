@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./Ordenes.css";
 import PaginaBase from "../General/PaginaBase/PaginaBase";
 
+// La clase row respectica y la informacion que va en las columnas. 
 const dataObject = [
   { rowClass: "no-gutters", columns: ["No es", "2 of 3", "3 of 3"] },
   { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
