@@ -36,10 +36,6 @@ const Router = createBrowserRouter([
     element: <MainPage />,
   },
   {
-    path: "/registroCliente",
-    element: <SignC />,
-  },
-  {
     path: "/inicioSesionEmpleado",
     element: <LoginE />,
   },

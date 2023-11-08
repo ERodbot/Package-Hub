@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,600&display=swap");
-
 body {
   font-family: "Poppins", sans-serif;
 }
@@ -11,13 +10,13 @@ body {
   margin: 0px;
 }
 
-.title {
+.mainContainer .title {
   font-size: 46px;
   font-style: normal;
   font-weight: 700;
   line-height: 0.7;
   margin-top: 40px;
-  color: #3793ff;
+  color: #3b95fe;
 }
 
 .formulario {
@@ -28,7 +27,7 @@ body {
   padding-top: 120px;
 }
 
-.formulario input {
+.mainContainer .formulario input {
   width: 100%;
   padding: 10px;
   border: none;
@@ -38,19 +37,19 @@ body {
   font-size: 16;
 }
 
-.formulario form {
+.mainContainer .formulario form {
   width: 100%;
   box-sizing: border-box;
 }
 
-form .inputT1 {
+.mainContainer form .inputT1 {
   position: relative;
   margin: 10px 0;
 }
 
-.inputT1 input,
+.mainContainer .inputT1 input,
 select {
-  width: 200px;
+  width: 100%;
   padding: 10px 3px 10px 36px;
   /*mover donde se escribe*/
   border-radius: 20px;
@@ -67,7 +66,7 @@ select {
   height: 40%;
 }
 
-.usernameC input {
+.mainContainer .usernameC input {
   background-image: url("../../../assets/Logos/userLogo.svg");
 }
 
@@ -122,8 +121,8 @@ select {
   height: auto;
 }
 
-.buttonT1 {
-  width: 30%;
+.mainContainer .buttonT1 {
+  width: 100%;
   border-radius: 10px;
   padding: 13px 0px 13px 0px;
   cursor: pointer;
@@ -194,14 +193,18 @@ select {
 #dropdownMenuButton {
   color: black;
   border-color: black;
+  width: 100%;
 }
 
 /* Estilos de las opciones del dropdown */
-.dropdown-item {
+
+.mainContainer .dropdown-item {
   color: black;
+  width: 345px;
 }
 
 /* Cambiar color al pasar el ratón sobre las opciones */
-.dropdown-item:hover {
+
+.mainContainer .dropdown-item:hover {
   background-color: #0056b3;
 }
