@@ -21,6 +21,7 @@ import LayoutConsulta from "./Pages/Admin/Consultas/layoutConsulta.jsx";
 import SignE from "./Pages/Admin/LoginSignUpE/SignUpEmpleado.jsx";
 import LoginE from "./Pages/Admin/LoginSignUpE/LoginEmpleado.jsx";
 import Complaints from "./Pages/Admin/CustomerService/AnswerComplaints.jsx";
+import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -116,6 +117,10 @@ const Router = createBrowserRouter([
     path: "/Consulta",
     element: <LayoutConsulta />,
   },
+  {
+    path: "/Busqueda",
+    element: <Busqueda />,
+  }
 ]);
 
 export default Router;
