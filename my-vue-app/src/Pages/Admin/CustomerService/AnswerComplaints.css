@@ -1,14 +1,10 @@
-.background2 {
-  background-image: url("../../assets/Background/sale_info_bg.jpg");
-  background-size: cover;
+.background5 {
   min-width: 100%;
   min-height: 100%;
-  position: absolute;
   left: 0;
   top: 0;
 }
-
-.title2 {
+.mainPage.title2 {
   font-size: 46px;
   font-style: normal;
   font-weight: 700;
@@ -17,16 +13,17 @@
   color: #000000;
   margin-top: -50px;
   padding-bottom: 10px;
+  margin-top: 1%;
 }
 
 .mainPage {
   padding-top: 160px;
-  padding-left: 300px;
-  padding-right: 300px;
+  padding-left: 60px;
+  padding-right: 60px;
 }
 
 .vertical-scroll-container {
-  max-height: 500px;
+  max-height: 400px;
   max-height: auto;
   overflow-y: auto;
   overflow-x: hidden; /* Oculta scroll horizontal */
@@ -55,8 +52,12 @@
   padding-top: 10px;
   padding-bottom: 10px;
   border-radius: 0px;
-  height: 60px;
+  height: fit-content;
   overflow: hidden;
+}
+
+.no-gutters {
+  align-items: center;
 }
 
 .odd-row {
@@ -64,6 +65,7 @@
   border-radius: 10px;
   margin-left: 2px;
   margin-bottom: 4px;
+  height: fit-content;
 }
 
 .even-row {
@@ -71,6 +73,7 @@
   border-radius: 10px;
   margin-left: 2px;
   margin-bottom: 4px;
+  height: fit-content;
 }
 
 .popOver-content {
@@ -88,11 +91,34 @@
   color: black;
 }
 
-.row-link {
-  color: black !important;
-  text-decoration: none !important;
+.respuesta-container {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: #bbbbbb;
+  height: fit-content;
+  text-align: left;
+  align-items: center;
+  font-size: 24px;
+  padding: 15px;
 }
 
-.row-link:hover {
-  color: blue !important;
+.answerRows {
+  margin-bottom: 10px;
+}
+
+.respuesta-container .answerRows {
+  display: flex;
+  align-items: center; /* Centra verticalmente los elementos */
+}
+
+.buscarBtn {
+  background-color: #eb9f0b;
+  width: 15%;
+  color: black;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.buscarBtn:hover {
+  background-color: #b77c08;
+  color: black;
 }

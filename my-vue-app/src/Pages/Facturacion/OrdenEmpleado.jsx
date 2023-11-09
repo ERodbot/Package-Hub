@@ -21,6 +21,7 @@ const dataObject = [
   { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
   { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
 ];
+
 // Funcion que renderiza el contenido del popover
 const renderPopover = (labelsAndValues) => (
   <Popover id="button-popover" className="popOver-content">

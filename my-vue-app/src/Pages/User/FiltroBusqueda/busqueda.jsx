@@ -28,14 +28,13 @@ const useBuscarProductos = () => {
   const handleBuscarClick = () => {
     // Lógica para buscar productos con los filtros seleccionados
     console.log("Buscar productos con filtro:", filtro);
-    // Aquí puedes implementar la lógica de búsqueda real
+    // Aca se puede acceder al array o se puede ver en la termianl
   };
 
   return { filtro, handleFiltroChange, handleBuscarClick };
 };
 
 // La funcion busqueda se encarga de generar el formulario
-// El boton de buscar no tiene funcionalidad por el momento
 function Busqueda() {
   const { filtro, handleFiltroChange, handleBuscarClick } = useBuscarProductos();
 

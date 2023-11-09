@@ -22,6 +22,8 @@ import SignE from "./Pages/Admin/LoginSignUpE/SignUpEmpleado.jsx";
 import LoginE from "./Pages/Admin/LoginSignUpE/LoginEmpleado.jsx";
 import Busqueda from "./Pages/Admin/Consultas/layoutConsulta.jsx";
 import CustomService from "./Pages/User/CustomerService/CustomService.jsx";
+import Complaints from "./Pages/Admin/CustomerService/AnswerComplaints.jsx";
+import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -35,10 +37,6 @@ const Router = createBrowserRouter([
   {
     path: "/main",
     element: <MainPage />,
-  },
-  {
-    path: "/registroCliente",
-    element: <SignC />,
   },
   {
     path: "/inicioSesionEmpleado",
@@ -66,6 +64,12 @@ const Router = createBrowserRouter([
     path: "/ordenesEmpleado",
     element: <OrdenesEmpleado />,
   },
+
+  {
+    path: "/answerComplaints",
+    element: <Complaints />,
+  },
+
   {
     path: "/profileCliente",
     element: <Profile />,
@@ -94,10 +98,7 @@ const Router = createBrowserRouter([
     path: "/productDetail",
     element: <ProductDetails />,
   },
-  {
-    path: "/busqueda",
-    element: <Busqueda />,
-  },
+
   {
     path: "/shoppingCart",
     element: <ShoppingCart />,
@@ -121,6 +122,10 @@ const Router = createBrowserRouter([
   {
     path: "/CustomService",
     element: <CustomService />,
+  },
+  {
+    path: "/Busqueda",
+    element: <Busqueda />,
   },
 ]);
 

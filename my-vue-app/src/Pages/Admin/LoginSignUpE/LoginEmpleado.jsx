@@ -5,18 +5,42 @@ import trevolImage from '../../../assets/Decorations/trevol_skate.png';
 import trevolImage2 from '../../../assets/Logos/logotype.svg';
 
 const LoginEmpleado = () => {
+  // Funcion para guardar los valores de username y password
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  // Guarda varia informacion importante para el ingreso de un cliente
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  // Funcion para mostrarlo en la consola
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aquí se peude acceder a los valores del formulario en formData
+    console.log(formData);
+ 
+  };
+  // Funcion para renderizar el componente
   return (
     <div className="mainContainer">
     <div className="formulario">
       <p className="title">Inicio de Sesión Empleado</p>
 
-      <form id="loginEstudianteForm" method="post">
+      <form id="loginEstudianteForm" onSubmit={handleSubmit} method="post" >
         <div className="inputT1 usernameC">
           <input
             id="usernameC"
             type="text"
             placeholder="Username"
             required
+            onChange={handleInputChange}
           />
         </div>
 
@@ -26,12 +50,13 @@ const LoginEmpleado = () => {
             type="password"
             placeholder="Password"
             required
+            onChange={handleInputChange}
           />
         </div>
 
         <div>
           <Link to="/main">
-            <button className="buttonT1" type="submit">
+            <button className="buttonT1" type="submit" onClick={handleSubmit}>
               Iniciar Sesión
             </button>
           </Link>
@@ -43,8 +68,8 @@ const LoginEmpleado = () => {
       
     </div>
     <div className="contenedor-imagenes">
-        <img class = "imagen imagen-headder" src={trevolImage2} alt="LogoPackage" />
-        <img class = "imagen" src={trevolImage} alt="LogoPackage" />
+        <img className = "imagen imagen-headder" src={trevolImage2} alt="LogoPackage" />
+        <img className = "imagen" src={trevolImage} alt="LogoPackage" />
     </div>
     </div>
   );
