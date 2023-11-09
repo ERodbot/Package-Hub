@@ -22,6 +22,8 @@ import SignE from "./Pages/Admin/LoginSignUpE/SignUpEmpleado.jsx";
 import LoginE from "./Pages/Admin/LoginSignUpE/LoginEmpleado.jsx";
 import Complaints from "./Pages/Admin/CustomerService/AnswerComplaints.jsx";
 import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
+import BusquedaEmpleado from "./Pages/Admin/FindEmployee/FindEmployee.jsx";
+
 
 const Router = createBrowserRouter([
   {
@@ -96,7 +98,6 @@ const Router = createBrowserRouter([
     path: "/productDetail",
     element: <ProductDetails />,
   },
-  
   {
     path: "/shoppingCart",
     element: <ShoppingCart />,
@@ -120,7 +121,13 @@ const Router = createBrowserRouter([
   {
     path: "/Busqueda",
     element: <Busqueda />,
+  },
+  {
+    path: "/BusquedaEmployee",
+    element: <BusquedaEmpleado />,
   }
 ]);
+
+
 
 export default Router;
