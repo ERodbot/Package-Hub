@@ -4,15 +4,7 @@
     left:0;
     top:0;
     padding:10%;
-    
-}
-
-.main-div{
-    width:70%;
-}
-
-.sizing-container{
-  min-height: fit-content;
+    min-height: fit-content;  
 }
   
   .custom-card {

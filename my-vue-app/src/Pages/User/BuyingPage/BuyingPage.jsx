@@ -1,41 +1,36 @@
 import React, { useState } from "react";
-import { Container, Card, Form, Button } from "react-bootstrap";
+import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 import "./BuyingPage.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
 const BuyingPage = () => {
-  // Create useState hooks for form input values
   const [address, setAddress] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [expiration, setExpiration] = useState("");
   const [cvc, setCVC] = useState("");
-
-  // Create a variable for the price
   const price = 100.0;
 
   return (
     <PaginaBase>
-      <Container className="d-flex justify-content-center align-items-center custom-main-container">
-        <Container className="sizing-container">
-          <div className="main-div">
+      <Container className="custom-main-container">
+        <Row>
+          <Col md={9}>
             <Card className="custom-card">
               <Card.Header className="card-header">
                 <h4>Dirección de envío</h4>
               </Card.Header>
               <Card.Body>
                 <Form>
-                  <Form.Group>
-                    <Form.Label>Dirección</Form.Label>
-                    <Form.Control
+                  <FormGroup label="Dirección">
+                    <FormControl
                       type="text"
                       placeholder="Ingrese su dirección"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                     />
-                  </Form.Group>
+                  </FormGroup>
                 </Form>
               </Card.Body>
             </Card>
@@ -46,60 +41,67 @@ const BuyingPage = () => {
               </Card.Header>
               <Card.Body>
                 <Form>
-                  <Form.Group>
-                    <Form.Label>Número de tarjeta</Form.Label>
-                    <Form.Control
+                  <FormGroup label="Número de tarjeta">
+                    <FormControl
                       type="text"
                       placeholder="Ingrese el número de tarjeta"
                       value={cardNumber}
                       onChange={(e) => setCardNumber(e.target.value)}
                     />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Nombre del titular de la tarjeta</Form.Label>
-                    <Form.Control
+                  </FormGroup>
+                  <FormGroup label="Nombre del titular de la tarjeta">
+                    <FormControl
                       type="text"
                       placeholder="Ingrese el nombre del titular"
                       value={cardHolder}
                       onChange={(e) => setCardHolder(e.target.value)}
                     />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Fecha de vencimiento</Form.Label>
-                    <Form.Control
+                  </FormGroup>
+                  <FormGroup label="Fecha de vencimiento">
+                    <FormControl
                       type="text"
                       placeholder="MM/AA"
                       value={expiration}
                       onChange={(e) => setExpiration(e.target.value)}
                     />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Código de seguridad</Form.Label>
-                    <Form.Control
+                  </FormGroup>
+                  <FormGroup label="Código de seguridad">
+                    <FormControl
                       type="text"
                       placeholder="CVC"
                       value={cvc}
                       onChange={(e) => setCVC(e.target.value)}
                     />
-                  </Form.Group>
+                  </FormGroup>
                 </Form>
               </Card.Body>
             </Card>
-          </div>
+          </Col>
 
-          <Card className="custom-total-card">
-            <Card.Body>
-              <h3>Total a pagar</h3>
-              <p className="custom-text-price">${price.toFixed(2)}</p>
-              <Link to="/main">
-                <Button className="custom-button">Continuar Compra</Button>
-              </Link>
-            </Card.Body>
-          </Card>
-        </Container>
+          <Col md={3} className="mt-3">
+            <Card className="custom-total-card">
+              <Card.Body>
+                <h3>Total a pagar</h3>
+                <p className="custom-text-price">${price.toFixed(2)}</p>
+                <Link to="/main">
+                  <Button className="custom-button">Continuar Compra</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Container>
     </PaginaBase>
   );
 };
+
+const FormGroup = ({ label, children }) => (
+  <Form.Group>
+    <Form.Label>{label}</Form.Label>
+    {children}
+  </Form.Group>
+);
+
+const FormControl = (props) => <Form.Control {...props} />;
 
 export default BuyingPage;

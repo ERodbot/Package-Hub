@@ -10,13 +10,10 @@ import "./ShoppingCart.css";
 
 const ShoppingCart = () => {
   // Initialize state to hold product data and total price
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(jsonData.products);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    // Load data from the JSON file into the state
-    setProducts(jsonData.products);
-
     // Calculate the total price considering the units purchased for each product
     const total = jsonData.products.reduce(
       (acc, product) => acc + product.price * product.unitsPurchased,
@@ -24,6 +21,23 @@ const ShoppingCart = () => {
     );
     setTotalPrice(total);
   }, []);
+
+  const deleteElement = (productName) => {
+    // Filter out the product with the given name
+    const updatedProducts = products.filter(
+      (product) => product.name !== productName
+    );
+
+    // Calculate the total price based on the updated products
+    const total = updatedProducts.reduce(
+      (acc, product) => acc + product.price * product.unitsPurchased,
+      0
+    );
+
+    // Update the state with the updated products and total price
+    setProducts(updatedProducts);
+    setTotalPrice(total);
+  };
 
   return (
     <PaginaBase>
@@ -42,6 +56,12 @@ const ShoppingCart = () => {
                   category={product.category}
                   url={product.url}
                 />
+                <Button
+                  className="custom-button-shopping-cart-delete my-3 mx-5"
+                  onClick={() => deleteElement(product.name)}
+                >
+                  Eliminar
+                </Button>
               </Col>
             ))}
           </Row>
@@ -53,9 +73,15 @@ const ShoppingCart = () => {
               <Card.Text>
                 <h3>${totalPrice.toFixed(2)}</h3>
               </Card.Text>
-              <Link to="/Buying">
-                <Button className="custom-button-shopping-cart">Comprar</Button>
-              </Link>
+              {totalPrice > 0 ? (
+                <Link to="/Buying">
+                  <Button className="custom-button-shopping-cart">
+                    Comprar
+                  </Button>
+                </Link>
+              ) : (
+                <p>Sin productos</p>
+              )}
             </Card.Body>
           </Card>
           <img

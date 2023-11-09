@@ -42,7 +42,7 @@ const Receipt = () => {
         <Container className="receipt-page">
           <h1 className="text-center custom-text my-5">Package Hub</h1>
           <Container>
-            <Card className="card-receipt custom-card-receipt">
+            <Card className="card-receipt custom-card-receipt mx-auto">
               <Card.Body>
                 <Row>
                   <Col>

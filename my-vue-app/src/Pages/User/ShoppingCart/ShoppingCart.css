@@ -36,6 +36,7 @@
   background-color: #F58071;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   border-radius: 1.2rem;
+  margin: auto
 }
 
 
@@ -44,6 +45,16 @@
   color: black;
   border-radius: 3rem;
   width: 100%;
+  border: 1px solid black;
+  font-weight: bold;
+}
+
+
+.custom-button-shopping-cart-delete {
+  background-color: #F58071;
+  color: black;
+  border-radius: 3rem;
+  width: fit-content;
   border: 1px solid black;
   font-weight: bold;
 }

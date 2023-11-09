@@ -66,7 +66,7 @@ const NavbarPage = () => {
                 Salir
               </NavDropdown.Item>
             </NavDropdown>
-            <InputGroup className="search-input">
+            <InputGroup className="search-input mt-4">
               <FormControl
                 className="my-auto"
                 placeholder="Buscar"
@@ -77,18 +77,18 @@ const NavbarPage = () => {
             </InputGroup>
             <Container>
               <Link to="/shoppingCart">
-                <img src={shopping_cart} id="custom-img" />
+                <img src={shopping_cart} id="custom-img" className="mt-2" />
               </Link>
               <p>Carrito</p>
             </Container>
             <Container>
               <Link to="/profileCliente">
-                <img src={profile} id="custom-img" />
+                <img src={profile} id="custom-img" className="mt-2" />
               </Link>
               <p>Perfil</p>
             </Container>
             <Container>
-              <img src={cr} id="custom-img" />
+              <img src={cr} id="custom-img" className="mt-3" />
             </Container>
           </Nav>
         </Navbar.Collapse>
