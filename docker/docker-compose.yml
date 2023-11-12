@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  na-inventory-server:
+    container_name: na-inventory-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "12e@5678"
+    ports:
+      - "1434:1433"
+    networks:
+      - sql-network
+    volumes:
+      - na-inventory-data:/var/opt/mssql
+
+  sa-inventory-server:
+    container_name: sa-inventory-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "12e@5678"
+    ports:
+      - "1435:1433"
+    networks:
+      - sql-network
+    volumes:
+      - sa-inventory-data:/var/opt/mssql
+
+  caribbean-inventory-server:
+    container_name: caribbean-inventory-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "12e@5678"
+    ports:
+      - "1436:1433"
+    networks:
+      - sql-network
+    volumes:
+      - caribbean-inventory-data:/var/opt/mssql
+
+  hr-server:
+    container_name: hr-server
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: "12345"
+      MYSQL_DATABASE: "humanr"
+    ports:
+      - "3306:3306"
+    networks:
+      - sql-network
+    volumes:
+      - hr-data:/var/lib/mysql
+
+  support-sales-server:
+    container_name: support-sales-server
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: "12345"
+      POSTGRES_DB: "salessup"
+    ports:
+      - "5432:5432"
+    networks:
+      - sql-network
+    volumes:
+      - support-sales-data:/var/lib/postgresql/data
+
+networks:
+  sql-network:
+    driver: bridge
+
+volumes:
+  na-inventory-data:
+  sa-inventory-data:
+  caribbean-inventory-data:
+  hr-data:
+  support-sales-data:
