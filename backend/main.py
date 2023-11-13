@@ -1,14 +1,12 @@
-from fastapi import FastAPI, HTTPException, Depends, status
-from pydantic import BaseModel
-from typing import Annotated
-import models.user as user_model
-from config.database import engine, SessionLocal
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
+from config.database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
-from routes.user import user
+from routes.client import client
+from routes.auth import auth
 
 app = FastAPI()
-app.include_router(user)
+app.include_router(client)
+app.include_router(auth)
 
 origins = [
     "http://localhost:3000"
@@ -23,13 +21,4 @@ app.add_middleware(
 )
 
 
-user_model.Base.metadata.create_all(bind=engine)
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-db_dependency = Annotated[Session, Depends(get_db)]
+Base.metadata.create_all(bind=engine)

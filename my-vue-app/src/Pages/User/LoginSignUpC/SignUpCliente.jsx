@@ -66,6 +66,26 @@ const SignUpCliente = () => {
             />
           </div>
 
+          <div className="inputT1 usernameC">
+            <input
+              id="Name"
+              type="text"
+              placeholder="Name"
+              required
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="inputT1 usernameC">
+            <input
+              id="LastName"
+              type="text"
+              placeholder="Last Name"
+              required
+              onChange={handleInputChange}
+            />
+          </div>
+
           <div className="inputT1 correo">
             <input
               id="correo"
