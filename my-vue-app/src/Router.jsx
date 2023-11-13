@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import NavbarPage from "./Compoments/Navbar/Navbar.jsx";
+
 import MainPage from "./Pages/User/Main/MainPage";
 import Products from "./Compoments/Products/Products";
 import LoginC from "./Pages/User/LoginSignUpC/LoginCliente.jsx";
@@ -12,7 +12,7 @@ import Ordenes from "./Pages/Facturacion/Ordenes.jsx";
 import OrdenesEmpleado from "./Pages/Facturacion/OrdenEmpleado.jsx";
 import Profile from "./Pages/User/Profile/ProfileC.jsx";
 import ShoppingCart from "./Pages/User/ShoppingCart/ShoppingCart.jsx";
-import ProductDetails from "./Pages/User/ProductDitails/ProductDitails.jsx";
+import ProductDetails from "./Pages/User/ProductDetails/ProductDetails.jsx";
 import SalesFormReportConsult from "./Pages/Admin/SalesInfoRequest/SalesInfoRequest.jsx";
 import Drinks from "./Pages/User/Drinks/Drinks.jsx";
 import Skate from "./Pages/User/Skate/Skate.jsx";
@@ -20,7 +20,6 @@ import Snacks from "./Pages/User/Snacks/Snacks.jsx";
 import LayoutConsulta from "./Pages/Admin/Consultas/layoutConsulta.jsx";
 import SignE from "./Pages/Admin/LoginSignUpE/SignUpEmpleado.jsx";
 import LoginE from "./Pages/Admin/LoginSignUpE/LoginEmpleado.jsx";
-import Busqueda from "./Pages/Admin/Consultas/layoutConsulta.jsx";
 import CustomService from "./Pages/User/CustomerService/CustomService.jsx";
 import Complaints from "./Pages/Admin/CustomerService/AnswerComplaints.jsx";
 import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";

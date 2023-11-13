@@ -4,37 +4,52 @@ import "./Receipt.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
 const Receipt = () => {
-  const [invoiceData, setInvoiceData] = useState(null);
-  const [itemsData, setItemsData] = useState(null);
+  const [factura, setFactura] = useState(null);
+  const [emision, setEmision] = useState(null);
+  const [orden, setOrden] = useState(null);
+  const [cliente, setCliente] = useState(null);
+  const [direccionFacturacion, setDireccionFacturacion] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [direccionEnvio, setDireccionEnvio] = useState(null);
 
-  // Cargar los datos desde los archivos JSON
+  const [items, setItems] = useState(null);
+  const [subtotal, setSubtotal] = useState(null);
+  const [total, setTotal] = useState(null);
+
+  // Cargar los valores de prueba en un useEffect
   useEffect(() => {
-    // Simular una carga asíncrona de los datos (puedes usar fetch o axios)
-    // invoiceData.json y itemsData.json deben estar en la misma ubicación que este componente
-    import("./invoiceData.json")
-      .then((data) => setInvoiceData(data))
-      .catch((error) => console.error("Error loading invoice data:", error));
+    // Simular la carga de valores de prueba
+    setFactura("12345");
+    setEmision("2023-11-10");
+    setOrden("67890");
+    setCliente("John Doe");
+    setDireccionFacturacion("123 Main St, City");
+    setEmail("john.doe@example.com");
+    setDireccionEnvio("456 Second St, Town");
 
-    import("./itemsData.json")
-      .then((data) => setItemsData(data))
-      .catch((error) => console.error("Error loading items data:", error));
+    setItems([
+      { articulo: "Item 1", precio: 10.0 },
+      { articulo: "Item 2", precio: 15.0 },
+      { articulo: "Item 3", precio: 20.0 },
+    ]);
+    setSubtotal(45.0);
+    setTotal(45.0);
   }, []);
 
-  if (!invoiceData || !itemsData) {
+  if (
+    factura === null ||
+    emision === null ||
+    orden === null ||
+    cliente === null ||
+    direccionFacturacion === null ||
+    email === null ||
+    direccionEnvio === null ||
+    items === null ||
+    subtotal === null ||
+    total === null
+  ) {
     return <p>Loading...</p>;
   }
-
-  const {
-    factura,
-    emision,
-    orden,
-    cliente,
-    direccionFacturacion,
-    email,
-    direccionEnvio,
-  } = invoiceData;
-
-  const { items, subtotal, total } = itemsData;
 
   return (
     <Container className="background-receipt">
@@ -66,12 +81,12 @@ const Receipt = () => {
                   <Col>
                     <h2 className="text-center custom-text-h2">Detalles</h2>
                     <h3 className="text-center custom-text-h3">Artículos</h3>
-                    {items.map((item, index) => {
+                    {items.map((item, index) => (
                       <p
                         className="custom-text-p"
                         key={index}
-                      >{`${item.articulo}: $${item.precio}.`}</p>;
-                    })}
+                      >{`${item.articulo}: $${item.precio}.`}</p>
+                    ))}
                     <h3 className="text-center custom-text-h3">
                       Método de pago
                     </h3>

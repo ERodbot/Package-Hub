@@ -1,16 +1,16 @@
 /*React*/
 import React from "react";
-/*Navbar para usuario sin permisos admin*/
+/*Navbar for users without admin permissions*/
 import NavbarPage from "../../../Compoments/Navbar/Navbar";
 /*Custom css*/
 import "./PaginaBase.css";
 
-const PaginaBase = ({ children, isadmin = false }) => {
+const PaginaBase = ({ children, isAdmin = false }) => {
   return (
     <>
       <div>
-        {/* navbar se incluye como componente, "children son los "
-       componentes hijos (el front end de cada pagina individual)*/}
+        {/* Navbar is included as a component, "children" are the 
+       child components (the frontend of each individual page)*/}
         <NavbarPage />
         <div>{children}</div>
       </div>

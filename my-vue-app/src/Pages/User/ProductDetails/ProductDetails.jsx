@@ -1,56 +1,69 @@
-import React, { useState } from "react";
-import { Card, Carousel, Container, Row, Col, Button } from "react-bootstrap";
+// Import React, Bootstrap components, and styles
+import React, { useState, useEffect } from "react";
+import { Card, Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
-import Color from "../../../Compoments/Color/Color";
-import "./ProductDitails.css";
+import "./ProductDetails.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 import ProductCard from "../../../Compoments/ProductDetailsDisplay/ProductDetailsDisplay";
-
-/*imagen de prueba*/
 import product_img1 from "../../../assets/Products/trululu-gusanos-acidos-bolsa-img1.jpg";
 import product_img2 from "../../../assets/Products/trululu-gusanos-acidos-bolsa-img2.png";
 
-const productDetailsData = {
-  marca: "Ejemplo Marca",
-  descripción: "Este es un producto de ejemplo",
-  material: "Plástico",
-  peso: "1.5 kg",
-  precio: 49.99,
-  unidades: 1,
-  envio: 5.0,
-  fotos: [product_img1, product_img2],
-  colors: ["red", "black", "yellow"],
-  tipo: "snack",
-};
-
+// ProductDetails functional component
 const ProductDetails = () => {
-  const [brand, setBrand] = useState(productDetailsData.marca);
-  const [type, setType] = useState(productDetailsData.tipo);
-  const [weight, setWeight] = useState(productDetailsData.peso);
-  const [material, setMaterial] = useState(productDetailsData.material);
-  const [quantity, setQuantity] = useState(productDetailsData.unidades);
-  const [precioUnitario, setPrecioUnitario] = useState(
-    productDetailsData.precio
-  );
-  const [envio, setEnvio] = useState(productDetailsData.envio);
-  const [fotos, setFotos] = useState(productDetailsData.fotos);
-  const [colors, setColors] = useState(productDetailsData.colors);
-  const [description, setDescription] = useState(
-    productDetailsData.descripción
-  );
-  // Calcular subtotal y total usando el estado de cantidad
-  const [subtotal, setSubtotal] = useState(quantity * precioUnitario);
-  const [total, setTotal] = useState(subtotal + envio);
+  // Initialize state variables with default values
+  const [brand, setBrand] = useState("");
+  const [type, setType] = useState("");
+  const [weight, setWeight] = useState("");
+  const [material, setMaterial] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [precioUnitario, setPrecioUnitario] = useState(0);
+  const [envio, setEnvio] = useState(0);
+  const [fotos, setFotos] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [description, setDescription] = useState("");
 
+  // Calculate subtotal and total using the quantity state
+  const [subtotal, setSubtotal] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  // Load data using useEffect
+  useEffect(() => {
+    // Simulate data loading (you can fetch data using an API call)
+    setTimeout(() => {
+      setBrand("Ejemplo Marca");
+      setType("snack");
+      setWeight("1.5 kg");
+      setMaterial("Plástico");
+      setQuantity(1);
+      setPrecioUnitario(49.99);
+      setEnvio(5.0);
+      setFotos([product_img1, product_img2]);
+      setColors(["red", "black", "yellow"]);
+      setDescription("Este es un producto de ejemplo");
+
+      // Calculate initial subtotal and total
+      const initialSubtotal = 1 * 49.99; // Assuming initial quantity is 1
+      const initialTotal = initialSubtotal + 5.0; // Assuming initial shipping cost is 5.0
+
+      // Set initial values for subtotal and total
+      setSubtotal(initialSubtotal);
+      setTotal(initialTotal);
+    }, 1000); // Simulate a delay for data loading
+  }, []);
+
+  // Function to update quantity and recalculate subtotal and total
   const updateCantidad = (newCantidad) => {
     setQuantity(newCantidad);
+    setSubtotal(newCantidad * precioUnitario);
+    setTotal(newCantidad * precioUnitario + envio);
   };
 
+  // JSX structure for the ProductDetails component
   return (
     <PaginaBase>
       <Container>
         <Row>
+          {/* Product details display */}
           <Col md={9} className="custom-col-product-display">
             <ProductCard
               cantidad={quantity}
@@ -71,13 +84,15 @@ const ProductDetails = () => {
               setTotal={setTotal}
             />
           </Col>
+
+          {/* Buying options display */}
           <Col>
             <Card className="buy-options-display">
               <h2 className="my-5">Info del envío</h2>
               <Row>
                 <Col md={6}>
                   <p>
-                    <strong>Unidad: </strong>
+                    <strong>Precio Unidad: </strong>
                   </p>
                   <p>
                     <strong>Subtotal: </strong>
@@ -96,10 +111,11 @@ const ProductDetails = () => {
               <h4>
                 <strong>Total a Pagar: </strong>
               </h4>
-              <h2> ${total.toFixed(2)}</h2>
+              <h2>${total.toFixed(2)}</h2>
               <hr />
               <Row>
                 <Col md={12}>
+                  {/* Add to cart and Buy now buttons */}
                   <Button className="m-1 w-100 custom-product-detail-button-add">
                     Agregar al carrito
                   </Button>
@@ -118,4 +134,5 @@ const ProductDetails = () => {
   );
 };
 
+// Export the ProductDetails component
 export default ProductDetails;

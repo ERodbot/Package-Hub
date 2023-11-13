@@ -4,9 +4,9 @@
 }
 
 .units-to-buy-button {
-    width: 50%;
-    padding-left: 1%;
-    padding-right: 1%;
+    width: fit-content;
+    padding-left: 10%;
+    padding-right: 10%;
     border-radius: 4rem;
     background-color: #E896CB;
     border: none;
