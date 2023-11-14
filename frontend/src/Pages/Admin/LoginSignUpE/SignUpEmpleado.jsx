@@ -14,6 +14,10 @@ const SignUpEmpleado = () => {
     passwordE: "",
     pais: "Pais de origen",
     rol: "Rol en empresa",
+    estado: "Estado",
+    ciudad: "Ciudad",
+    street: "",
+    postal: "",
   });
 
   const handleInputChange = (e) => {
@@ -47,6 +51,9 @@ const SignUpEmpleado = () => {
 
   const dropdownOptions = ["Costa rica", "Venezuela"];
   const dropdownOptions2 = ["Admin", "Employee"];
+    // Datos del dropdown los cuales solo se agregan a la lista
+  const dropdownOptions3 = ["SanJose", "Cartago"];
+  const dropdownOptions4 = ["Taras", "Lima", "Liberia"];
 
   return (
     <div className="mainContainer">
@@ -56,6 +63,26 @@ const SignUpEmpleado = () => {
         <form id="loginEstudianteForm" onSubmit={handleSubmit} method="post">
           <div className="inputT1 usernameC">
             <input id="usernameE" type="text" placeholder="Username" required onChange={handleInputChange} />
+          </div>
+
+          <div className="inputT1 usernameC">
+            <input
+              id="name"
+              type="text"
+              placeholder="name"
+              required
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="inputT1 usernameC">
+            <input
+              id="lastname"
+              type="text"
+              placeholder="Last Name"
+              required
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className="inputT1 correo">
@@ -83,6 +110,52 @@ const SignUpEmpleado = () => {
 
             <Dropdown onSelect={(eventKey) => handleDropdownSelect2(eventKey)}>
               <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
+                {formData.estado}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {dropdownOptions3.map((option, index) => (
+                  <Dropdown.Item key={index} eventKey={option}>
+                    {option}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+
+            <Dropdown onSelect={(eventKey) => handleDropdownSelect3(eventKey)}>
+              <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
+                {formData.ciudad}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {dropdownOptions4.map((option, index) => (
+                  <Dropdown.Item key={index} eventKey={option}>
+                    {option}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+
+            <div className="inputT1 street">
+            <input
+              id="street"
+              type="street  "
+              placeholder="Calle"
+              required
+              onChange={handleInputChange}
+            />
+            </div>
+
+            <div className="inputT1 postal">
+            <input
+              id="postal"
+              type="postal"
+              placeholder="Codigo Postal"
+              required
+              onChange={handleInputChange}
+            />
+            </div>
+
+            <Dropdown onSelect={(eventKey) => handleDropdownSelect2(eventKey)}>
+              <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
                 {formData.rol}
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -95,7 +168,7 @@ const SignUpEmpleado = () => {
             </Dropdown>
             
             <button className="buttonT1" type="submit">
-              Iniciar Sesión
+              Registrarse
             </button>
           </div>
         </form>
