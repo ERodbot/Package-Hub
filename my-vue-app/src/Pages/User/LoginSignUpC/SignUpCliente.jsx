@@ -9,10 +9,16 @@ import trevolImage2 from "../../../assets/Logos/logotype.svg";
 const SignUpCliente = () => {
   const [formData, setFormData] = useState({
     username: "",
+    name: "",
+    lastname: "",
     correo: "",
     telefono: "",
     password: "",
     pais: "Pais de origen",
+    estado: "Estado",
+    ciudad: "Ciudad",
+    street: "",
+    postal: "",
   });
 
   // Guarda varia informacion importante para el registro de un cliente
@@ -37,6 +43,21 @@ const SignUpCliente = () => {
     }));
   };
 
+  const handleDropdownSelect2 = (option) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      estado: option,
+    }));
+  };
+
+  const handleDropdownSelect3 = (option) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      estado: option,
+    }));
+  };
+
+
   // Funcion para mostrarlo en la consola
   // Los datos se guardan asi: {username: 'Davder', password: '123456'}
   const handleSubmit = (e) => {
@@ -49,6 +70,9 @@ const SignUpCliente = () => {
 
   // Datos del dropdown los cuales solo se agregan a la lista
   const dropdownOptions = ["Costa rica", "Venezuela"];
+  const dropdownOptions2 = ["SanJose", "Cartago"];
+  const dropdownOptions3 = ["Taras", "Lima", "Liberia"];
+
 
   return (
     <div className="mainContainer">
@@ -68,9 +92,9 @@ const SignUpCliente = () => {
 
           <div className="inputT1 usernameC">
             <input
-              id="Name"
+              id="name"
               type="text"
-              placeholder="Name"
+              placeholder="name"
               required
               onChange={handleInputChange}
             />
@@ -78,7 +102,7 @@ const SignUpCliente = () => {
 
           <div className="inputT1 usernameC">
             <input
-              id="LastName"
+              id="lastname"
               type="text"
               placeholder="Last Name"
               required
@@ -126,6 +150,54 @@ const SignUpCliente = () => {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
+
+            <Dropdown onSelect={(eventKey) => handleDropdownSelect2(eventKey)}>
+              <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
+                {formData.estado}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {dropdownOptions2.map((option, index) => (
+                  <Dropdown.Item key={index} eventKey={option}>
+                    {option}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+
+            <Dropdown onSelect={(eventKey) => handleDropdownSelect3(eventKey)}>
+              <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
+                {formData.ciudad}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {dropdownOptions3.map((option, index) => (
+                  <Dropdown.Item key={index} eventKey={option}>
+                    {option}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+
+            <div className="inputT1 street">
+            <input
+              id="street"
+              type="street  "
+              placeholder="Calle"
+              required
+              onChange={handleInputChange}
+            />
+            </div>
+
+            <div className="inputT1 postal">
+            <input
+              id="postal"
+              type="postal"
+              placeholder="Codigo Postal"
+              required
+              onChange={handleInputChange}
+            />
+            </div>
+
+
               <button className="buttonT1" type="submit" onClick={handleSubmit}>
                 Registrarse
               </button>

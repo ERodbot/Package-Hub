@@ -82,6 +82,14 @@ select {
   background-image: url("../../../assets/Logos/emailLogo.svg");
 }
 
+.mainContainer .street input {
+  background-image: url("../../../assets/Logos/locationLogo.svg");
+}
+
+.mainContainer .postal input {
+  background-image: url("../../../assets/Logos/mailBoxLogo.svg");
+}
+
 .contenedor-imagenes {
   display: wrap;
   flex-direction: column;
