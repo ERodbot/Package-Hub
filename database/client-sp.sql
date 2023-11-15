@@ -54,6 +54,7 @@ BEGIN
 	DECLARE @idClient int;
 	DECLARE @idGeoposition int;
 	DECLARE @geopositionTable TABLE (id INT);
+	DECLARE @spQuery NVARCHAR(MAX);
 
 
     -- Get id for the AddressType and ContactType
@@ -80,20 +81,52 @@ BEGIN
 
 
     -- Insert new Address into Address table
-    INSERT INTO hr.[human-resources]..Address (street, postalCode, idAddressType, idCity, enabled, idGeoposition)
-    VALUES (@address, @postalCode, @idAddressType, @idCity, 1, @idGeoposition);
+	-- Constructing the SQL query
+	SET @spQuery = N'CALL InsertNewAddress(' + 
+             dbo.ConcatString(@address) + ', ' +  -- Address with single quotes escaped
+             dbo.ConcatInteger(@postalCode) + ', ' +  -- Postal Code
+             dbo.ConcatInteger(@idAddressType) + ', ' +  -- Address Type ID
+             dbo.ConcatInteger(@idCity) + ', ' +  -- City ID
+             dbo.ConcatInteger(@idGeoposition) + ')';  -- Geoposition ID
+
+
+-- Executing the query on the linked server
+	BEGIN TRY
+		EXEC (@spQuery) AT [hr];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ' + @spQuery;
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
 
     -- Get newly inserted Address id
-    SELECT @idAddress = idAddress FROM hr.[human-resources]..Address WHERE street = @address AND postalCode = @postalCode;
+    SELECT TOP 1 @idAddress = idAddress FROM hr.[human-resources]..Address ORDER BY idAddress DESC;
 	
     -- Insert new Contact into Contact table
-    INSERT INTO hr.[human-resources]..ContactInfo (phone, email, idContactType, enabled)
-    VALUES (@phone, @email, @idContactType, 1);
+	SET @spQuery = N'CALL InsertNewContactInfo(' +
+				dbo.ConcatString(@phone) + ', ' +
+				dbo.ConcatString(@email) + ', ' +
+				dbo.ConcatInteger(@idContactType) + ')';
+
+
+	BEGIN TRY
+		EXEC (@spQuery) AT [hr];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ' + @spQuery;
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
 
     -- Get newly inserted Contact id
-    SELECT @idContact = idContactInfo FROM hr.[human-resources]..ContactInfo WHERE phone = @phone AND email = @email;
+    SELECT TOP 1 @idContact = idContactInfo FROM hr.[human-resources]..ContactInfo ORDER BY idContactInfo DESC;
 
     -- Insert new Client into Client table
-    INSERT INTO [support-sales].[support-sales].[sales].Clients (email, username, name, lastName, idAddress, idContact, password)
-    VALUES (@email, @username, @name, @lastName, @idAddress, @idContact, @password);
+	BEGIN TRY
+		EXEC ('CALL registerClient(?, ?, ?, ?, ?, ?, ?)', @email, @username, @name, @lastName, @idAddress, @idContact, @password) AT [support-sales];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ';
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
+
 END;
