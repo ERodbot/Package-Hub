@@ -9,6 +9,7 @@ client = APIRouter()
 
 @client.post("/test")
 def testing(test: test, db: db_dependency):
+
     test_dict = test.model_dump()
     query = text("""EXEC test @address=:address, @postalCode=:postal_code""")
     params = {
