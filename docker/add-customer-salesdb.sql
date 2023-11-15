@@ -15,23 +15,6 @@
 -- -- Connect to the newly created database
 -- -- \c "customer-sales"
 
--- -- DROP DATABASE IF EXISTS "customer-sales";
--- DROP DATABASE IF EXISTS "customer-sales";
-
--- -- Create the database
--- CREATE DATABASE "customer-sales"
---     WITH
---     OWNER = postgres
---     ENCODING = 'UTF8'
---     LC_COLLATE = 'en_US.utf8'
---     LC_CTYPE = 'en_US.utf8'
---     TABLESPACE = pg_default
---     CONNECTION LIMIT = -1
---     IS_TEMPLATE = False;
-
--- -- Connect to the newly created database
--- -- \c "customer-sales"
-
 -- Create schemas
 CREATE SCHEMA IF NOT EXISTS "sales";
 CREATE SCHEMA IF NOT EXISTS "customer-service";
@@ -199,6 +182,7 @@ BEGIN;
 -- Creation of tables and constraints for 'sales' schema
 
 -- DROP and CREATE TABLE statements for 'sales' schema
+
 DROP TABLE IF EXISTS sales."Orders";
 
 CREATE TABLE IF NOT EXISTS sales."Orders"
@@ -211,7 +195,7 @@ CREATE TABLE IF NOT EXISTS sales."Orders"
     "idEmployee" integer NOT NULL,
     "idOrderStatus" integer NOT NULL,
     "idShipping" integer NOT NULL,
-    enabled bit(1) NOT NULL,
+    enabled integer NOT NULL DEFAULT 1,
     "invoiceNumber" uuid NOT NULL,
     "idPayStatus" integer NOT NULL,
     "idPayType" integer NOT NULL,
@@ -230,7 +214,7 @@ CREATE TABLE IF NOT EXISTS sales."Clients"
     "idAddress" integer NOT NULL,
     "idContact" integer NOT NULL,
     password text NOT NULL,
-    enabled bit(1) NOT NULL,
+    enabled integer NOT NULL DEFAULT 1,
     PRIMARY KEY ("idClient")
 );
 
@@ -253,8 +237,8 @@ CREATE TABLE IF NOT EXISTS sales."Cards"
     cvv integer NOT NULL,
     "idCardType" integer NOT NULL,
     "idClient" integer NOT NULL,
-    enabled bit(1) NOT NULL,
-    PRIMARY KEY ("idCard")
+    enabled integer NOT NULL DEFAULT 1,
+    PRIMARY KEY ("idCardType")
 );
 
 DROP TABLE IF EXISTS sales."TransactionLog";
@@ -317,7 +301,7 @@ CREATE TABLE IF NOT EXISTS sales."PayType"
 DROP TABLE IF EXISTS sales."OperationType";
 
 CREATE TABLE IF NOT EXISTS sales."OperationType"
-(
+(   
     "idOperationType" integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
     PRIMARY KEY ("idOperationType")
@@ -334,7 +318,6 @@ CREATE TABLE IF NOT EXISTS sales."Shipping"
     PRIMARY KEY ("idShipping")
 );
 
--- ALTER TABLE statements for 'sales' schema
 ALTER TABLE IF EXISTS sales."Orders"
     ADD FOREIGN KEY ("idOrderStatus")
     REFERENCES sales."OrderStatus" ("idOrderStatus") MATCH SIMPLE
@@ -413,5 +396,6 @@ ALTER TABLE IF EXISTS sales."OrderDetails"
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
+
 -- End transaction
 END;

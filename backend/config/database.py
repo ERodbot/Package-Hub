@@ -5,24 +5,22 @@ from sqlalchemy.orm.session import Session
 from typing import Annotated
 from fastapi import Depends
 
-
+# Credentials for database
 username = "sa"
 password = "12345"
 server = "localhost"
 port = "1433"
-db = "xd"
+db = "cluster"
 driver = "ODBC Driver 17 for SQL Server"
 
+# Create connection string
 URL_DATABASE = f"mssql+pyodbc://{username}:{password}@{server}:{port}/{db}?driver={driver}"
 
-engine = create_engine(
-    URL_DATABASE, connect_args={"check_same_thread": False}
-)
-
+# Create engine
+engine = create_engine(URL_DATABASE)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
-
+# Dependency for database
 def get_db():
     db = SessionLocal()
     try:
@@ -30,6 +28,6 @@ def get_db():
     finally:
         db.close()
 
-db_dependency = Annotated[Session, Depends(get_db)]
 
+db_dependency = Annotated[Session, Depends(get_db)]
 Base = declarative_base()

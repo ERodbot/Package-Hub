@@ -1,20 +1,22 @@
-from typing import Optional
-from pydantic import BaseModel, EmailStr, constr
+from pydantic import BaseModel, EmailStr
 
 
 class Client(BaseModel):
-    username: str
     name: str
     lastname: str
-    email: str
+    username: str
     telephone: str
-    password: str
+    email: EmailStr
+    country: str
+    state: str
+    city: str
+    street: str
+
 
 class ClientCreate(Client):
-    pass
+    password: str
+    postal_code: int
 
-class Client(Client):
-    id: int
-
-    class Config:
-        orm_mode = True
+class test(BaseModel):
+    address: str
+    postal_code: int
