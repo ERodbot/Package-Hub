@@ -1,25 +1,27 @@
 from pydantic import BaseModel, EmailStr
+from fastapi import Form
+from typing import Annotated
 
 
 class Client(BaseModel):
-    name: str
-    lastname: str
-    username: str
-    telephone: str
-    email: EmailStr
-    country: str
-    state: str
-    city: str
-    street: str
+    name: Annotated[str, Form()]
+    lastname: Annotated[str, Form()]
+    username: Annotated[str, Form()]
+    telephone: Annotated[str, Form()]
+    email: Annotated[EmailStr, Form()]
+    country: Annotated[str, Form()]
+    state: Annotated[str, Form()]
+    city: Annotated[str, Form()]
+    street: Annotated[str, Form()]
 
 
 class ClientCreate(Client):
-    password: str
-    postal_code: int
+    password: Annotated[str, Form()]
+    postal_code: Annotated[str, Form()]
 
 class ClientLogin(BaseModel):
-    username: str
-    password: str
+    username: Annotated[str, Form()]
+    password: Annotated[str, Form()]
 
 class test(BaseModel):
     address: str

@@ -1,24 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./LoginSignUp.css";
 import { Dropdown } from "react-bootstrap";
 import trevolImage from "../../../assets/Decorations/trevol_skate.png";
 import trevolImage2 from "../../../assets/Logos/logotype.svg";
+import { registerRequest, getCountry, getStates, getCities} from "../../../api/auth";
+import { useNavigate } from "react-router-dom";
 
 // Funcion para el registro de un cliente
 const SignUpCliente = () => {
+
+  const navigate = useNavigate();
+
+  // Dropdown data
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getCountry();
+        setCountries(response.data);
+      } catch (error) {
+        console.log(error);
+
+      }
+  };
+  fetchData();
+  }, []);
+
+
   const [formData, setFormData] = useState({
     username: "",
     name: "",
     lastname: "",
-    correo: "",
-    telefono: "",
+    email: "",
+    telephone: "",
     password: "",
-    pais: "Pais de origen",
-    estado: "Estado",
-    ciudad: "Ciudad",
+    country: "Pais",
+    state: "Estado",
+    city: "Ciudad",
     street: "",
-    postal: "",
+    postal_code: 0
   });
 
   // Guarda varia informacion importante para el registro de un cliente
@@ -36,42 +60,50 @@ const SignUpCliente = () => {
   };
 
   // Funcion para tomar el dropdown
-  const handleDropdownSelect = (option) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      pais: option,
-    }));
-  };
-
-  const handleDropdownSelect2 = (option) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      estado: option,
-    }));
-  };
-
-  const handleDropdownSelect3 = (option) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      estado: option,
-    }));
+  const handleDropdownSelect = async (eventKey, dropdownType) => {
+    if (dropdownType === 'country') {
+      setFormData({ ...formData, country: eventKey, state: 'Estado', city: 'Ciudad' });
+      try {
+        const response = await getStates(eventKey);
+        setStates(response.data);
+        setCities([]); // Clear cities
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (dropdownType === 'state') {
+      setFormData({ ...formData, state: eventKey, city: 'Ciudad' });
+      try {
+        const response = await getCities(eventKey);
+        setCities(response.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    } else if (dropdownType === 'city') {
+      setFormData({ ...formData, city: eventKey });
+    }
   };
 
 
   // Funcion para mostrarlo en la consola
   // Los datos se guardan asi: {username: 'Davder', password: '123456'}
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     
     e.preventDefault();
     // Aquí puedes acceder a los valores del formulario en formData
-    console.log(formData);
+    console.log("Form data", formData);
+    try {
+      const response = await registerRequest(formData);
+      console.log(response);
+      alert("Usuario registrado con éxito");
+      navigate("/inicioSesionCliente")
+    } catch (error) {
+      console.log(error);
+      alert("Error al registrar usuario");
+    }
 
   };
 
-  // Datos del dropdown los cuales solo se agregan a la lista
-  const dropdownOptions = ["Costa Rica", "Venezuela"];
-  const dropdownOptions2 = ["San Jose", "Cartago"];
-  const dropdownOptions3 = ["Taras", "Lima", "Liberia"];
 
 
   return (
@@ -112,7 +144,7 @@ const SignUpCliente = () => {
 
           <div className="inputT1 correo">
             <input
-              id="correo"
+              id="email"
               type="email"
               placeholder="Correo"
               required
@@ -122,7 +154,7 @@ const SignUpCliente = () => {
 
           <div className="inputT1 telefono">
             <input
-              id="telefono"
+              id="telephone"
               type="tel"
               placeholder="Telefono"
               required
@@ -138,49 +170,53 @@ const SignUpCliente = () => {
               required
               onChange={handleInputChange}
             />
-            <Dropdown onSelect={(eventKey) => handleDropdownSelect(eventKey)}>
-              <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
-                {formData.pais}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {dropdownOptions.map((option, index) => (
-                  <Dropdown.Item key={index} eventKey={option}>
-                    {option}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
 
-            <Dropdown onSelect={(eventKey) => handleDropdownSelect2(eventKey)}>
-              <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
-                {formData.estado}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {dropdownOptions2.map((option, index) => (
-                  <Dropdown.Item key={index} eventKey={option}>
-                    {option}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
+          {/* Country Dropdown */}
+          <Dropdown onSelect={(eventKey) => handleDropdownSelect(eventKey, 'country')}>
+            <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
+              {formData.country}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {countries.map((country, index) => (
+                <Dropdown.Item key={index} eventKey={country.name}>
+                  {country.name}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
 
-            <Dropdown onSelect={(eventKey) => handleDropdownSelect3(eventKey)}>
-              <Dropdown.Toggle variant="secondary" id="dropdownMenuButton">
-                {formData.ciudad}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {dropdownOptions3.map((option, index) => (
-                  <Dropdown.Item key={index} eventKey={option}>
-                    {option}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
+          {/* State Dropdown */}
+          <Dropdown onSelect={(eventKey) => handleDropdownSelect(eventKey, 'state')}>
+            <Dropdown.Toggle variant="secondary" id="dropdownMenuButton" disabled={!formData.country || formData.country === 'Select Country'}>
+              {formData.state}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {states.map((state, index) => (
+                <Dropdown.Item key={index} eventKey={state.name}>
+                  {state.name}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+
+          {/* City Dropdown */}
+          <Dropdown onSelect={(eventKey) => handleDropdownSelect(eventKey, 'city')}>
+            <Dropdown.Toggle variant="secondary" id="dropdownMenuButton" disabled={!formData.state || formData.state === 'Select State'}>
+              {formData.city}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {cities.map((city, index) => (
+                <Dropdown.Item key={index} eventKey={city.name}>
+                  {city.name}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
 
             <div className="inputT1 street">
             <input
               id="street"
-              type="street  "
+              type="street"
               placeholder="Calle"
               required
               onChange={handleInputChange}
@@ -189,7 +225,7 @@ const SignUpCliente = () => {
 
             <div className="inputT1 postal">
             <input
-              id="postal"
+              id="postal_code"
               type="postal"
               placeholder="Codigo Postal"
               required

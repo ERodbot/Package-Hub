@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Form
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
@@ -14,6 +14,7 @@ from schemas.client import Client, ClientCreate, test, ClientLogin
 from config.auth import ALGORITHM, SECRET_KEY
 from sqlalchemy import text
 from sqlalchemy.exc import DBAPIError
+from typing import List, Dict
 
 auth = APIRouter(
     tags=["auth"],
@@ -23,9 +24,18 @@ auth = APIRouter(
 bcrypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
+
 @auth.post("/registerClient")
 def createClient(client: ClientCreate, db: db_dependency):
-    client_dict = client.model_dump()
+    client_dict = client.dict()
+
+    # hash the password
+    hashed_password = bcrypt.hash(client_dict['password'])
+    client_dict['password'] = hashed_password
+    # check if the password is the same as hashed
+    # print(bcrypt.verify(client_dict['password'], hashed_password))
+    client_dict['postal_code'] = int(client_dict['postal_code'])
+
     query = text("""
                 EXEC registerClient 
                 @name=:name, 
@@ -59,6 +69,71 @@ def createClient(client: ClientCreate, db: db_dependency):
 
 
     return client_dict
+
+@auth.get("/getCountry", response_model=List[Dict[str, str]])
+def getCountry(db: db_dependency):
+    query = text("""SELECT name FROM [hr].[human-resources]..Country""")
+    try:
+        result = db.execute(query).fetchall()
+        
+        # Convert result to a list of dictionaries
+        countries = [{"name": row[0]} for row in result]
+        
+        return countries  # FastAPI automatically converts this to JSON
+
+    except DBAPIError as e:
+        error_message = e.args[0]
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+
+@auth.get("/getState/{country_name}", response_model=List[Dict[str, str]])
+def getState(country_name: str, db: db_dependency):
+
+    query = text(f"""SELECT idCountry FROM [hr].[human-resources]..Country WHERE name = '{country_name}'""")
+    try:
+        result = db.execute(query).fetchone()
+        idCountry = result[0]
+    except DBAPIError as e:
+        error_message = e.args[0]
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+    query = text(f"""SELECT name FROM [hr].[human-resources]..State WHERE idCountry = '{idCountry}'""")
+    try:
+        result = db.execute(query).fetchall()
+        
+        # Convert result to a list of dictionaries
+        states = [{"name": row[0]} for row in result]
+        
+        return states  # FastAPI automatically converts this to JSON
+
+    except DBAPIError as e:
+        error_message = e.args[0]
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+@auth.get("/getCity/{state_name}", response_model=List[Dict[str, str]])
+def getState(state_name: str, db: db_dependency):
+
+    query = text(f"""SELECT idState FROM [hr].[human-resources]..State WHERE name = '{state_name}'""")
+    try:
+        result = db.execute(query).fetchone()
+        idState = result[0]
+    except DBAPIError as e:
+        error_message = e.args[0]
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+    query = text(f"""SELECT name FROM [hr].[human-resources]..City WHERE idState = '{idState}'""")
+    try:
+        result = db.execute(query).fetchall()
+        
+        # Convert result to a list of dictionaries
+        states = [{"name": row[0]} for row in result]
+        
+        return states  # FastAPI automatically converts this to JSON
+
+    except DBAPIError as e:
+        error_message = e.args[0]
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
 
 @auth.post("/loginClient")
 def loginClient(client: ClientLogin, db: db_dependency):

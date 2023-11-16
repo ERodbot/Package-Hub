@@ -31,3 +31,10 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+DELIMITER //
+
+CREATRE PROCEDURE getCountries(
+
+)
