@@ -118,7 +118,7 @@ BEGIN
 	-- Check if the user already exists
 	IF NOT EXISTS (SELECT username FROM [support-sales].[support-sales].[sales].Clients WHERE username = @username)
 	BEGIN
-		DECLARE @ErrorMessage NVARCHAR(200) = 'User does not exist';
+		DECLARE @ErrorMessage NVARCHAR(400) = 'User does not exist';
 		RAISERROR(@ErrorMessage, 16, 1);
 		RETURN;
 	END
@@ -126,8 +126,11 @@ BEGIN
 	-- Check if the password is correct
 	IF NOT EXISTS (SELECT username FROM [support-sales].[support-sales].[sales].Clients WHERE username = @username AND password = @password)
 	BEGIN
-		DECLARE @ErrorMessage NVARCHAR(200) = 'Wrong password';
-		RAISERROR(@ErrorMessage, 16, 1);
+		DECLARE @ErrorMessagex NVARCHAR(400) = 'Wrong password';
+		RAISERROR(@ErrorMessagex, 16, 1);
 		RETURN;
 	END
+	SELECT username FROM [support-sales].[support-sales].[sales].Clients WHERE username = @username AND password = @password
 END;
+
+EXEC loginClient @username = 'dangar', @password = 12345
