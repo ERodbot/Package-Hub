@@ -6,7 +6,7 @@ import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
 // The row class and the information that goes in the columns.
 const dataObject = [
-  {columns: ["Nombre", "Rol", "Departamento" ,"Ventas", "Pais"] },
+  {columns: ["Nombre", "Rol", "DepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamentoDepartamento afgfdasdafhjafksdhfajkdhfksa fasdhjfhasjkfhjkas fassdfjahsjdf hasdjf asdf asdjkfh asj fjkasd fahdjsk fasdjkfh asjkdfh asdj fasdjkh fjasd" ,"Ventas", "Pais"] },
   {columns: ["Nombre", "Rol", "Departamento", "Ventas", "Pais"] },
   {columns: ["Nombre", "Rol", "Departamento", "Ventas", "Pais"] },
   {columns: ["Nombre", "Rol", "Departamento", "Ventas", "Pais"] },

@@ -6,7 +6,7 @@ import PaginaBase from "../General/PaginaBase/PaginaBase";
 
 // Elements that will be shown in the table
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión Fecha emisión Fecha emisiónFecha emisiónFecha emisión Fecha emisión", "Estado: Pendiente"] },
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },

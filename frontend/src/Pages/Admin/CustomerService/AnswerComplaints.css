@@ -22,11 +22,10 @@
   padding-right: 60px;
 }
 
-.vertical-scroll-container {
-  max-height: 400px;
-  max-height: auto;
+.mainPage .vertical-scroll-container {
+  max-height: 500px;
+  height: fit-content;
   overflow-y: auto;
-  overflow-x: hidden; /* Hides horizontal scoll */
   padding-right: 20px;
   padding-bottom: 30px;
 }
@@ -48,32 +47,33 @@
   background-color: #f5e1cd; /* Color of place scroll*/
 }
 
-.columnaOrden {
+.mainPage .columnaOrden {
   padding-top: 10px;
   padding-bottom: 10px;
   border-radius: 0px;
   height: fit-content;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
-.no-gutters {
-  align-items: center;
+.mainPage .no-gutters {
+  margin-right: 0;
+  margin-left: 0;
 }
 
-.odd-row {
+.mainPage .odd-row {
   background-color: #bbbbbb;
   border-radius: 10px;
-  margin-left: 2px;
   margin-bottom: 4px;
   height: fit-content;
 }
 
-.even-row {
-  background-color: #e1b765;
+.mainPage .even-row {
+  background-color: #eb9f0b;
   border-radius: 10px;
   margin-left: 2px;
   margin-bottom: 4px;
   height: fit-content;
+  overflow-y: auto;
 }
 
 .popOver-content {

@@ -5,7 +5,7 @@ import PaginaBase from "../General/PaginaBase/PaginaBase";
 
 // Elements that will be shown in the table
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión Fecha emisión Fecha emisión Fecha emisión Fecha emisión Fecha emisión ", "Estado: Pendiente"] },
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
@@ -55,11 +55,13 @@ const renderRows = (data) => {
 // Function that renders the page
 const OrdenesEmpleado = () => (
   <PaginaBase>
-    <Container fluid className="mainPage">
-      <p className="title2">Registro de Ordenes</p>
-      <div className="vertical-scroll-container">
-        {renderRows(dataObject)}
-      </div>
+    <Container fluid className="background2">
+      <Container fluid className="mainPage">
+        <p className="title2">Registro de Ordenes</p>
+        <div className="vertical-scroll-container">
+          {renderRows(dataObject)}
+        </div>
+      </Container>
     </Container>
   </PaginaBase>
 );

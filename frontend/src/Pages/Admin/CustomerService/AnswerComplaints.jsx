@@ -6,7 +6,7 @@ import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
 // Element list for mapping
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["#7473-8273", "usuario", "El problema es que no se guardan. Ademas sucede que los datos no se guarden de la fomra que yo quiero y necesito", "nombre@estudiantec.cr"] },
+  { rowClass: "no-gutters", columns: ["#7473-8273", "usuario", "Eomra que yo quiero y necesito Eomra ", "nombre@estudiantec.cr     fs"] },
   { rowClass: "no-gutters", columns: ["#4473-8273", "usuario", "problema...", "nombre@estudiantec.cr"] },
   { rowClass: "no-gutters", columns: ["#4473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
   { rowClass: "no-gutters", columns: ["#4473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
@@ -83,7 +83,7 @@ const AnswerComplaints = () => {
   // Render the answer text in the text area
   return (
     <PaginaBase>
-      <Container className="background5">
+      <Container className="background2">
         <Container fluid className="mainPage">
           <p className="title2">Registro de Quejas y Consultas</p>
           <input

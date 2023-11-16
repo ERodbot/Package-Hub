@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import "./busqueda.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 // Se encarga de generar un forms para la busqueda de productos
@@ -63,9 +64,11 @@ function Busqueda() {
         ))}
         <Form.Group as={Row} className="mb-3">
           <Col sm={{ span: 10, offset: 2 }}>
-            <Button className="buscarBtn" type="button" onClick={handleBuscarClick}>
-              Buscar
-            </Button>
+            <Link to="/snacks">
+              <Button className="buscarBtn" type="button" onClick={handleBuscarClick}>
+                Buscar
+              </Button>
+            </Link>
           </Col>
         </Form.Group>
       </Form>

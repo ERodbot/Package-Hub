@@ -44,7 +44,7 @@ const ProductDetails = () => {
         setWeight(response.data.weight);
         setMaterial(response.data.material);
         setPrecioUnitario(response.data.price);
-        setColors([response.data.color]);
+        setColors(response.data.color);
         setDescription(response.data.description);
         setFotos([response.data.image, product_img1, product_img2]);
 
