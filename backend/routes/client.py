@@ -25,69 +25,6 @@ def testing(test: test, db: db_dependency):
     
     return test_dict
 
-@client.post("/registerClient")
-def createClient(client: ClientCreate, db: db_dependency):
-    client_dict = client.model_dump()
-    query = text("""
-                EXEC registerClient 
-                @name=:name, 
-                @lastName=:lastname, 
-                @username=:username, 
-                @email=:email, 
-                @phone=:phone,
-                @address=:address, 
-                @city=:city, 
-                @country=:country, 
-                @postalCode=:postal_code, 
-                @password=:password""")
-    params = {
-                'name': client_dict['name'], 
-                'lastname': client_dict['lastname'], 
-                'username': client_dict['username'], 
-                'email': client_dict['email'], 
-                'phone': client_dict['telephone'], 
-                'address': client_dict['street'], 
-                'city': client_dict['city'], 
-                'country': client_dict['country'], 
-                'postal_code': client_dict['postal_code'], 
-                'password': client_dict['password']
-              }
-
-    try:
-        db.execute(query, params)
-    except DBAPIError as e:
-        error_message = e.args[0]
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
-
-
-    return client_dict
-
-@client.post("/loginClient")
-def loginClient(client: ClientLogin, db: db_dependency):
-    client_dict = client.model_dump()
-    query = text("""EXEC loginClient @username=:username, @password=:password""")
-    params = {
-                'username': client_dict['username'], 
-                'password': client_dict['password']
-              }
-
-    try:
-        db.execute(query, params)
-    except DBAPIError as e:
-        error_message = e.args[0]
-        # raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
-        if 'User does not exist' in error_message:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User does not exist')
-        elif 'Wrong password' in error_message:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Wrong password')
-        else:
-            # If the error message doesn't match any specific case, return a generic 406 status code
-            raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
-
-    return client_dict
-
-
-
 @client.get("/getClient/{id}", response_model = Client)
 def getClient(id: int, db: db_dependency):
     # Llama al procedimiento almacenado en la base de datos
