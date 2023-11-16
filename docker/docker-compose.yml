@@ -3,7 +3,9 @@ version: '3.8'
 services:
   na-inventory-server:
     container_name: na-inventory-server
-    build: .
+    build:
+      context: ./na-inventory
+      dockerfile: Dockerfile
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "12e@5678"
