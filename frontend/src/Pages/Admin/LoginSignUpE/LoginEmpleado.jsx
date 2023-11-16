@@ -5,13 +5,13 @@ import trevolImage from '../../../assets/Decorations/trevol_skate.png';
 import trevolImage2 from '../../../assets/Logos/logotype.svg';
 
 const LoginEmpleado = () => {
-  // Funcion para guardar los valores de username y password
+  // Function to save information of the complaint answers
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-  // Guarda varia informacion importante para el ingreso de un cliente
+  // Saves innformation for client login
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -20,14 +20,14 @@ const LoginEmpleado = () => {
     }));
   };
 
-  // Funcion para mostrarlo en la consola
+  // Function to show on console
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí se peude acceder a los valores del formulario en formData
+    // Acces the console form data
     console.log(formData);
  
   };
-  // Funcion para renderizar el componente
+  // Renders the component in the page
   return (
     <div className="mainContainer">
     <div className="formulario">

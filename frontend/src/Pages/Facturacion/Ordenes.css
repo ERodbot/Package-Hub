@@ -29,26 +29,26 @@
   max-height: 500px;
   max-height: auto;
   overflow-y: auto;
-  overflow-x: hidden; /* Oculta scroll horizontal */
+  overflow-x: hidden; /* Hides horizontal scoll */
   padding-right: 20px;
   padding-bottom: 30px;
 }
 
-/* Evitar el desbordamiento vertical */
+/* Prevent vertical overfloww */
 .vertical-scroll-container > .no-gutters {
   flex-wrap: nowrap;
 }
 
 .vertical-scroll-container::-webkit-scrollbar {
-  width: 16px; /* Ancho del scroll */
+  width: 16px; /* Widght of scroll */
 }
 
 .vertical-scroll-container::-webkit-scrollbar-thumb {
-  background-color: #eb9f0b; /* Color del scroll */
+  background-color: #eb9f0b; /* Color scroll */
 }
 
 .vertical-scroll-container::-webkit-scrollbar-track {
-  background-color: #f5e1cd; /* Color de la pista de scroll*/
+  background-color: #f5e1cd; /* Color of place scroll*/
 }
 
 .columnaOrden {

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './AnswerComplaints.css';
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
-// Lista de elementos para el mappeo
+// Element list for mapping
 const dataObject = [
   { rowClass: "no-gutters", columns: ["#7473-8273", "usuario", "El problema es que no se guardan. Ademas sucede que los datos no se guarden de la fomra que yo quiero y necesito", "nombre@estudiantec.cr"] },
   { rowClass: "no-gutters", columns: ["#4473-8273", "usuario", "problema...", "nombre@estudiantec.cr"] },
@@ -23,8 +23,8 @@ const dataObject = [
   { rowClass: "no-gutters", columns: ["#9473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
 ];
 
-// Para la redireccion de pagina se puede hacer de esta forma /productDetail/0"
-// Esta funcion crea todas las rows necesarias
+// For the redirection of the page can be donde like this: /productDetail/0"
+// This function renders the rows of the table
 function renderRows(data) {
   return data.map((row, index) => (
     <Link key={index} to={`/productDetail/${index}`} style={{ color: 'black' , textDecoration: 'none' }}>
@@ -45,13 +45,13 @@ function renderRows(data) {
     </Link>
   ));
 }
-
+// Function to save information of the complaint answers
 const AnswerComplaints = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
   const [respuestaTexto, setRespuestaTexto] = useState(null);
 
-  // Se encarga de busquedas en la tabla
+  // Makes the search bar work
   const filteredData = dataObject.filter(item =>
     item.columns.some(column =>
       column.toLowerCase().includes(searchTerm.toLowerCase())
@@ -59,13 +59,13 @@ const AnswerComplaints = () => {
   );
 
   const handleBuscarClick = () => {
-    // Obtener el valor seleccionado en el Form.Select
+    // Obtains the selected valie in the Form.Select
     const ordenSeleccionada = document.getElementById('formSelect').value;
 
-    // Encontrar el índice de la fila basado en la orden
+    // Find the index of the selected row
     const indiceFila = dataObject.findIndex(item => item.columns[0] === ordenSeleccionada);
 
-    // Guardar el índice y el texto de respuesta en el estado
+    // Save the index and the text of the answer in the state
     setSelectedRowIndex(indiceFila);
     let textAreaValue = document.getElementById('formTextArea').value;
     if (textAreaValue != null) {
@@ -74,14 +74,13 @@ const AnswerComplaints = () => {
       setRespuestaTexto(null);
     }
 
-
-    // Aca se puede tomar el indiceFila y respuesta texto para hacer lo que se necesite
+    // Here we can do the logic to save the answer in the database
 
     console.log('Índice de la fila:', indiceFila);
     console.log('Texto de respuesta:', respuestaTexto);
   };
 
-  // Se encarga de renderizar la pagina
+  // Render the answer text in the text area
   return (
     <PaginaBase>
       <Container className="background5">
@@ -123,7 +122,6 @@ const AnswerComplaints = () => {
               </Col>
             </Row>
 
-            {/* Agregar el botón para submit */}
             <Row className="answerRows">
               <Col sm={12} className="text-center">
                 <Button className="buscarBtn" type="button" onClick={handleBuscarClick}>

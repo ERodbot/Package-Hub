@@ -6,6 +6,7 @@ import { Dropdown } from "react-bootstrap";
 import trevolImage from '../../../assets/Decorations/trevol_skate.png';
 import trevolImage2 from '../../../assets/Logos/logotype.svg';
 
+// Function to save information of the complaint answers
 const SignUpEmpleado = () => {
   const [formData, setFormData] = useState({
     usernameE: "",
@@ -20,6 +21,7 @@ const SignUpEmpleado = () => {
     postal: "",
   });
 
+  // Saves the information of the form
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -28,6 +30,7 @@ const SignUpEmpleado = () => {
     }));
   };
 
+  // Saves the information of the dropdown contry
   const handleDropdownSelect = (option) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -35,6 +38,7 @@ const SignUpEmpleado = () => {
     }));
   };
 
+  // Saves the information of the dropdown state
   const handleDropdownSelect2 = (option) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -42,19 +46,20 @@ const SignUpEmpleado = () => {
     }));
   };
 
-  // Asi se guarda la informacion {usernameE: 'fads', correoE: 'fasd@a', telefonoE: 'fasd', passwordE: 'afds', pais: 'Costa rica', rol: 'Admin'}
+  // The information is saved like this {usernameE: 'fads', correoE: 'fasd@a', telefonoE: 'fasd', passwordE: 'afds', pais: 'Costa rica', rol: 'Admin'}
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    // Aquí puedes realizar otras operaciones con los datos del formulario si es necesario
+    // Here you can make some backend operations
   };
 
+  // All data from dropdowns
   const dropdownOptions = ["Costa rica", "Venezuela"];
   const dropdownOptions2 = ["Admin", "Employee"];
-    // Datos del dropdown los cuales solo se agregan a la lista
   const dropdownOptions3 = ["SanJose", "Cartago"];
   const dropdownOptions4 = ["Taras", "Lima", "Liberia"];
 
+  // Renders the component in the page
   return (
     <div className="mainContainer">
       <div className="formulario">

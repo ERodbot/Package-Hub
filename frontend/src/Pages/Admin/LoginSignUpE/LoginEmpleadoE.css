@@ -184,7 +184,7 @@ select {
   margin-bottom: 12px;
 }
 
-/* Estilos del menú del dropdown */
+/* Dropdown styles */
 .dropdown-menu {
   background-color: #007bff;
   padding-top: 10px;
@@ -196,12 +196,12 @@ select {
   border-color: black;
 }
 
-/* Estilos de las opciones del dropdown */
+/* Styles of dropdown options */
 .dropdown-item {
   color: black;
 }
 
-/* Cambiar color al pasar el ratón sobre las opciones */
+/* Change color on hover*/
 .dropdown-item:hover {
   background-color: #0056b3;
 }
