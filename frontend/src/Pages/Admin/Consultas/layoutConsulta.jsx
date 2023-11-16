@@ -8,8 +8,7 @@ function Busqueda() {
     { type: 'Tipo de Producto:', product: 'Producto' },
     { type: 'Tipo de Producto:', product: 'Producto' },
     { type: 'Tipo de Producto:', product: 'Producto' },
-    { type: 'jafdsff:', product: 'Producto' },
-    // Add more items as needed
+    { type: 'jafdsff:', product: 'Producto' }
   ];
 
   return (

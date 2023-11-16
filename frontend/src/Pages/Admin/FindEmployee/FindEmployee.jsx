@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./FindEmployee.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
-// La clase row respectica y la informacion que va en las columnas. 
+// The row class and the information that goes in the columns.
 const dataObject = [
   {columns: ["Nombre", "Rol", "Departamento" ,"Ventas", "Pais"] },
   {columns: ["Nombre", "Rol", "Departamento", "Ventas", "Pais"] },
@@ -21,8 +21,8 @@ const dataObject = [
   {columns: ["Nombre", "Rol", "Departamento", "Ventas", "Pais"] },
   {columns: ["Nombre", "Rol", "Departamento", "Ventas", "Pais"] },
 ];
-// Para la redireccion de pagina se puede hacer de esta forma /productDetail/0"
-// Esta funcion se supone que redirige a la facturación 
+// For the redirection of the page can be donde like this: /productDetail/0"
+// Function has to be changed to redirect to the employee detail page
 function renderRows(data) {
   return data.map((row, index) => (
     <Link key={index} to={`/employeeDetail/${index}`} style={{ color: 'black' , textDecoration: 'none' }}>
@@ -43,19 +43,18 @@ function renderRows(data) {
     </Link>
   ));
 }
-
-// Esta crea el HTML de la pagina 
+// Creats the HTML of the page
 const FindEmployee = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Se encarga de busquedas en la tabla
+  // Makes the search bar work
   const filteredData = dataObject.filter(item =>
     item.columns.some(column =>
       column.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
-  // Se encarga de renderizar la pagina
+  // Se renders the page
   return (
     <PaginaBase>
       <Container className="background2">

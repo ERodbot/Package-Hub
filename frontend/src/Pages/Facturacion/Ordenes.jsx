@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./Ordenes.css";
 import PaginaBase from "../General/PaginaBase/PaginaBase";
 
-// La clase row respectica y la informacion que va en las columnas. 
+// Elements that will be shown in the table
 const dataObject = [
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
@@ -21,8 +21,8 @@ const dataObject = [
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
   { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
 ];
-// Para la redireccion de pagina se puede hacer de esta forma /productDetail/0"
-// Esta funcion se supone que redirige a la facturación 
+// Works for redirecting to other page like this /productDetail/0"
+// Has to redirect to the "facturación"
 function renderRows(data) {
   return data.map((row, index) => (
     <Link key={index} to={`/productDetail/${index}`} style={{ color: 'black' , textDecoration: 'none' }}>
@@ -41,18 +41,18 @@ function renderRows(data) {
   ));
 }
 
-// Esta crea el HTML de la pagina 
+// Creates the HTML of the page
 const OrdenesClientes = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Se encarga de busquedas en la tabla
+  // Does the search bar work
   const filteredData = dataObject.filter(item =>
     item.columns.some(column =>
       column.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
-  // Se encarga de renderizar la pagina
+  // Renders the page
   return (
     <PaginaBase>
       <Container className="background2">
