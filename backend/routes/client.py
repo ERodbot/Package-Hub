@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from config.database import db_dependency
-from schemas.client import Client, ClientCreate, test, ClientLogin
+from schemas.client import Client, ClientCreate, test
 from sqlalchemy import text
 from sqlalchemy.exc import DBAPIError
 
