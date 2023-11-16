@@ -62,7 +62,25 @@ def createClient(client: ClientCreate, db: db_dependency):
 
     return client_dict
 
-    
+@client.post("/loginClient")
+def loginClient(client: ClientCreate, db: db_dependency):
+    client_dict = client.model_dump()
+    query = text("""EXEC loginClient @username=:username, @password=:password""")
+    params = {
+                'username': client_dict['username'], 
+                'password': client_dict['password']
+              }
+
+    try:
+        db.execute(query, params)
+    except DBAPIError as e:
+        error_message = e.args[0]
+        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+    return client_dict
+
+
+
 @client.get("/getClient/{id}", response_model = Client)
 def getClient(id: int, db: db_dependency):
     # Llama al procedimiento almacenado en la base de datos
