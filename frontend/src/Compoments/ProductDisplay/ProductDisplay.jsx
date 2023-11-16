@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 import "./ProductDisplay.css";
 
@@ -14,9 +15,12 @@ const ProductDisplay = ({
   category,
   url,
 }) => {
+
+  const navigate = useNavigate();
+
   // Function to handle redirection to the specified URL
   const handleRedirection = (url) => {
-    window.open(url);
+    navigate(url, {state: {nombre: name, categoria: category}});
   };
 
   return (

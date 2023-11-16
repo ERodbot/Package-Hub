@@ -7,6 +7,7 @@ import "./ProductDetailsDisplay.css";
 
 const ProductCard = ({
   // Props for managing product quantity, value, shipping, images, colors, and details
+  nombre,
   cantidad,
   setValQuantity,
   value,
@@ -38,14 +39,14 @@ const ProductCard = ({
             ))}
           </Carousel>
           {/* Display available colors */}
-          <h4>Colores disponibles: </h4>
-          {colors.map((val, index) => (
+          <h4>Colores disponibles: {colors}</h4>
+          {/* {colors.map((val, index) => (
             <Color key={index} style={val} />
-          ))}
+          ))} */}
         </Col>
         {/* Product details and quantity section */}
         <Col md={6} className="text-align-start">
-          <h2 className="my-5">Detalles del producto.</h2>
+          <h2 className="my-5">{nombre}</h2>
           {/* Map through product details and display them */}
           <Row className="m-2">
             {Object.entries(productDetailsData).map(([key, value]) => (

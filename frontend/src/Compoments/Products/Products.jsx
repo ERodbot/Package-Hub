@@ -3,17 +3,32 @@
 import ProductDisplay from "../ProductDisplay/ProductDisplay";
 import { Col, Container, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { getProductsCategory } from "../../api/products";
 
 /* CSS Styles */
 import "./Products.css";
 
 const Products = ({
   // Props for the product category and data
-  category,
-  productsData,
+  category
 }) => {
   // Use useState to manage the product data
   const [products, setProducts] = useState([]);
+  const [productsData, setProductsData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getProductsCategory(category);
+        setProductsData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [category]);
+    
+
 
   useEffect(() => {
     // Update the state with the provided productsData
@@ -35,12 +50,12 @@ const Products = ({
           <Col key={index} className="g-4">
             <ProductDisplay
               // Pass product details as props to ProductDisplay component
-              price={product.price}
+              price={`$${product.price}`}
               name={product.name}
               image={product.image}
               categorystyle={category}
               category={category}
-              url={`/productDetail${product.name}`}
+              url={`/productDetail`}
             />
           </Col>
         ))}

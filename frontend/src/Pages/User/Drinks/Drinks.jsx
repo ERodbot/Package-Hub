@@ -4,19 +4,8 @@ import Products from "../../../Compoments/Products/Products";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 import drinks_icon from "../../../assets/Decorations/alcohol_title.jpg";
 import "./Drinks.css";
-import productsList from "../../../Compoments/Products/productsData.json";
 
 const Drinks = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    // Load products initially
-    setProducts(productsList.products);
-  }, []);
-
-  useEffect(() => {
-    console.log("products: ", products);
-  }, [products]);
 
   return (
     <PaginaBase>
@@ -30,7 +19,7 @@ const Drinks = () => {
               className="custom-title-image"
             />
           </div>
-          <Products category={"Bebidas"} productsData={products} />
+          <Products category={"Bebidas"}/>
         </Container>
       </Container>
     </PaginaBase>
