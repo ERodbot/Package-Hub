@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseMode
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
 from config.database import db_dependency
@@ -20,69 +20,85 @@ auth = APIRouter(
 bcrypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
-@auth.post("/registerClient", response_model = clientSchema)
-def create_client(client: ClientCreate, db: db_dependency):
-    if client.username is None or client.name is None or client.lastname is None or client.email is None or client.telephone is None or client.password is None:
-        return HTTPException(status_code=400, detail="Missing fields")
-    query = text("""
-        DECLARE @Resultado INT;
-        EXEC CreateClient
-            @Username=:username,
-            @Name=:name,
-            @Lastname=:lastname,
-            @Email=:email,
-            @Telephone=:telephone,
-            @Password=:password,
-            @Resultado = @Resultado OUTPUT;
-        SELECT @Resultado as Resultado;
-    """)
 
-    hashed_password = bcrypt.hash(client.password)
 
-    params = {
-        "username": client.username,
-        "name": client.name,
-        "lastname": client.lastname,
-        "email": client.email,
-        "telephone": client.telephone,
-        "password": hashed_password,
-    }
 
-    try:
-        result = db.execute(query, params).fetchone()
-        if result and result.Resultado == 1:
-            db.commit()
-            return client
-        else:
-            raise HTTPException(status_code=500, detail="Failed to create client")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+
+
+
+
+
+# @auth.post("/registerClient", response_model = clientSchema)
+# def create_client(client: ClientCreate, db: db_dependency):
+#     if client.username is None or client.name is None or client.lastname is None or client.email is None or client.telephone is None or client.password is None:
+#         return HTTPException(status_code=400, detail="Missing fields")
+#     query = text("""
+#         DECLARE @Resultado INT;
+#         EXEC CreateClient
+#             @Username=:username,
+#             @Name=:name,
+#             @Lastname=:lastname,
+#             @Email=:email,
+#             @Telephone=:telephone,
+#             @Password=:password,
+#             @Resultado = @Resultado OUTPUT;
+#         SELECT @Resultado as Resultado;
+#     """)
+
+#     hashed_password = bcrypt.hash(client.password)
+
+#     params = {
+#         "username": client.username,
+#         "name": client.name,
+#         "lastname": client.lastname,
+#         "email": client.email,
+#         "telephone": client.telephone,
+#         "password": hashed_password,
+#     }
+
+#     try:
+#         result = db.execute(query, params).fetchone()
+#         if result and result.Resultado == 1:
+#             db.commit()
+#             return client
+#         else:
+#             raise HTTPException(status_code=500, detail="Failed to create client")
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
     
-@auth.post("/loginClient", response_model = clientSchema)
-def login_client(db: db_dependency, form_data: OAuth2PasswordRequestForm = Depends()):
-    query = text("""
-        DECLARE @Resultado INT;
-        EXEC IniciarSesionCliente
-            @Username=:username,
-            @Password=:password,
-            @Resultado = @Resultado OUTPUT;
-        SELECT @Resultado as Resultado;
-    """)
+# @auth.post("/loginClient", response_model = clientSchema)
+# def login_client(db: db_dependency, form_data: OAuth2PasswordRequestForm = Depends()):
+#     query = text("""
+#         DECLARE @Resultado INT;
+#         EXEC IniciarSesionCliente
+#             @Username=:username,
+#             @Password=:password,
+#             @Resultado = @Resultado OUTPUT;
+#         SELECT @Resultado as Resultado;
+#     """)
 
-    params = {
-        "username": form_data.username,
-        "password": form_data.password,
-    }
+#     params = {
+#         "username": form_data.username,
+#         "password": form_data.password,
+#     }
 
-    try:
-        result = db.execute(query, params).fetchone()
-        if result and result.Resultado == 1:
-            db.commit()
-            return clientSchema(username=form_data.username)
-        else:
-            raise HTTPException(status_code=401, detail="Invalid credentials")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+#     try:
+#         result = db.execute(query, params).fetchone()
+#         if result and result.Resultado == 1:
+#             db.commit()
+#             return clientSchema(username=form_data.username)
+#         else:
+#             raise HTTPException(status_code=401, detail="Invalid credentials")
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+
+
+# BIEN ! :D
+
 
 @auth.post("/token")
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency):
