@@ -6,21 +6,20 @@ import PaginaBase from "../General/PaginaBase/PaginaBase";
 
 // La clase row respectica y la informacion que va en las columnas. 
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["No es", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
 ];
 // Para la redireccion de pagina se puede hacer de esta forma /productDetail/0"
 // Esta funcion se supone que redirige a la facturación 

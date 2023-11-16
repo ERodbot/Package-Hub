@@ -5,23 +5,21 @@ import PaginaBase from "../General/PaginaBase/PaginaBase";
 
 // Elementos que se mostraran en la tabla
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
-  { rowClass: "no-gutters", columns: ["1 of 3", "2 of 3", "3 of 3"], popoverContent: { Etiqueta1: "Valor1", Etiqueta2: "Valor2" }},
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Pendiente"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
+  { rowClass: "no-gutters", columns: ["Orden #1727471", "Fecha emisión", "Estado: Entragado"] },
 ];
-
 // Funcion que renderiza el contenido del popover
 const renderPopover = (labelsAndValues) => (
   <Popover id="button-popover" className="popOver-content">
