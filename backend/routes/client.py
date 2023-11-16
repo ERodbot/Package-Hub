@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from config.database import db_dependency
-from schemas.client import Client, ClientCreate, test
+from schemas.client import Client, ClientCreate, test, ClientLogin
 from sqlalchemy import text
 from sqlalchemy.exc import DBAPIError
 
@@ -57,13 +57,13 @@ def createClient(client: ClientCreate, db: db_dependency):
         db.execute(query, params)
     except DBAPIError as e:
         error_message = e.args[0]
-        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
 
 
     return client_dict
 
 @client.post("/loginClient")
-def loginClient(client: ClientCreate, db: db_dependency):
+def loginClient(client: ClientLogin, db: db_dependency):
     client_dict = client.model_dump()
     query = text("""EXEC loginClient @username=:username, @password=:password""")
     params = {
@@ -75,7 +75,14 @@ def loginClient(client: ClientCreate, db: db_dependency):
         db.execute(query, params)
     except DBAPIError as e:
         error_message = e.args[0]
-        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+        # raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+        if 'User does not exist' in error_message:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User does not exist')
+        elif 'Wrong password' in error_message:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Wrong password')
+        else:
+            # If the error message doesn't match any specific case, return a generic 406 status code
+            raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
 
     return client_dict
 

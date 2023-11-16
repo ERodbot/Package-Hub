@@ -17,6 +17,10 @@ class ClientCreate(Client):
     password: str
     postal_code: int
 
+class ClientLogin(BaseModel):
+    username: str
+    password: str
+
 class test(BaseModel):
     address: str
     postal_code: int

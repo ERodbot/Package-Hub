@@ -38,8 +38,8 @@ function Router() {
           <Route path="/inicioSesionCliente" element={<LoginC />}></Route>
           <Route path="/inicioSesionEmpleado" element={<LoginE />}></Route>
           <Route path="/registroEmpleado" element={<SignE />}></Route>
-          <Route element={<ProtectedRoute />}>
-          <Route path="/main" element={<MainPage />}></Route>
+          {/* <Route element={<ProtectedRoute />}> */}
+            <Route path="/main" element={<MainPage />}> </Route>
             <Route path="/Receipt" element={<Receipt />}></Route>
             <Route path="/ordenesCliente" element={<Ordenes />}></Route>
             <Route path="/ordenesEmpleado" element={<OrdenesEmpleado />}></Route>
@@ -57,7 +57,7 @@ function Router() {
             <Route path="/CustomService" element={<CustomService />}></Route>
             <Route path="/Busqueda" element={<Busqueda />}></Route>
             <Route path="/BusquedaEmployee" element={<BusquedaEmpleado />}></Route>
-            </Route>
+          {/* </Route> */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>
