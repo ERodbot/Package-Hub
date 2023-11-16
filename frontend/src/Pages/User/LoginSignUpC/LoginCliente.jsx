@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./LoginSignUp.css";
 import trevolImage from "../../../assets/Decorations/trevol_skate.png";
 import trevolImage2 from "../../../assets/Logos/logotype.svg";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/auth";
+
 
 // Funcion para el ingreso de un cliente
 const LoginCliente = () => {
+
+  const navigate = useNavigate();
+
+  const { iniciar_sesion, user, isAuthenticated } = useAuth();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -21,12 +29,16 @@ const LoginCliente = () => {
   };
 
   // Funcion para mostrarlo en la consola
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí se peude  acceder a los valores del formulario en formData
     console.log(formData);
- 
+    iniciar_sesion(formData);
   };
+
+  useEffect(() => {
+    if (isAuthenticated)
+      navigate("/main");
+  }, [isAuthenticated]);
 
   return (
     <div className="mainContainer">

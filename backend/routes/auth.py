@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException, Form
+from fastapi import APIRouter, Depends, HTTPException, Form, status, Response, Request, Cookie
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
@@ -136,144 +136,78 @@ def getState(state_name: str, db: db_dependency):
 
 
 @auth.post("/loginClient")
-def loginClient(client: ClientLogin, db: db_dependency):
+def loginClient(client: ClientLogin, response: Response, db: db_dependency):
     client_dict = client.model_dump()
     query = text("""EXEC loginClient @username=:username, @password=:password""")
     params = {
-                'username': client_dict['username'], 
-                'password': client_dict['password']
-              }
-
+        'username': client_dict['username'],
+        'password': client_dict['password']
+    }
+    
     try:
-        db.execute(query, params)
+        user = db.execute(query, params).fetchone()
+        username = user[0]
+        if username:
+            # El usuario y contraseña son válidos, procede con la creación del token
+            access_token = create_access_token(
+                username=username,  # Ajusta esto según tu modelo de datos
+                expires_delta=timedelta(minutes=20)
+            )
+            # Devuelve el token en lugar del usuario
+            response.set_cookie(key="token", value=access_token, httponly=False)
+
+            return {'status': status.HTTP_200_OK, 'data': {}}
+        # Si no se encontró el usuario, se levanta una excepción
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+
     except DBAPIError as e:
         error_message = e.args[0]
-        # raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
         if 'User does not exist' in error_message:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User does not exist')
         elif 'Wrong password' in error_message:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Wrong password')
         else:
-            # If the error message doesn't match any specific case, return a generic 406 status code
-            raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=error_message)
 
-    return client_dict
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @auth.post("/registerClient", response_model = clientSchema)
-# def create_client(client: ClientCreate, db: db_dependency):
-#     if client.username is None or client.name is None or client.lastname is None or client.email is None or client.telephone is None or client.password is None:
-#         return HTTPException(status_code=400, detail="Missing fields")
-#     query = text("""
-#         DECLARE @Resultado INT;
-#         EXEC CreateClient
-#             @Username=:username,
-#             @Name=:name,
-#             @Lastname=:lastname,
-#             @Email=:email,
-#             @Telephone=:telephone,
-#             @Password=:password,
-#             @Resultado = @Resultado OUTPUT;
-#         SELECT @Resultado as Resultado;
-#     """)
-
-#     hashed_password = bcrypt.hash(client.password)
-
-#     params = {
-#         "username": client.username,
-#         "name": client.name,
-#         "lastname": client.lastname,
-#         "email": client.email,
-#         "telephone": client.telephone,
-#         "password": hashed_password,
-#     }
-
-#     try:
-#         result = db.execute(query, params).fetchone()
-#         if result and result.Resultado == 1:
-#             db.commit()
-#             return client
-#         else:
-#             raise HTTPException(status_code=500, detail="Failed to create client")
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-    
-# @auth.post("/loginClient", response_model = clientSchema)
-# def login_client(db: db_dependency, form_data: OAuth2PasswordRequestForm = Depends()):
-#     query = text("""
-#         DECLARE @Resultado INT;
-#         EXEC IniciarSesionCliente
-#             @Username=:username,
-#             @Password=:password,
-#             @Resultado = @Resultado OUTPUT;
-#         SELECT @Resultado as Resultado;
-#     """)
-
-#     params = {
-#         "username": form_data.username,
-#         "password": form_data.password,
-#     }
-
-#     try:
-#         result = db.execute(query, params).fetchone()
-#         if result and result.Resultado == 1:
-#             db.commit()
-#             return clientSchema(username=form_data.username)
-#         else:
-#             raise HTTPException(status_code=401, detail="Invalid credentials")
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
-
-# BIEN ! :D
-
-
-@auth.post("/token")
-async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency):
-    client = await authenticate_client(form_data.username, form_data.password, db)
-    if not client:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-    access_token = create_access_token(
-        data={"sub": client.username}, expires_delta=timedelta(minutes=20)
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
-
-def authenticate_client(username: str, password: str, db: Session):
-    user = db.query(Client).filter(Client.username == username).first()
-    if not user:
-        return False
-    if not verify_password(password, user.password):
-        return False
-    return user
-
-def verify_password(plain_password, hashed_password):
-    return bcrypt.verify(plain_password, hashed_password)
-
-def create_access_token(username: str, id = int, expires_delta: timedelta = None):
-    encode = {"sub" : username, "id" : id}
+def create_access_token(username: str, expires_delta: timedelta = None):
+    encode = {"sub" : username}
     expires = datetime.utcnow() + timedelta(minutes=20)
     encode.update({"exp": expires})
-    return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
+    return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)   
+
+# @auth.get("/verifyToken")
+# async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
+#     try:
+#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+#         username: str = payload.get("sub")
+#         id: int = payload.get("id")
+#         if username is None:
+#             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
+#         return {"username": username, "id": id}
+#     except JWTError:
+#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
+
+from fastapi import HTTPException, status, Depends, Request
+from jose import jwt, JWTError
+from typing import Optional
+
+# ... your existing imports and code ...
+
+async def get_token_from_cookie(request: Request) -> Optional[str]:
+    # Attempt to retrieve the token from the cookie
+    return request.cookies.get("token")
+
+@auth.get("/verifyToken")
+async def get_current_user(token: Optional[str] = Depends(get_token_from_cookie)):
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No authentication token found")
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
-        id: int = payload.get("id")
         if username is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
-        return {"username": username, "id": id}
+        return {"username": username}
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
-

@@ -18,11 +18,13 @@ import logo from "../../assets/Logos/logotype.svg";
 import shopping_cart from "../../assets/Links/shopping_cart.png";
 import profile from "../../assets/Links/profile.jpg";
 import cr from "../../assets/Links/cr.jpg";
+import { useAuth } from "../../contexts/auth";
 
 // Functional component definition
 const NavbarPage = () => {
   // State for search term input
   const [searchTerm, setSearchTerm] = useState("");
+  const { logout } = useAuth();
 
   // Event handler for search input
   const handleSearch = (event) => {
@@ -33,6 +35,11 @@ const NavbarPage = () => {
   useEffect(() => {
     console.log(searchTerm);
   }, [searchTerm]);
+
+  const salir = () => {
+    logout();
+  };
+
 
   return (
     <Navbar
@@ -99,6 +106,11 @@ const NavbarPage = () => {
             {/* Image for "Otros" section */}
             <Container>
               <img src={cr} id="custom-img" className="mt-3" />
+            </Container>
+            <Container>
+              <button id="custom-img" className="btn mt-3" onClick={salir}>
+                Salir
+              </button>
             </Container>
           </Nav>
         </Navbar.Collapse>

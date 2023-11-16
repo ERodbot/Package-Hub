@@ -6,11 +6,14 @@ import trevolImage from "../../../assets/Decorations/trevol_skate.png";
 import trevolImage2 from "../../../assets/Logos/logotype.svg";
 import { registerRequest, getCountry, getStates, getCities} from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/auth";
 
 // Funcion para el registro de un cliente
 const SignUpCliente = () => {
 
   const navigate = useNavigate();
+
+  const { isAuthenticated } = useAuth();
 
   // Dropdown data
   const [countries, setCountries] = useState([]);
@@ -104,6 +107,10 @@ const SignUpCliente = () => {
 
   };
 
+  useEffect(() => {
+    if (isAuthenticated)
+      navigate("/main");
+  }, [isAuthenticated]);
 
 
   return (
