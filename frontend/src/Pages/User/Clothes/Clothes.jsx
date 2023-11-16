@@ -4,21 +4,9 @@ import Products from "../../../Compoments/Products/Products";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 import clothes_icon from "../../../assets/Decorations/clothing_title.jpg";
 import "./Clothes.css";
-import productsList from "../../../Compoments/Products/productsData.json";
 
-/* Path es temporal, es para cargar productos placeholder, usar el useState para cargar los productos del request */
 
 const Clothes = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    // Load products initially
-    setProducts(productsList.products);
-  }, []);
-
-  useEffect(() => {
-    console.log("products: ", products);
-  }, [products]);
 
   return (
     <PaginaBase>
@@ -32,7 +20,7 @@ const Clothes = () => {
               className="custom-title-image"
             />
           </div>
-          <Products category={"Ropa"} productsData={products} />
+          <Products category={"Ropa"}/>
         </Container>
       </Container>
     </PaginaBase>

@@ -18,7 +18,7 @@ const Snacks = () => {
             />
           </div>
 
-          <Products category={"Snacks"} url={"/productDetail"} />
+          <Products category={"Snacks"}/>
         </Container>
       </Container>
     </PaginaBase>

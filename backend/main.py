@@ -3,10 +3,12 @@ from config.database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 from routes.client import client
 from routes.auth import auth
+from routes.products import product
 
 app = FastAPI()
 app.include_router(client)
 app.include_router(auth)
+app.include_router(product)
 
 origins = [
     "http://localhost:3000"
