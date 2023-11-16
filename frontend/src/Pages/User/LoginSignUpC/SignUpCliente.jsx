@@ -69,8 +69,8 @@ const SignUpCliente = () => {
   };
 
   // Datos del dropdown los cuales solo se agregan a la lista
-  const dropdownOptions = ["Costa rica", "Venezuela"];
-  const dropdownOptions2 = ["SanJose", "Cartago"];
+  const dropdownOptions = ["Costa Rica", "Venezuela"];
+  const dropdownOptions2 = ["San Jose", "Cartago"];
   const dropdownOptions3 = ["Taras", "Lima", "Liberia"];
 
 

@@ -20,7 +20,7 @@ INSERT INTO Role (`idRole`, `name`, `description`, `idDepartments`, `enabled`) V
 
 -- Llenado de datos dummy para la tabla `ContactType`
 INSERT INTO `human-resources`.`ContactType` (`idContactType`, `name`) VALUES
-(1, 'Teléfono'),
+(1, 'Personal'),
 (2, 'Correo Electrónico');
 
 -- Llenado de datos dummy para la tabla ContactInfo
