@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS "customer-service"."TicketLog"
     posttime timestamp with time zone NOT NULL,
     "idOperationType" integer NOT NULL,
     description text NOT NULL,
-    checksum bit varying NOT NULL,
+    checksum text NOT NULL,
     PRIMARY KEY ("idTicketLog")
 );
 
@@ -118,7 +118,6 @@ CREATE TABLE IF NOT EXISTS "customer-service"."Responses"
     PRIMARY KEY ("idResponse")
 );
 
--- ALTER TABLE statements for 'customer-service' schema
 ALTER TABLE IF EXISTS "customer-service"."Calls"
     ADD FOREIGN KEY ("idCallType")
     REFERENCES "customer-service"."CallType" ("idCallType") MATCH SIMPLE
@@ -173,6 +172,7 @@ ALTER TABLE IF EXISTS "customer-service"."Responses"
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
+
 -- End transaction
 END;
 
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS sales."Orders"
     "idOrderStatus" integer NOT NULL,
     "idShipping" integer NOT NULL,
     enabled integer NOT NULL DEFAULT 1,
-    "invoiceNumber" uuid NOT NULL,
+    "invoiceNumber" text NOT NULL,
     "idPayStatus" integer NOT NULL,
     "idPayType" integer NOT NULL,
     PRIMARY KEY ("idOrder")
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS sales."Cards"
     "idCardType" integer NOT NULL,
     "idClient" integer NOT NULL,
     enabled integer NOT NULL DEFAULT 1,
-    PRIMARY KEY ("idCardType")
+    PRIMARY KEY ("idCard")
 );
 
 DROP TABLE IF EXISTS sales."TransactionLog";
@@ -252,7 +252,7 @@ CREATE TABLE IF NOT EXISTS sales."TransactionLog"
     "idOperationType" integer NOT NULL,
     amount integer NOT NULL,
     description text NOT NULL,
-    checksum bit varying NOT NULL,
+    checksum text NOT NULL,
     PRIMARY KEY ("idTransactionLog")
 );
 
@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS sales."PayType"
 DROP TABLE IF EXISTS sales."OperationType";
 
 CREATE TABLE IF NOT EXISTS sales."OperationType"
-(   
+(
     "idOperationType" integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
     PRIMARY KEY ("idOperationType")
@@ -396,6 +396,5 @@ ALTER TABLE IF EXISTS sales."OrderDetails"
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
-
 -- End transaction
 END;
