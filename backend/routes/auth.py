@@ -156,7 +156,7 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
             # Devuelve el token en lugar del usuario
             response.set_cookie(key="token", value=access_token, httponly=False)
 
-            return status.HTTP_200_OK
+            return {'status': status.HTTP_200_OK, 'data': {}}
         # Si no se encontró el usuario, se levanta una excepción
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
