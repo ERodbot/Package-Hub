@@ -4,11 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.client import client
 from routes.auth import auth
 from routes.products import product
+from routes.reporting import reporting
 
 app = FastAPI()
 app.include_router(client)
 app.include_router(auth)
 app.include_router(product)
+app.include_router(reporting)
 
 origins = [
     "http://localhost:8000",

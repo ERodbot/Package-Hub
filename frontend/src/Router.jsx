@@ -5,8 +5,8 @@ import MainPage from "./Pages/User/Main/MainPage";
 import Products from "./Compoments/Products/Products";
 import LoginC from "./Pages/User/LoginSignUpC/LoginCliente.jsx";
 import SignC from "./Pages/User/LoginSignUpC/SignUpCliente.jsx";
-import Clothes from "./Pages/User/Clothes/Clothes";
-import Receipt from "./Pages/User/Receipt/Receipt";
+import Clothes from "./Pages/User/Clothes/Clothes.jsx";
+import Receipt from "./Pages/User/Receipt/Receipt.jsx";
 import BuyingPage from "./Pages/User/BuyingPage/BuyingPage";
 import Ordenes from "./Pages/Facturacion/Ordenes.jsx";
 import OrdenesEmpleado from "./Pages/Facturacion/OrdenEmpleado.jsx";
@@ -31,7 +31,6 @@ import { AuthProvider } from "./contexts/auth.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import { CarritoProvider } from "./contexts/carrito.jsx";
-
 
 function Router() {
   return (
