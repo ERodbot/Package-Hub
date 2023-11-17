@@ -130,13 +130,10 @@ const Planilla = () => {
                   />
                 </div>
               ))}
-              <Form.Group as={Row} className="mb-3">
-                <Col sm={{ span: 10, offset: 2 }}>
                     <Button className="buscarBtn" type="button" onClick={handleBuscarClick}>
                       Buscar
                     </Button>
-                </Col>
-              </Form.Group>
+              
             </Form>
 
           <div className="vertical-scroll-container">
