@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form, Button  } from "react-bootstrap";
 import "./performance.css";
@@ -44,8 +44,6 @@ const useBuscarProductos = () => {
     setFiltro((prevFiltro) => ({ ...prevFiltro, [seccion]: value }));
   };
 
-  
-
   const handleBuscarClick = () => {
     // Lógica para buscar productos con los filtros seleccionados
     console.log("Buscar productos con filtro:", filtro);
@@ -59,49 +57,42 @@ const useBuscarProductos = () => {
 // Has to redirect to the "facturación"
 
 function renderRows(data) {
+  const titles = ["Pais", "sucursal", "Description", "moneda", "odd"];
   return data.map((row, index) => (
-      <Row className={index % 2 === 0 ? "even-row" : "odd-row"}>
-        <Col className="columnaOrden" data-index={index}>
-          {row.columns[0]}
+    <Row key={index} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+      {row.columns.map((key, columnIndex) => (
+        <Col
+          key={columnIndex}
+          className="columnaOrden"
+          data-index={columnIndex}
+        >
+          {index === 0 ? `${titles[columnIndex]}: ` : ''} {key}
         </Col>
-        <Col className="columnaOrden">
-          {row.columns[1]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[2]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[3]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[4]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[5]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[6]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[7]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[8]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[9]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[10]}
-        </Col>
-      </Row>
+      ))}
+    </Row>
   ));
 }
 
 // Creates the HTML of the page
 const PerformanceReport = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterdItems, setFilterdItems] = useState([]);
   const { filtro, handleFiltroChange, handleBuscarClick } = useBuscarProductos();
+
+  
+  useEffect(() => {
+    setFilterdItems(dataObject);
+  }, []);
+
+  useEffect(() => {
+    const filteredData = dataObject.filter((item) =>
+      item.columns.some((column) =>
+        column.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setFilterdItems(filteredData);
+  }, [searchTerm]);
+
 
   // Does the search bar work
   const filteredData = dataObject.filter(item =>
@@ -170,7 +161,7 @@ const PerformanceReport = () => {
       </Form>
 
           <div className="vertical-scroll-container">
-            {renderRows(filteredData)}
+            {renderRows(filterdItems)}
           </div>
         </Container>
       </Container>
