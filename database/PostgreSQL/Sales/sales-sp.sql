@@ -238,7 +238,7 @@ CREATE OR REPLACE PROCEDURE registerClient(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    INSERT INTO "sales"."Clients" ("email", "username", "name", "lastName", "idAddress", "idContact", "password", "enabled")
+    INSERT INTO "Clients" ("email", "username", "name", "lastName", "idAddress", "idContact", "password", "enabled")
     VALUES (email, username, name, lastName, idAddress, idContact, password, 1);
 END;
 $$;
