@@ -53,7 +53,7 @@ function Router() {
           <Route path="/performance" element={<PerformanceReport />}></Route>
           <Route path="/Consulta" element={<LayoutConsulta />}></Route>
 
-          <Route element={<ProtectedRoute />}>
+          {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/main" element={<MainPage />}> </Route>
             <Route path="/Receipt" element={<Receipt />}></Route>
             <Route path="/ordenesCliente" element={<Ordenes />}></Route>
@@ -68,7 +68,7 @@ function Router() {
             <Route path="/SalesReport" element={<SalesFormReportConsult />}></Route>
             <Route path="/CustomService" element={<CustomService />}></Route>
             
-          </Route>
+          {/* </Route> */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>

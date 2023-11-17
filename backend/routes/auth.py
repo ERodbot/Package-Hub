@@ -25,6 +25,8 @@ bcrypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
+
+
 @auth.post("/registerClient")
 def createClient(client: ClientCreate, db: db_dependency):
     client_dict = client.dict()
