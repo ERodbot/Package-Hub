@@ -133,4 +133,3 @@ BEGIN
 	SELECT username FROM [support-sales].[support-sales].[sales].Clients WHERE username = @username AND password = @password
 END;
 
-EXEC loginClient @username = 'dangar', @password = 12345

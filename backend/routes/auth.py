@@ -138,25 +138,25 @@ def getState(state_name: str, db: db_dependency):
 @auth.post("/loginClient")
 def loginClient(client: ClientLogin, response: Response, db: db_dependency):
     client_dict = client.model_dump()
-    query = text("""EXEC loginClient @username=:username, @password=:password""")
+    query = text("""SELECT password FROM [support-sales].[support-sales].[sales].Clients WHERE username = :username""")
     params = {
         'username': client_dict['username'],
-        'password': client_dict['password']
     }
-    
     try:
         user = db.execute(query, params).fetchone()
-        username = user[0]
-        if username:
-            # El usuario y contraseña son válidos, procede con la creación del token
-            access_token = create_access_token(
-                username=username,  # Ajusta esto según tu modelo de datos
-                expires_delta=timedelta(minutes=20)
-            )
-            # Devuelve el token en lugar del usuario
-            response.set_cookie(key="token", value=access_token, httponly=False)
-
-            return {'status': status.HTTP_200_OK, 'data': {}}
+        pwd_db = user[0]
+        if pwd_db:
+            validate = bcrypt.verify(client_dict['password'], pwd_db)
+            if validate:
+                # El usuario y contraseña son válidos, procede con la creación del token
+                access_token = create_access_token(
+                    username=client_dict['username'],  # Ajusta esto según tu modelo de datos
+                    expires_delta=timedelta(minutes=20)
+                )
+                # Devuelve el token en lugar del usuario
+                response.set_cookie(key="token", value=access_token, httponly=False)
+                return {'status': status.HTTP_200_OK, 'data': {}}
+            
         # Si no se encontró el usuario, se levanta una excepción
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
@@ -168,6 +168,28 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Wrong password')
         else:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=error_message)
+        
+
+# username = "xd"
+#     query = text("""SELECT password FROM [support-sales].[support-sales].[sales].Clients WHERE username = :username""")
+#     params = {"username": username}
+
+#     try:
+#         result = db.execute(query, params).fetchone()
+#         if result is None:
+#             raise HTTPException(status_code=404, detail="User not found")
+#         else:
+#             password = result[0]
+#     except DBAPIError as e:
+#         error_message = e.args[0]
+#         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+#     status = bcrypt.verify(pwd, password)
+
+#     if status:
+#         return {"detail": "Password is correct"}
+#     else:
+#         raise HTTPException(status_code=200 , detail="Password is incorrect")
 
 def create_access_token(username: str, expires_delta: timedelta = None):
     encode = {"sub" : username}
