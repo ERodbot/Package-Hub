@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button  } from "react-bootstrap";
 import "./performance.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
+import { getCountry } from '../../../api/auth';
+import { getRoles } from '../../../api/reporting';
+
 
 // Elements that will be shown in the table
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"]},
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetrics Description"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress", "performanceMetrics", "performanceMetricsDescription"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"]},
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"]},
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"]},
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
+  { rowClass: "no-gutters", columns: ["Name", "LastName", "rating", "department", "employeeRole", "country", "state", "city", "adress"] },
 ];
 
 const secciones2 = [
@@ -27,17 +29,15 @@ const secciones2 = [
   {label: "Fecha fin", placeholder: "AAAA-MM-DD"}
 ];
 
-const secciones = [
-  {label: "Pais", placeholder: "Selecciona el país", values: ["USA", "Canada", "Mexico"] },
-  {label: "Bodega", placeholder: "Selecciona la bodega", values: ["Alpha", "Beta", "Gamma"] }
-];
+
+
 
 const useBuscarProductos = () => {
   const [filtro, setFiltro] = useState({
-    "Fecha inicio": "",
-    "Fecha fin": "",
-    "Pais": "",
-    "Bodega": ""
+    "Fecha inicio": null,
+    "Fecha fin": null,
+    "Pais": null,
+    "Rol": null
   });
 
   const handleFiltroChange = (seccion, value) => {
@@ -47,9 +47,22 @@ const useBuscarProductos = () => {
   
 
   const handleBuscarClick = () => {
-    // Lógica para buscar productos con los filtros seleccionados
-    console.log("Buscar productos con filtro:", filtro);
-    // Aca se puede acceder al array o se puede ver en la termianl
+    if (filtro["Fecha inicio"] == "") {
+      filtro["Fecha inicio"] = null;
+    }
+    if (filtro["Fecha fin"] == "") {
+      filtro["Fecha fin"] = null;
+    }
+    if (filtro["Pais"] == "Selecciona el país") {
+      filtro["Pais"] = null;
+    }
+    if (filtro["Rol"] == "Selecciona el rol") {
+      filtro["Rol"] = null;
+    }
+      // Lógica para buscar productos con los filtros seleccionados
+      console.log("Buscar productos con filtro:", filtro);
+      // Aca se puede acceder al array o se puede ver en la termianl
+    
   };
 
   return { filtro, handleFiltroChange, handleBuscarClick };
@@ -100,8 +113,43 @@ function renderRows(data) {
 
 // Creates the HTML of the page
 const PerformanceReport = () => {
+
+  const [countries, setCountries] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { filtro, handleFiltroChange, handleBuscarClick } = useBuscarProductos();
+
+
+  const secciones = [
+  {label: "Pais", placeholder: "Selecciona el país", values: countries},
+  {label: "Rol", placeholder: "Selecciona el rol", values: roles }
+  ];
+
+  useEffect(() => {
+    // Call the endpoint to get all the roles and all the countries
+    const fetchCountry = async () => {
+      try {
+        const response = await getCountry();
+        setCountries(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    const fetchRole = async () => {
+      try {
+        const roleResponse = await getRoles();
+        setRoles(roleResponse.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchCountry();
+    fetchRole();
+  }, []);
+
+
+
 
   // Does the search bar work
   const filteredData = dataObject.filter(item =>
