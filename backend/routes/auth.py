@@ -81,7 +81,7 @@ def getCountry(db: db_dependency):
         # Convert result to a list of dictionaries
         countries = [{"name": row[0]} for row in result]
         
-        return countries  # FastAPI automatically converts this to JSON
+        return countries 
 
     except DBAPIError as e:
         error_message = e.args[0]

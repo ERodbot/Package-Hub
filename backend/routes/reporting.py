@@ -28,8 +28,8 @@ def getRoles(db: db_dependency):
     
     return roles_dict
 
-@reporting.get("/getPerfomance")
-def getPerfomance(db: db_dependency, start_date: str | None = None, end_date: str | None = None, role: str  | None = None, country: str | None = None):
+@reporting.get("/getPerformance")
+def getPerformance(db: db_dependency, start_date: str | None = None, end_date: str | None = None, role: str  | None = None, country: str | None = None):
 
     query = text("""EXEC usp_ReportingByPerformance @initial_date=:start_date, @final_date=:end_date, @role_filter=:role, @country_filter=:country""")
     params = {

@@ -61,6 +61,16 @@
   overflow-y: auto;
 }
 
+.column-header, .columnaOrden {
+  text-align: center;
+}
+
+.header-row {
+  background-color: #f5f5f5; 
+  border-bottom: 2px solid #ddd; 
+}
+
+
 .odd-row {
   background-color: #bbbbbb;
   border-radius: 10px;
