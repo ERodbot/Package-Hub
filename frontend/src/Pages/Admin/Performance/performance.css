@@ -1,5 +1,5 @@
-.background2 {
-  background-image: url("../../assets/Background/sale_info_bg.jpg");
+.background7 {
+  background-image: url("../../../assets/Background/sale_info_bg.jpg");
   background-size: cover;
   min-width: 100%;
   min-height: 100%;
@@ -103,10 +103,10 @@
   flex-direction: column;
   display: flex;
   margin-top: 20px;
+  margin-left: 0px;
   width: 100%;
-  background-color: #f5e1cd;
-  padding: 20px 30px 1dvb 30px;
-  padding-right: 600px;
+  background-color: #bbbbbb;
+  margin-bottom: 20px;
 }
 
 .labelWrapper {
@@ -116,28 +116,23 @@
 }
 
 .labelContainer {
+  text-align: left;
   width: 580px;
   max-width: 480px;
 }
 
-.contenedorFormulario {
-  background-color: #efebe2;
-  align-items: center;
-}
 .contenedorFormularioProdu {
   margin-bottom: 10px;
-  background-color: whitesmoke;
-  color: #000000;
+  margin-left: 20px;
+  width: 100%;
 }
 
 .buscarBtn {
   background-color: #f58071;
   border-radius: 12px;
   border: none;
+  margin-left: 84%;
+  margin-top: 10px;
   height: 40px;
   width: 100px;
-}
-
-.mb-3 {
-  align-items: center;
 }
