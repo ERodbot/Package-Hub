@@ -13,17 +13,25 @@ import {
 import { Link } from "react-router-dom";
 import "./BuyingPage.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
+import { useCarrito } from "../../../contexts/carrito";
+
 
 // BuyingPage functional component
 const BuyingPage = () => {
+  const { products, total} = useCarrito();
+
   // State variables to manage user inputs
   const [address, setAddress] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [expiration, setExpiration] = useState("");
   const [cvc, setCVC] = useState("");
-  const [price, setPrice] = useState(0);
 
+  const realizarPago = () => {
+    console.log("Pago realizado");
+
+    //realizar llamada a sp de registrar venta
+  }
   // JSX structure for the BuyingPage
   return (
     <PaginaBase>
@@ -104,11 +112,8 @@ const BuyingPage = () => {
               <Card.Body>
                 <h3>Total a pagar</h3>
                 {/* Display the total amount to be paid */}
-                <p className="custom-text-price">${price.toFixed(2)}</p>
-                {/* Button to continue with the purchase */}
-                <Link to="/main">
-                  <Button className="custom-button">Continuar Compra</Button>
-                </Link>
+                <p className="custom-text-price">${total.toFixed(2)}</p>               {/* Button to continue with the purchase */}
+                  <Button className="custom-button" onClick={realizarPago}>Continuar Compra</Button>
               </Card.Body>
             </Card>
           </Col>
