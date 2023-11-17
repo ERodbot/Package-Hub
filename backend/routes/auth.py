@@ -27,7 +27,7 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 @auth.post("/registerClient")
 def createClient(client: ClientCreate, db: db_dependency):
-    client_dict = client.dict()
+    client_dict = client.model_dump()
 
     # hash the password
     hashed_password = bcrypt.hash(client_dict['password'])
