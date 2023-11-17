@@ -9,9 +9,11 @@ import { getProductDetails } from "../../../api/products";
 import ProductCard from "../../../Compoments/ProductDetailsDisplay/ProductDetailsDisplay";
 import product_img1 from "../../../assets/Products/trululu-gusanos-acidos-bolsa-img1.jpg";
 import product_img2 from "../../../assets/Products/trululu-gusanos-acidos-bolsa-img2.png";
+import { useCarrito } from "../../../contexts/carrito";
 
 // ProductDetails functional component
 const ProductDetails = () => {
+  const { agregarProducto, recibirEnvio } = useCarrito();
 
   const location = useLocation();
   const nombre = location.state?.nombre;
@@ -23,14 +25,14 @@ const ProductDetails = () => {
   const [type, setType] = useState("");
   const [weight, setWeight] = useState("");
   const [material, setMaterial] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [precioUnitario, setPrecioUnitario] = useState(0);
-  const [envio, setEnvio] = useState(0);
+  const [envio, setEnvio] = useState(5);
   const [fotos, setFotos] = useState([]);
   const [colors, setColors] = useState("");
   const [description, setDescription] = useState("");
 
-  // Calculate subtotal and total using the quantity state
+  // Calculate subtotal and total using the quantity stat
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
 
@@ -48,55 +50,24 @@ const ProductDetails = () => {
         setDescription(response.data.description);
         setFotos([response.data.image, product_img1, product_img2]);
 
-        // Calculate initial subtotal and total
-        const initialSubtotal = 1 * precioUnitario; // Assuming initial quantity is 1
-        const initialTotal = initialSubtotal + envio; // Assuming initial shipping cost is 5.0
-
-        // Set initial values for subtotal and total
-        setSubtotal(initialSubtotal);
-        setTotal(initialTotal);
-
-
-
+        //calculos total y subtotal
+        setSubtotal(quantity * precioUnitario);
+        setTotal(quantity * precioUnitario + envio);
+        recibirEnvio(envio);
 
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-
-
-    // Simulate data loading (you can fetch data using an API call)
-    // setTimeout(() => {
-    //   setBrand("Ejemplo Marca");
-    //   setType("snack");
-    //   setWeight("1.5 kg");
-    //   setMaterial("Plástico");
-    //   setQuantity(1);
-    //   setPrecioUnitario(49.99);
-    //   setEnvio(5.0);
-    //   setFotos([product_img1, product_img2]);
-    //   setColors(["red", "black", "yellow"]);
-    //   setDescription("Este es un producto de ejemplo");
-
-    //   // Calculate initial subtotal and total
-    //   const initialSubtotal = 1 * 49.99; // Assuming initial quantity is 1
-    //   const initialTotal = initialSubtotal + 5.0; // Assuming initial shipping cost is 5.0
-
-    //   // Set initial values for subtotal and total
-    //   setSubtotal(initialSubtotal);
-    //   setTotal(initialTotal);
-    // }, 1000); // Simulate a delay for data loading
-
-
-
-  }, []);
+  }, [quantity, precioUnitario]);
 
   // Function to update quantity and recalculate subtotal and total
   const updateCantidad = (newCantidad) => {
     setQuantity(newCantidad);
     setSubtotal(newCantidad * precioUnitario);
     setTotal(newCantidad * precioUnitario + envio);
+    console.log(quantity, total, subtotal)
   };
 
   // JSX structure for the ProductDetails component
@@ -110,8 +81,6 @@ const ProductDetails = () => {
               nombre={nombre}
               cantidad={quantity}
               setValQuantity={setQuantity}
-              value={precioUnitario}
-              shipping={envio}
               colors={colors}
               fotos={fotos}
               productDetailsData={{
@@ -158,7 +127,13 @@ const ProductDetails = () => {
               <Row>
                 <Col md={12}>
                   {/* Add to cart and Buy now buttons */}
-                  <Button className="m-1 w-100 custom-product-detail-button-add">
+                  <Button className="m-1 w-100 custom-product-detail-button-add" onClick={() => agregarProducto({
+                    name: nombre,
+                    unitsPurchased: quantity,
+                    price: precioUnitario,
+                    image: fotos[0],
+                    category: type
+                  })}>
                     Agregar al carrito
                   </Button>
                   <Link to="/buying">

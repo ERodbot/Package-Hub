@@ -1,6 +1,6 @@
 /* ProductCard Component */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Carousel, Col, Row, Button } from "react-bootstrap";
 import Color from "../Color/Color";
 import "./ProductDetailsDisplay.css";
@@ -9,17 +9,18 @@ const ProductCard = ({
   // Props for managing product quantity, value, shipping, images, colors, and details
   nombre,
   cantidad,
-  setValQuantity,
-  value,
-  shipping,
   fotos,
   colors,
   productDetailsData,
   // Functions for updating quantity, subtotal, and total
-  updateCantidad,
-  setSubtotal,
-  setTotal,
+  updateCantidad
 }) => {
+  const [valQuantity, setValQuantity] = React.useState(cantidad);
+
+  useEffect(() => {
+    updateCantidad(valQuantity);
+  }, [valQuantity]);
+  
   return (
     /* Main card for displaying product details */
     <Card className="product-detail-main-card">
@@ -75,10 +76,10 @@ const ProductCard = ({
               <Button
                 className="units-to-buy-button"
                 onClick={() => {
-                  setValQuantity((prevCantidad) => prevCantidad + 1);
-                  updateCantidad(cantidad + 1);
-                  setSubtotal((prevSubtotal) => (cantidad + 1) * value);
-                  setTotal((prevTotal) => (cantidad + 1) * value + shipping);
+                  setValQuantity(valQuantity + 1);
+                  updateCantidad(valQuantity + 1);
+                  console.log(valQuantity);
+
                 }}
               >
                 {cantidad} (+)
@@ -87,11 +88,11 @@ const ProductCard = ({
                 className="units-to-buy-button"
                 onClick={() => {
                   if (cantidad > 1) {
-                    setValQuantity((prevCantidad) => prevCantidad - 1);
-                    updateCantidad(cantidad - 1);
-                    setSubtotal((prevSubtotal) => (cantidad - 1) * value);
-                    setTotal((prevTotal) => (cantidad - 1) * value + shipping);
+                    setValQuantity(valQuantity - 1);
+                    updateCantidad(valQuantity - 1);
+                    
                   }
+                  console.log(valQuantity);
                 }}
               >
                 (-)
