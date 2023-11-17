@@ -77,3 +77,10 @@ INSERT INTO sales."OrderDetails" ("idOrder", "idProduct", quantity, "priceUnit",
 (1, 1, 2, 25.25, 0.50, 49.50, '2023-11-14'),
 (2, 2, 3, 30.00, 1.25, 89.25, '2023-11-15'),
 (3, 3, 1, 40.00, 2.00, 38.00, '2023-11-16');
+
+
+-- BranchOffice Data
+INSERT INTO sales."BranchOffice" ("idCountry", "idLocation", "description", "opens", "closes", "idCurrency", "idManager")
+VALUES 
+(1, 1, 'branch store in EEUU', '08:00:00', '18:00:00', 1, 2),
+(1, 1, 'branch store in Spain main', '010:00:00', '20:00:00', 2, 1);
