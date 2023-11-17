@@ -53,22 +53,22 @@ function Router() {
           <Route path="/performance" element={<PerformanceReport />}></Route>
           <Route path="/Consulta" element={<LayoutConsulta />}></Route>
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/main" element={<MainPage />}> </Route>
-            <Route path="/Receipt" element={<Receipt />}></Route>
-            <Route path="/ordenesCliente" element={<Ordenes />}></Route>
-            <Route path="/ordenesEmpleado" element={<OrdenesEmpleado />}></Route>
-            <Route path="/profileCliente" element={<Profile />}></Route>
-            <Route path="/clothes" element={<Clothes />}></Route>
-            <Route path="/snacks" element={<Snacks />}></Route>
-            <Route path="/drinks" element={<Drinks />}></Route>
-            <Route path="/skate" element={<Skate />}></Route>
-            <Route path="/Buying" element={<BuyingPage />}></Route>
-            <Route path="/shoppingCart" element={<ShoppingCart />}></Route>
-            <Route path="/SalesReport" element={<SalesFormReportConsult />}></Route>
-            <Route path="/CustomService" element={<CustomService />}></Route>
+          {/* <Route element={<ProtectedRoute />}> */}
+          <Route path="/main" element={<MainPage />}> </Route>
+          <Route path="/Receipt" element={<Receipt />}></Route>
+          <Route path="/ordenesCliente" element={<Ordenes />}></Route>
+          <Route path="/ordenesEmpleado" element={<OrdenesEmpleado />}></Route>
+          <Route path="/profileCliente" element={<Profile />}></Route>
+          <Route path="/clothes" element={<Clothes />}></Route>
+          <Route path="/snacks" element={<Snacks />}></Route>
+          <Route path="/drinks" element={<Drinks />}></Route>
+          <Route path="/skate" element={<Skate />}></Route>
+          <Route path="/Buying" element={<BuyingPage />}></Route>
+          <Route path="/shoppingCart" element={<ShoppingCart />}></Route>
+          <Route path="/SalesReport" element={<SalesFormReportConsult />}></Route>
+          <Route path="/CustomService" element={<CustomService />}></Route>
             
-          </Route>
+          {/* </Route> */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>

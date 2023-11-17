@@ -141,3 +141,6 @@ INSERT INTO PaymentLog (idPaymentLog, posttime, description, checksum, paymentid
 (2, NOW(), 'Pago de salario a Maria García', 'checksum6', 2),
 (3, NOW(), 'Pago de salario a Michael Smith', 'checksum7', 3),
 (4, NOW(), 'Pago de salario a Sakura Tanaka', 'checksum8', 4);
+
+
+
