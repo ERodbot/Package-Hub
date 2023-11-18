@@ -480,3 +480,124 @@ GO
 -- EXEC usp_ReportingSalaryStructure
 --    @initial_date = '2023-11-30',
 --    @final_date = '2023-11-01'; 
+
+-------------------------------------------------------------------------
+-- Insert Order Details
+-------------------------------------------------------------------------
+
+CREATE OR ALTER PROCEDURE insert_order_detail
+	 @in_order_id INT,
+	 @in_product_id INT,
+	 @in_quantity INT,
+	 @in_price_unit FLOAT,
+	 @in_discount FLOAT
+AS
+BEGIN
+	EXEC ('CALL insert_order_detail(?, ?, ?, ?, ?)', @in_order_id, @in_product_id, @in_quantity, @in_price_unit, @in_discount ) AT [support-sales];
+END;
+GO
+
+-- EXEC insert_order_detail @in_order_id = 1, @in_product_id = 2, @in_quantity = 3, @in_price_unit = 40.00, @in_discount = 15.00
+
+
+
+-------------------------------------------------------------------------
+-- Verify product quantity price
+-------------------------------------------------------------------------
+
+CREATE OR ALTER PROCEDURE calculate_total_price
+	 @productName NVARCHAR(100),  
+	 @in_quantity INT,
+	 @in_discount FLOAT,
+	 @out_total FLOAT
+AS
+BEGIN
+	DECLARE @currentPrice MONEY;
+	DECLARE @currentPriceF FLOAT;
+
+	IF EXISTS (SELECT 1 FROM [cluster].[dbo].[Products] WHERE name = @productName)
+    BEGIN
+        SELECT @currentPrice = Pr.price 
+        FROM
+            [cluster].[dbo].[Products] AS Pr
+        WHERE
+            Pr.name = @productName;
+
+
+		SET @currentPriceF = CAST(@currentPrice AS FLOAT);
+		EXEC ('CALL calculate_total_price(?, ?, ?, ?)', @in_quantity, @currentPriceF, @in_discount, @out_total) AT [support-sales];
+    END
+    ELSE
+    BEGIN
+        DECLARE @ErrorMessage VARCHAR(100) = 'No existe el producto ingresado'
+        RAISERROR (@ErrorMessage, 16, 1);
+        RETURN; 
+    END
+END;
+GO
+
+-- EXEC calculate_total_price @productName = 'Bolitas de queso', @in_quantity = 3,  @in_discount = 0, @out_total = NULL
+
+--------------------------------------------------------------------------------------
+-- Muetsra reporte por fechas que se puede filtrar por producto, categoria y fecha
+-------------------------------------------------------------------------------------
+
+CREATE OR ALTER PROCEDURE viewReport
+    @productName NVARCHAR(30) = NULL,
+	@categoryName NVARCHAR(30) = NULL,
+    @startDate DATE = NULL
+AS
+BEGIN
+    -- Crear una tabla temporal
+    CREATE TABLE #TempProductList (
+        [idProduct] INT,
+        [name] NVARCHAR(30), 
+		[categoryName] NVARCHAR(30)
+    );
+
+    -- Insertar datos en la tabla temporal desde el procedimiento [na-inventory].[inventory].[dbo].[GetAllProducts]
+    INSERT INTO #TempProductList ([idProduct], [name], [categoryName])
+    EXEC [na-inventory].[inventory].[dbo].[GetAllProducts];
+
+    -- Seleccionar resultados de la tabla temporal junto con los resultados de [public].[get_sales_report()]
+    SELECT
+        vr.[clientName],
+        vr.[clientEmail],
+        vr.[orderDate],
+        p.[name], -- Aquí se refiere al nombre obtenido en el JOIN
+		p.[categoryName],
+        vr.[quantity],
+        vr.[lineTotal] AS Total
+    FROM OPENQUERY([support-sales], 'SELECT * FROM public.get_sales_report()') vr
+    LEFT JOIN #TempProductList p ON vr."idProduct" = p."idProduct"
+    WHERE
+        (@productName IS NULL OR p.[name] LIKE '%' + @productName + '%')
+        AND (@startDate IS NULL OR vr.[orderDate] >= @startDate)
+		AND (@categoryName IS NULL OR p.[categoryName] LIKE '%' + @categoryName + '%');
+
+    -- Eliminar la tabla temporal al finalizar el procedimiento
+    DROP TABLE #TempProductList;
+END;
+
+-- EXEC viewReport  @productName = 'Bolitas de queso', @categoryName = 'snacks';
+
+--------------------------------------------------------------------------------------
+-- Crear un ticket de complaint (estoy seguro que esta bien pero no corre, debe haber un error de sintaxis)
+-------------------------------------------------------------------------------------
+
+DROP PROCEDURE insertTicket
+
+CREATE OR ALTER PROCEDURE insertTicket
+    @p_description NVARCHAR(MAX),
+    @p_createdAt DATETIMEOFFSET,
+    @p_updatedAt DATETIMEOFFSET,
+    @p_idTicketType INT,
+    @p_idOrder INT,
+    @p_idClient INT
+AS
+BEGIN
+	EXEC ('CALL InsertTicket(?, ?, ?, ?, ?, ?)', @p_description, @p_createdAt, @p_updatedAt, @p_idTicketType, @p_idOrder, @p_idClient ) AT [support-sales];
+END;
+GO
+
+-- EXEC insertTicket @p_description = 'Descripción del ticket', @p_createdAt = GETDATE(), @p_updatedAt = GETDATE(),  @p_idTicketType = 1,  @p_idOrder = 22,  @p_idClient = 456

@@ -418,3 +418,95 @@ BEGIN
     SELECT @idOrder;
 
 END;
+
+-------------------------------------------------------------------------
+-- Insert Order Details
+-------------------------------------------------------------------------
+
+--Query en Postgrese para insertar orden
+CREATE OR REPLACE PROCEDURE insert_order_detail(
+    in_order_id INT,
+    in_product_id INT,
+    in_quantity INT,
+    in_price_unit FLOAT,
+    in_discount FLOAT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    total_price MONEY;
+    price_unit_money MONEY;
+    discount_money MONEY;
+BEGIN
+    price_unit_money := in_price_unit::NUMERIC::MONEY;
+    discount_money := in_discount::NUMERIC::MONEY;
+
+    total_price := (in_quantity * price_unit_money) - discount_money;
+
+    INSERT INTO sales."OrderDetails" ("idOrder", "idProduct", quantity, "priceUnit", discount, "lineTotal", "date")
+    VALUES (in_order_id, in_product_id, in_quantity, price_unit_money, discount_money, total_price, CURRENT_DATE);
+END;
+$$;
+
+
+-------------------------------------------------------------------------
+-- Verify product quantity price
+-------------------------------------------------------------------------
+
+--Query Postgrese viewTotal price
+CREATE OR REPLACE PROCEDURE calculate_total_price(
+    in_quantity INT,
+    in_price_unit FLOAT,
+    in_discount FLOAT,
+    OUT out_total FLOAT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    price_unit_money FLOAT;
+    discount_money FLOAT;
+BEGIN
+    price_unit_money := in_price_unit;
+    discount_money := in_discount;
+    out_total := (in_quantity * price_unit_money) - discount_money;
+END;  
+$$;
+
+-------------------------------------------------------------------------
+-- Get Sales Report
+-------------------------------------------------------------------------
+
+-- DROP FUNCTION public.get_sales_report()
+CREATE OR REPLACE FUNCTION public.get_sales_report()
+RETURNS TABLE (
+    "idOrderDetails" integer,
+    "idOrder" integer,
+    "clientName" text,
+    "clientEmail" text, 
+    "orderDate" date,
+    "idProduct" integer,
+    quantity integer,
+    "lineTotal" money
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        od."idOrderDetails",
+        o."idOrder",
+        c."name" AS "clientName",
+        c."email" AS "clientEmail",
+        o.date AS "orderDate",
+        od."idProduct",
+        od.quantity,
+        od."lineTotal"
+    FROM
+        sales."OrderDetails" od
+    JOIN
+        sales."Orders" o ON od."idOrder" = o."idOrder"
+    JOIN
+        sales."Clients" c ON o."idClient" = c."idClient";
+END;
+$$ LANGUAGE plpgsql;
+
+-- SELECT * FROM get_sales_report();

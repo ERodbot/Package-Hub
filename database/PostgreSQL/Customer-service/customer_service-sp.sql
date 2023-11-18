@@ -21,36 +21,36 @@ BEGIN
     DECLARE @InicieTransaccion BIT = 0
     
 
-    -- Validación de rol_filter si se proporciona
+    -- Validaciï¿½n de rol_filter si se proporciona
 IF @name IS NOT NULL
 BEGIN
     IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.name = @name)
     BEGIN 
         SET @Message = 'Error - El cliente con nombre especificado no existe en la base de datos.'
-        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad según tus necesidades
-        SET @ErrorState = 2 -- Puedes ajustar el estado de error según tus necesidades
-        SET @CustomError = 50016 -- Puedes definir un número de error personalizado según tus necesidades
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad segï¿½n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error segï¿½n tus necesidades
+        SET @CustomError = 50016 -- Puedes definir un nï¿½mero de error personalizado segï¿½n tus necesidades
         RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
         RETURN
     END
 END
 
--- Validación de country_filter si se proporciona
+-- Validaciï¿½n de country_filter si se proporciona
 IF @lastName IS NOT NULL
 BEGIN
     IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.lastName = @lastName)
     BEGIN 
         SET @Message = 'Error - El cliente con apellido especificado no existe en la base de datos.'
-        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad según tus necesidades
-        SET @ErrorState = 2 -- Puedes ajustar el estado de error según tus necesidades
-        SET @CustomError = 50017 -- Puedes definir un número de error personalizado según tus necesidades
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad segï¿½n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error segï¿½n tus necesidades
+        SET @CustomError = 50017 -- Puedes definir un nï¿½mero de error personalizado segï¿½n tus necesidades
         RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
         RETURN
     END
 END
   
 
-    -- Verificar si no hay una transacción en curso
+    -- Verificar si no hay una transacciï¿½n en curso
     IF @@TRANCOUNT = 0
     BEGIN
         SET @InicieTransaccion = 1
@@ -133,36 +133,36 @@ BEGIN
     DECLARE @InicieTransaccion BIT = 0
     
 
-    -- Validación de rol_filter si se proporciona
+    -- Validaciï¿½n de rol_filter si se proporciona
 IF @name IS NOT NULL
 BEGIN
     IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.name = @name)
     BEGIN 
         SET @Message = 'Error - El cliente con nombre especificado no existe en la base de datos.'
-        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad según tus necesidades
-        SET @ErrorState = 2 -- Puedes ajustar el estado de error según tus necesidades
-        SET @CustomError = 50016 -- Puedes definir un número de error personalizado según tus necesidades
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad segï¿½n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error segï¿½n tus necesidades
+        SET @CustomError = 50016 -- Puedes definir un nï¿½mero de error personalizado segï¿½n tus necesidades
         RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
         RETURN
     END
 END
 
--- Validación de country_filter si se proporciona
+-- Validaciï¿½n de country_filter si se proporciona
 IF @lastName IS NOT NULL
 BEGIN
     IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.lastName = @lastName)
     BEGIN 
         SET @Message = 'Error - El cliente con apellido especificado no existe en la base de datos.'
-        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad según tus necesidades
-        SET @ErrorState = 2 -- Puedes ajustar el estado de error según tus necesidades
-        SET @CustomError = 50017 -- Puedes definir un número de error personalizado según tus necesidades
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad segï¿½n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error segï¿½n tus necesidades
+        SET @CustomError = 50017 -- Puedes definir un nï¿½mero de error personalizado segï¿½n tus necesidades
         RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
         RETURN
     END
 END
   
 
-    -- Verificar si no hay una transacción en curso
+    -- Verificar si no hay una transacciï¿½n en curso
     IF @@TRANCOUNT = 0
     BEGIN
         SET @InicieTransaccion = 1
@@ -247,36 +247,36 @@ BEGIN
     DECLARE @InicieTransaccion BIT = 0
     
 
-    -- Validación de rol_filter si se proporciona
+    -- Validaciï¿½n de rol_filter si se proporciona
 IF @name IS NOT NULL
 BEGIN
     IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.name = @name)
     BEGIN 
         SET @Message = 'Error - El cliente con nombre especificado no existe en la base de datos.'
-        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad según tus necesidades
-        SET @ErrorState = 2 -- Puedes ajustar el estado de error según tus necesidades
-        SET @CustomError = 50016 -- Puedes definir un número de error personalizado según tus necesidades
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad segï¿½n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error segï¿½n tus necesidades
+        SET @CustomError = 50016 -- Puedes definir un nï¿½mero de error personalizado segï¿½n tus necesidades
         RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
         RETURN
     END
 END
 
--- Validación de country_filter si se proporciona
+-- Validaciï¿½n de country_filter si se proporciona
 IF @lastName IS NOT NULL
 BEGIN
     IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.lastName = @lastName)
     BEGIN 
         SET @Message = 'Error - El cliente con apellido especificado no existe en la base de datos.'
-        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad según tus necesidades
-        SET @ErrorState = 2 -- Puedes ajustar el estado de error según tus necesidades
-        SET @CustomError = 50017 -- Puedes definir un número de error personalizado según tus necesidades
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad segï¿½n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error segï¿½n tus necesidades
+        SET @CustomError = 50017 -- Puedes definir un nï¿½mero de error personalizado segï¿½n tus necesidades
         RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
         RETURN
     END
 END
   
 
-    -- Verificar si no hay una transacción en curso
+    -- Verificar si no hay una transacciï¿½n en curso
     IF @@TRANCOUNT = 0
     BEGIN
         SET @InicieTransaccion = 1
@@ -335,3 +335,37 @@ END
 RETURN 0
 GO
 
+
+
+-------------------------------------------------------------------------
+-- Insert Ticket
+-------------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE "customer-service"."InsertTicket"(
+    IN p_description text,
+    IN p_createdAt timestamp with time zone,
+    IN p_updatedAt timestamp with time zone,
+    IN p_idTicketType integer,
+    IN p_idOrder integer,
+    IN p_idClient integer
+)
+LANGUAGE plpgsql
+AS $procedure$
+BEGIN
+    INSERT INTO "customer-service"."Tickets" (
+        description,
+        "createdAt",
+        "updatedAt",
+        "idTicketType",
+        "idOrder",
+        "idClient"
+    ) VALUES (
+        p_description,
+        p_createdAt,
+        p_updatedAt,
+        p_idTicketType,
+        p_idOrder,
+        p_idClient
+    );
+END;
+$procedure$;
+-- CALL "customer-service"."InsertTicket"('DescripciÃ³n del ticket', NOW(), NOW(), 1, 123, 456);
