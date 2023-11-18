@@ -49,7 +49,6 @@ function Router() {
             <Route path="/BusquedaEmployee" element={<BusquedaEmpleado />}></Route>
             <Route path="/ordenesEmpleado" element={<OrdenesEmpleado />}></Route>
             <Route path="/ordenesCliente" element={<Ordenes />}></Route>
-            <Route path="/ordenesCliente" element={<Ordenes />}></Route>
             <Route path="/planillaEmployee" element={<Planilla />}></Route>
             <Route path="/performance" element={<PerformanceReport />}></Route>
             <Route path="/Consulta" element={<LayoutConsulta />}></Route>
@@ -57,8 +56,6 @@ function Router() {
             {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/main" element={<MainPage />}> </Route>
             <Route path="/Receipt" element={<Receipt />}></Route>
-            <Route path="/ordenesCliente" element={<Ordenes />}></Route>
-            <Route path="/ordenesEmpleado" element={<OrdenesEmpleado />}></Route>
             <Route path="/profileCliente" element={<Profile />}></Route>
             <Route path="/clothes" element={<Clothes />}></Route>
             <Route path="/snacks" element={<Snacks />}></Route>
