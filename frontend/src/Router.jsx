@@ -26,6 +26,8 @@ import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
 import BusquedaEmpleado from "./Pages/Admin/FindEmployee/FindEmployee.jsx";
 import Planilla from "./Pages/Admin/Planilla/planilla.jsx";
 import PerformanceReport from "./Pages/Admin/Performance/performance.jsx";
+import SalesReport from "./Pages/Admin/SalesReport/salesReport.jsx";
+
 
 import { AuthProvider } from "./contexts/auth.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -52,6 +54,7 @@ function Router() {
             <Route path="/planillaEmployee" element={<Planilla />}></Route>
             <Route path="/performance" element={<PerformanceReport />}></Route>
             <Route path="/Consulta" element={<LayoutConsulta />}></Route>
+            <Route path="/ReportSales" element={<SalesReport />}></Route>
 
             {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/main" element={<MainPage />}> </Route>

@@ -559,13 +559,33 @@ BEGIN
     INSERT INTO #TempProductList ([idProduct], [name], [categoryName])
     EXEC [na-inventory].[inventory].[dbo].[GetAllProducts];
 
-    -- Seleccionar resultados de la tabla temporal junto con los resultados de [public].[get_sales_report()]
+    -- Crear o alterar la tabla permanente
+    IF OBJECT_ID('dbo.TempReportResults') IS NULL
+    BEGIN
+        CREATE TABLE dbo.TempReportResults (
+            [clientName] NVARCHAR(255),
+            [clientEmail] NVARCHAR(255),
+            [orderDate] DATE,
+            [productName] NVARCHAR(255),
+            [categoryName] NVARCHAR(255),
+            [quantity] INT,
+            [Total] MONEY
+        );
+    END
+    ELSE
+    BEGIN
+        -- Puedes realizar acciones adicionales si la tabla ya existe, por ejemplo, truncarla
+        TRUNCATE TABLE dbo.TempReportResults;
+    END;
+
+    -- Insertar resultados en la tabla permanente
+    INSERT INTO dbo.TempReportResults ([clientName], [clientEmail], [orderDate], [productName], [categoryName], [quantity], [Total])
     SELECT
         vr.[clientName],
         vr.[clientEmail],
         vr.[orderDate],
-        p.[name], -- Aquí se refiere al nombre obtenido en el JOIN
-		p.[categoryName],
+        p.[name], -- Refiriéndose al nombre obtenido en el JOIN
+        p.[categoryName],
         vr.[quantity],
         vr.[lineTotal] AS Total
     FROM OPENQUERY([support-sales], 'SELECT * FROM public.get_sales_report()') vr
@@ -575,11 +595,28 @@ BEGIN
         AND (@startDate IS NULL OR vr.[orderDate] >= @startDate)
 		AND (@categoryName IS NULL OR p.[categoryName] LIKE '%' + @categoryName + '%');
 
-    -- Eliminar la tabla temporal al finalizar el procedimiento
+    -- Seleccionar desde la tabla permanente para mostrar los datos
+		SELECT * FROM dbo.TempReportResults;
+
+    -- Eliminar las tablas temporales al finalizar el procedimiento
     DROP TABLE #TempProductList;
 END;
 
+-- SELECT * FROM dbo.TempReportResults
 -- EXEC viewReport  @productName = 'Bolitas de queso', @categoryName = 'snacks';
+
+
+CREATE OR ALTER PROCEDURE viewSalesReport
+    @productName NVARCHAR(30) = NULL,
+	@categoryName NVARCHAR(30) = NULL,
+    @startDate DATE = NULL
+AS
+BEGIN
+	EXEC viewReport  @productName = @productName , @categoryName = @categoryName, @startDate = @startDate;
+	SELECT * FROM dbo.TempReportResults
+END;
+
+-- EXEC viewSalesReport  @productName = 'Bolitas de queso'
 
 --------------------------------------------------------------------------------------
 -- Crear un ticket de complaint (estoy seguro que esta bien pero no corre, debe haber un error de sintaxis)

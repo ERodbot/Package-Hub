@@ -1,11 +1,12 @@
-USE `human-resources`;
-
+USE `human-resources`
 -- Llenado de datos dummy para la tabla `Departments`
+
 INSERT INTO Departments (`idDepartments`, `name`, `description`, `enabled`) VALUES
 (1, 'Recursos Humanos', 'Gestión de personal y recursos humanos', 1),
 (2, 'Ventas', 'Equipo de ventas y marketing', 1),
 (3, 'Servicio al Cliente', 'Atención al cliente y soporte técnico', 1),
 (4, 'Inventario', 'Gestión de inventario y logística', 1);
+
 
 
 -- Inserts adicionales para la tabla `Role`
@@ -19,8 +20,8 @@ INSERT INTO Role (`idRole`, `name`, `description`, `idDepartments`, `enabled`) V
 (7, 'Encargado de Almacén', 'Gestión de inventario y logística', 4, 1);
 
 -- Llenado de datos dummy para la tabla `ContactType`
-INSERT INTO `human-resources`.`ContactType` (`idContactType`, `name`) VALUES
-(1, 'Personal'),
+INSERT INTO ContactType (`idContactType`, `name`) VALUES
+(1, 'Teléfono'),
 (2, 'Correo Electrónico');
 
 -- Llenado de datos dummy para la tabla ContactInfo
@@ -75,16 +76,17 @@ INSERT INTO City (idCity, name, idState) VALUES
 -- Llenado de datos dummy para la tabla Address
 INSERT INTO Address (idAddress, street, postalCode, idAddressType, idCity, enabled, idGeoposition) VALUES
 (1, '123 Calle Principal', 90001, 1, 1, 1, 1),
-(2, '456 Calle Secundaria', 28001, 2, 2, 1, 1),
-(3, '789 Calle Sucursal', 3152787, 3, 3, 1, 1),
-(4, '012 Calle Remota', 100-0001, 4, 4, 1, 1);
+(2, '456 Calle Secundaria', 28001, 2, 2, 1, 2),
+(3, '789 Calle Sucursal', 28001, 3, 3, 1, 1),
+(4, '012 Calle Remota', 100-0001, 4, 4, 1, 2);
+
 
 -- Llenado de datos dummy para la tabla Employee
-INSERT INTO Employee (idEmployee, name, lastName, lastName2, idRole, idContactInfo, idPayHourPerEmployee, enabled, idAddress) VALUES
-(1, 'John', 'Doe', 'null', 1, 1, 1, 1, 1),
-(2, 'Maria', 'García', 'null', 2, 2, 2, 1, 2),
-(3, 'Michael', 'Smith', 'null', 5, 3, 3, 1, 3),
-(4, 'Sakura', 'Tanaka', 'null', 6, 4, 4, 1, 4);
+INSERT INTO Employee (idEmployee, name, lastName, username, password, idRole, idContactInfo, idPayHourPerEmployee, enabled, idAddress, email) VALUES
+(1, 'John', 'Doe', 'john.doe', 'contraseña1', 1, 1, 1, 1, 1, 'emailexample1.com'),
+(2, 'Maria', 'García', 'maria.garcia', 'contraseña2', 2, 2, 2, 1, 2, 'emailexample2.com'),
+(3, 'Michael', 'Smith', 'michael.smith', 'contraseña3', 5, 3, 3, 1, 3, 'emailexample3.com'),
+(4, 'Sakura', 'Tanaka', 'sakura.tanaka', 'contraseña4', 6, 4, 4, 1, 4,'emailexample4.com');
 
 -- Llenado de datos dummy para la tabla Payroll
 INSERT INTO Payroll (idPayroll, hours, date, idEmployee) VALUES
