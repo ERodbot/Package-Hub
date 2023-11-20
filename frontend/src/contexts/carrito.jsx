@@ -18,8 +18,6 @@ export const CarritoProvider = ({ children }) => {
     const [envio, setEnvio] = useState(0);
 
     useEffect(() => {
-        console.log(products);
-        console.log(envio);
         actualizarTotal();
     }, [products, envio]);
 
