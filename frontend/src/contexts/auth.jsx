@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
   const iniciar_sesion = async (formData) => {
     try {
       const res = await loginRequest(formData);
-      console.log(res.data);
       setUser(res.data);
       setIsAuthenticated(true);
     } catch (err) {

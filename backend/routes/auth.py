@@ -140,13 +140,14 @@ def getState(state_name: str, db: db_dependency):
 @auth.post("/loginClient")
 def loginClient(client: ClientLogin, response: Response, db: db_dependency):
     client_dict = client.model_dump()
-    query = text("""SELECT password FROM [support-sales].[support-sales].[sales].Clients WHERE username = :username""")
+    query = text("""SELECT password, email FROM [support-sales].[support-sales].[sales].Clients WHERE username = :username""")
     params = {
         'username': client_dict['username'],
     }
     try:
         user = db.execute(query, params).fetchone()
         pwd_db = user[0]
+        email = user[1]
         if pwd_db:
             validate = bcrypt.verify(client_dict['password'], pwd_db)
             if validate:
@@ -157,7 +158,7 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
                 )
                 # Devuelve el token en lugar del usuario
                 response.set_cookie(key="token", value=access_token, httponly=False)
-                return {'status': status.HTTP_200_OK, 'data': {}}
+                return {'status': status.HTTP_200_OK, 'data': {'email': email}}
             
         # Si no se encontró el usuario, se levanta una excepción
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")

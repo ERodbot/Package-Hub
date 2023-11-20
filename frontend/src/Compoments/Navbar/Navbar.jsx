@@ -7,8 +7,9 @@ import {
   InputGroup,
   FormControl,
   NavDropdown,
+  Button,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 /* Custom CSS styles */
 import "./Navbar.css";
@@ -22,6 +23,8 @@ import { useAuth } from "../../contexts/auth";
 
 // Functional component definition
 const NavbarPage = () => {
+
+  const navigate = useNavigate();
   // State for search term input
   const [searchTerm, setSearchTerm] = useState("");
   const { logout } = useAuth();
@@ -40,6 +43,17 @@ const NavbarPage = () => {
     logout();
   };
 
+  const handleButtonClick = (searchTerm) => {
+    if (searchTerm === "Inicio") {
+      navigate("/main");
+    }
+    else if (searchTerm === "Acerca") {
+      navigate("/about");
+    }
+    else {
+      navigate("/other");
+    }
+  }
 
   return (
     <Navbar
@@ -57,14 +71,15 @@ const NavbarPage = () => {
           <Nav className="my-auto">
             {/* Map through navigation links */}
             {["Inicio", "Acerca", "Otros"].map((val, index) => (
-              <Nav.Link
-                href={val === "Inicio" ? "/main" : undefined}
-                className="mx-4 mt-3"
-                id="custom-navlink"
-                key={index}
-              >
+              <Button className="mx-auto mt- btn btn-link "
+              id="custom-navlink"
+              key={index}
+              onClick={
+                () => handleButtonClick(val)
+              }>
+                
                 {val}
-              </Nav.Link>
+              </Button>
             ))}
             {/* Dropdown menu for additional links */}
             <NavDropdown id="custom-dropdown">

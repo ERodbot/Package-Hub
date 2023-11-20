@@ -639,6 +639,35 @@ GO
 
 -- EXEC insertTicket @p_description = 'Descripción del ticket', @p_createdAt = GETDATE(), @p_updatedAt = GETDATE(),  @p_idTicketType = 1,  @p_idOrder = 22,  @p_idClient = 456
 
+CREATE OR ALTER PROCEDURE createOrderDetail
+    @orderid INT,
+    @product varchar(MAX),
+    @quantity INT,
+    @price FLOAT,
+    @discount FLOAT
+AS
+BEGIN
+    DECLARE @idProduct INT;
+
+    -- Obtener el idProduct utilizando una variable local
+    (SELECT TOP 1 @idProduct = idProduct FROM [na-inventory].[inventory].[dbo].[Products] WHERE [name] = @product)
+
+    BEGIN TRY
+        -- Ejecutar el procedimiento almacenado en el servidor remoto
+        EXEC('CALL insert_order_detail(?,?,?,?,?)',
+            @orderid,
+            @idProduct,
+            @quantity,
+            @price,
+            @discount) AT [support-sales]
+    END TRY
+    BEGIN CATCH
+        PRINT 'Error occurred during execution: ' + ERROR_MESSAGE();
+        THROW;  -- Re-throw the caught exception
+    END CATCH
+END;
+
+
 --Query to get the list of consults in sqlserver
 
 CREATE OR ALTER PROCEDURE usp_getConsultsList

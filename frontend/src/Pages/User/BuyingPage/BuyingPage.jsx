@@ -14,11 +14,14 @@ import { Link } from "react-router-dom";
 import "./BuyingPage.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 import { useCarrito } from "../../../contexts/carrito";
+import { useAuth } from "../../../contexts/auth";
+import { createOrder, createOrderDetail} from "../../../api/ventas";
 
 
 // BuyingPage functional component
 const BuyingPage = () => {
   const { products, total} = useCarrito();
+  const { user } = useAuth();
 
   // State variables to manage user inputs
   const [address, setAddress] = useState("");
@@ -28,9 +31,29 @@ const BuyingPage = () => {
   const [cvc, setCVC] = useState("");
 
   const realizarPago = () => {
-    console.log("Pago realizado");
+    // if (address === "" || cardNumber === "" || cardHolder === "" || expiration === "" || cvc === "") {
+    //   alert("Debe llenar todos los campos");
+    // }
+    // else{
+      realizarOrden();
+    //   alert("Pago realizado con éxito");
+    // }
 
     //realizar llamada a sp de registrar venta
+  }
+
+  const realizarOrden = async () => {
+    try {
+      console.log(user.data.email, total)
+      const orden = await createOrder(user.data.email, total, "Credit Card");
+      console.log(orden)
+      for (let i = 0; i < products.length; i++) {
+        await createOrderDetail(orden, products[i].name, products[i].unitsPurchased, products[i].price, 0);
+      }
+    } catch (error) {
+      console.log(error);
+    } 
+
   }
   // JSX structure for the BuyingPage
   return (

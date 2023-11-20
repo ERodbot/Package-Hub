@@ -60,7 +60,8 @@ const ProductDetails = () => {
       }
     };
     fetchData();
-  }, [quantity, precioUnitario]);
+    console.log(type)
+  }, [quantity, precioUnitario, type]);
 
   // Function to update quantity and recalculate subtotal and total
   const updateCantidad = (newCantidad) => {
