@@ -114,16 +114,16 @@ const PerformanceReport = () => {
 
 
   const handleBuscarClick = async () => {
-    if (filtro["Fecha inicio"] == "") {
+    if (filtro["Fecha inicio"] === "") {
       filtro["Fecha inicio"] = null;
     }
-    if (filtro["Fecha fin"] == "") {
+    if (filtro["Fecha fin"] === "") {
       filtro["Fecha fin"] = null;
     }
-    if (filtro["Pais"] == "Selecciona el país") {
+    if (filtro["Pais"] === "Selecciona el país") {
       filtro["Pais"] = null;
     }
-    if (filtro["Rol"] == "Selecciona el rol") {
+    if (filtro["Rol"] === "Selecciona el rol") {
       filtro["Rol"] = null;
     }
 

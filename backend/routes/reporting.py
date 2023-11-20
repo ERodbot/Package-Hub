@@ -101,6 +101,40 @@ def getPerformance(db: db_dependency, start_date: str | None = None, end_date: s
     
     return perfomance_dict
 
+
+@reporting.get("/getPayroll")
+def getPayroll(db: db_dependency, start_date: str | None = None, end_date: str | None = None)
+
+    query = text("""usp_ReportingSalaryStructure @initial_date=:start_date, @final_date=:end_date""")
+    params = {
+        'start_date': start_date,
+        'end_date': end_date
+    }
+    try:
+        payroll = db.execute(query, params).fetchall()
+
+        # Make the dictionary to return
+        payroll_dict = []
+        for row in payroll:
+            payroll_dict.append({
+                'name': row[0],
+                'lastName': row[1],
+                'role': row[2],
+                'country': row[3],
+                'startDate': row[4],
+                'endDate': row[5],
+                'grossSalary': row[6],
+                'netSalary': row[7],
+                'deductions': row[8],
+                'percentage': row[9],
+            })
+        
+    except DBAPIError as e:
+        error_message = e.args[0]
+        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+    
+    return payroll_dict
+
 @reporting.get("/getReportVentas")
 def getReportVentas(db: db_dependency, productName: str | None = None, categoryName: str | None = None, startDate: str | None = None):
 
