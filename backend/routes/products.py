@@ -5,9 +5,35 @@ from schemas.client import Client, ClientCreate, test
 from sqlalchemy import text
 from sqlalchemy.exc import DBAPIError
 
-
-
 product = APIRouter(tags=["Product"])
+
+@product.get("/getAllInventoryProducts")
+def getAllInventoryProducts(db: db_dependency):
+    query = text("""EXEC GetAllInventoryProducts""")
+    try:
+        result = db.execute(query).fetchall()
+
+        # Make the dictionary to return
+        result_dict = []
+        for row in result:
+            result_dict.append({
+                'producto': row[0],
+                'descripcion': row[1],
+                'marca': row[2],
+                'inventario': row[3],
+                'cantidad': row[4],
+                'precio': row[5],
+                'bodega': row[6]
+            })
+
+    except DBAPIError as e:
+        error_message = e.args[0]
+        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+    
+    return result_dict
+    
+    
+    
 
 @product.get("/getProduct/{category}")
 def getProductPerCategory(category: str, db: db_dependency):

@@ -7,54 +7,49 @@ import jsonData from "./data.json";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 import cart_decoration from "../../../assets/Decorations/cart_decoration.jpg";
 import "./ShoppingCart.css";
+import { useCarrito } from "../../../contexts/carrito";
 
 const ShoppingCart = () => {
+  const { products, total, deleteElement} = useCarrito();
   // Initialize state to hold product data and total price
-  const [products, setProducts] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    setProducts(jsonData.products);
     // Calculate the total price considering the units purchased for each product
-    const total = jsonData.products.reduce(
-      (acc, product) => acc + product.price * product.unitsPurchased,
-      0
-    );
-    setTotalPrice(total);
+    // actualizarTotal();
   }, []);
 
-  const deleteElement = (productName) => {
-    // Find the product with the given name
-    const selectedProduct = products.find(
-      (product) => product.name === productName
-    );
+  // const deleteElement = (productName) => {
+  //   // Find the product with the given name
+  //   const selectedProduct = products.find(
+  //     (product) => product.name === productName
+  //   );
 
-    if (selectedProduct) {
-      const updatedProducts = products.map((product) =>
-        product.name === productName
-          ? {
-              ...product,
-              unitsPurchased: Math.max(product.unitsPurchased - 1, 0),
-            }
-          : product
-      );
+  //   if (selectedProduct) {
+  //     const updatedProducts = products.map((product) =>
+  //       product.name === productName
+  //         ? {
+  //             ...product,
+  //             unitsPurchased: Math.max(product.unitsPurchased - 1, 0),
+  //           }
+  //         : product
+  //     );
 
-      // Filter out products with quantity 0
-      const filteredProducts = updatedProducts.filter(
-        (product) => product.unitsPurchased > 0
-      );
+  //     // Filter out products with quantity 0
+  //     const filteredProducts = updatedProducts.filter(
+  //       (product) => product.unitsPurchased > 0
+  //     );
 
-      // Calculate the total price based on the updated products
-      const total = filteredProducts.reduce(
-        (acc, product) => acc + product.price * product.unitsPurchased,
-        0
-      );
+  //     // Calculate the total price based on the updated products
+  //     const total = filteredProducts.reduce(
+  //       (acc, product) => acc + product.price * product.unitsPurchased,
+  //       0
+  //     );
 
-      // Update the state with the updated products and total price
-      setProducts(filteredProducts);
-      setTotalPrice(total);
-    }
-  };
+  //     // Update the state with the updated products and total price
+  //     setProducts(filteredProducts);
+  //     setTotalPrice(total);
+  //   }
+  // };
 
   return (
     <PaginaBase>
@@ -88,9 +83,9 @@ const ShoppingCart = () => {
             <Card.Body>
               <Card.Title>Total a pagar</Card.Title>
               <Card.Text>
-                <h3>${totalPrice.toFixed(2)}</h3>
+                <h3>${total.toFixed(2)}</h3>
               </Card.Text>
-              {totalPrice > 0 ? (
+              {total > 0 ? (
                 <Link to="/Buying">
                   <Button className="custom-button-shopping-cart">
                     Comprar

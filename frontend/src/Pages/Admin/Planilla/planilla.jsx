@@ -1,26 +1,10 @@
-import React, { useState } from 'react';
+  import React, { useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { getPayroll } from '../../../api/reporting';
 import { Container, Row, Col, Form, Button  } from "react-bootstrap";
 import "./planilla.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
-// Elements that will be shown in the table
-const dataObject = [
-  { rowClass: "no-gutters", columns: ["Name", "LastName ","department","employeeRole",  "Country ","startDate","EndDate", "GrossSalary","NetSalary","Reduction","Percentage"]},
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-  { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
-];
 
 const secciones = [
   { label: "Fecha inicio", placeholder: "AAAA-MM-DD", values: ["Uno", "Two", "Three"] },
@@ -37,68 +21,191 @@ const useBuscarProductos = () => {
     setFiltro((prevFiltro) => ({ ...prevFiltro, [seccion]: value }));
   };
 
-  const handleBuscarClick = () => {
-    // Lógica para buscar productos con los filtros seleccionados
-    console.log("Buscar productos con filtro:", filtro);
-    // Aca se puede acceder al array o se puede ver en la termianl
-  };
 
-  return { filtro, handleFiltroChange, handleBuscarClick };
+
+  return { filtro, handleFiltroChange };
 };
 
 // Works for redirecting to other page like this /productDetail/0"
 // Has to redirect to the "facturación"
 function renderRows(data) {
-  return data.map((row, index) => (
-    
-      <Row className={index % 2 === 0 ? "even-row" : "odd-row"}>
-        <Col className="columnaOrden" data-index={index}>
-          {row.columns[0]}
+  const titles = ["Nombre", "Apellido", "Departamento", "Rol", "Pais", "Fecha inicio", "Fecha fin", "Salario bruto", "Salario neto", "Deducciones", "Porcentaje"];
+  return (
+    <>
+    {/* Header row with titles */}
+    <Row className="header-row">
+      {titles.map((title, index) => (
+        <Col key={index} className="column-header">
+          {title}
         </Col>
-        <Col className="columnaOrden">
-          {row.columns[1]}
+      ))}
+    </Row>
+
+    {/* Data rows */}
+    {data.map((row, index) => (
+    <Row key={index} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+      {row.columns.map((key, columnIndex) => (
+        <Col
+          key={columnIndex}
+          className="columnaOrden"
+          data-index={columnIndex}
+        >
+          {key}
         </Col>
-        <Col className="columnaOrden">
-          {row.columns[2]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[3]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[4]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[5]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[6]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[7]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[8]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[9]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[10]}
-        </Col>
-      </Row>
-  ));
+      ))}
+    </Row>
+  ))}
+  </>
+  );
 }
+
 
 // Creates the HTML of the page
 const Planilla = () => {
+
+  const [reportingData, setReportingData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const { filtro, handleFiltroChange, handleBuscarClick } = useBuscarProductos();
+  const [filterdItems, setFilterdItems] = useState([]);
+  const { filtro, handleFiltroChange } = useBuscarProductos();
+
+
+
+  const handleBuscarClick = () => {
+    if (filtro["Fecha inicio"] === "") {
+      filtro["Fecha inicio"] = null;
+    }
+    if (filtro["Fecha fin"] === "") {
+      filtro["Fecha fin"] = null;
+    }
+
+    try {
+      const handleBuscarClick = async () => {
+        if (filtro["Fecha inicio"] === "") {
+          filtro["Fecha inicio"] = null;
+        }
+        if (filtro["Fecha fin"] === "") {
+          filtro["Fecha fin"] = null;
+        }
+
+        try {
+          const response = await getPayroll(); // Assuming getPayroll is an async function that returns a promise
+          const reporting = response.data.map((element) => ({
+            rowClass: "no-gutters",
+            columns: [
+              element.name,
+              element.lastName,
+              element.department,
+              element.role,
+              element.country,
+              element.startDate,
+              element.endDate,
+              element.grossSalary,
+              element.netSalary,
+              element.deductions,
+              element.percentage
+            ],
+          }));
+
+          setReportingData(reporting);
+          console.log(reporting)
+
+        } catch (error) {
+          console.log(error);
+        }
+      };
+        if (filtro["Fecha inicio"] === "") {
+          filtro["Fecha inicio"] = null;
+        }
+        if (filtro["Fecha fin"] === "") {
+          filtro["Fecha fin"] = null;
+        }
+
+        try {
+          const response = await getPayroll(filtro["Fecha inicio"], filtro["Fecha fin"]);
+          console.log(response.data);
+
+          const reporting = response.data.map((element) => ({
+            rowClass: "no-gutters",
+            columns: [
+              element.name,
+              element.lastName,
+              element.department,
+              element.role,
+              element.country,
+              element.startDate,
+              element.endDate,
+              element.grossSalary,
+              element.netSalary,
+              element.deductions,
+              element.percentage
+            ],
+          }));
+
+          setReportingData(reporting);
+          console.log(reporting)
+
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      const reporting = response.data.map((element) => ({
+        rowClass: "no-gutters",
+        columns: [
+          element.name,
+          element.lastName,
+          element.department,
+          element.role,
+          element.country,
+          element.startDate,
+          element.endDate,
+          element.grossSalary,
+          element.netSalary,
+          element.deductions,
+          element.percentage
+        ],
+      }));
+
+      setReportingData(reporting);
+      console.log(reporting);
+
+    try {
+      // Your code for handling the error goes here
+    } catch (error) {
+      console.log(error);
+    }
+
+    // Logic for searching products with the selected filters
+    // Lógica para buscar productos con los filtros seleccionados
+    console.log("Buscar productos con filtro:", filtro);
+    // Aca se puede acceder al array o se puede ver en la termianl
+  };
+
+
+
+
+
+  useEffect(() => {
+    setFilterdItems(dataObject);
+  }, []);
+
+  useEffect(() => {
+    const filteredData = dataObject.filter((item) =>
+      item.columns.some((column) =>
+        column.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setFilterdItems(filteredData);
+  }, [searchTerm]);
+
 
   // Does the search bar work
-  const filteredData = dataObject.filter(item =>
-    item.columns.some(column =>
-      column.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+  const filteredData = reportingData.filter(item =>
+    item.columns.some(column => {
+      // Convert column to string if it's not already a string
+      const columnStr = column.toString().toLowerCase();
+      return columnStr.includes(searchTerm.toLowerCase());
+    })
   );
 
   // Renders the page
@@ -140,7 +247,7 @@ const Planilla = () => {
             </Form>
 
           <div className="vertical-scroll-container">
-            {renderRows(filteredData)}
+            {renderRows(filterdItems)}
           </div>
         </Container>
       </Container>

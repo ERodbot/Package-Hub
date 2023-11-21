@@ -179,3 +179,18 @@ BEGIN
     END
 END;
 GO
+
+------------------------------------------------------------
+
+CREATE OR ALTER PROCEDURE [dbo].[GetAllProducts]
+AS
+BEGIN
+    SELECT
+        P.[idProduct],
+        P.[name],
+        C.[name] AS [CategoryName]
+    FROM
+        [dbo].[Products] AS P
+    INNER JOIN
+        [dbo].[Category] AS C ON P.[idCategory] = C.[idCategory];
+END;

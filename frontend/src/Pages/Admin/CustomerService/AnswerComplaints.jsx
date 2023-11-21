@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './AnswerComplaints.css';
@@ -6,7 +6,7 @@ import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
 // Element list for mapping
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["#7473-8273", "usuario", "Eomra que yo quiero y necesito Eomra ", "nombre@estudiantec.cr     fs"] },
+  { rowClass: "no-gutters", columns: ["#7473-8273", "usuario", "I know a Little bout love", "nombre@estudiantec.cr     fs"] },
   { rowClass: "no-gutters", columns: ["#4473-8273", "usuario", "problema...", "nombre@estudiantec.cr"] },
   { rowClass: "no-gutters", columns: ["#4473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
   { rowClass: "no-gutters", columns: ["#4473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
@@ -26,25 +26,22 @@ const dataObject = [
 // For the redirection of the page can be donde like this: /productDetail/0"
 // This function renders the rows of the table
 function renderRows(data) {
+  const titles = ["Orden", "usuario", "problema", "correo"];
   return data.map((row, index) => (
-    <Link key={index} to={`/productDetail/${index}`} style={{ color: 'black' , textDecoration: 'none' }}>
-      <Row className={index % 2 === 0 ? "even-row" : "odd-row"}>
-        <Col className="columnaOrden" data-index={index}>
-          {row.columns[0]}
+    <Row key={index} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+      {row.columns.map((key, columnIndex) => (
+        <Col
+          key={columnIndex}
+          className="columnaOrden"
+          data-index={columnIndex}
+        >
+          {index === 0 ? `${titles[columnIndex]}: ` : ''} {key}
         </Col>
-        <Col className="columnaOrden">
-          {row.columns[1]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[2]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[3]}
-        </Col>
-      </Row>
-    </Link>
+      ))}
+    </Row>
   ));
 }
+
 // Function to save information of the complaint answers
 const AnswerComplaints = () => {
   const [searchTerm, setSearchTerm] = useState('');

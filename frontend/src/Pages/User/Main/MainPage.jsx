@@ -7,6 +7,7 @@ import drinks from "../../../assets/Menus/drinks.svg";
 import clothesmenu from "../../../assets/Menus/clothes.svg";
 import skatemenugit from "../../../assets/Menus/skate.svg";
 import { Link } from "react-router-dom";
+import  { useCarrito } from "../../../contexts/carrito";
 
 // Arrays containing menu images and names
 const menus = [snacksmenu, drinks, clothesmenu, skatemenugit];

@@ -480,3 +480,754 @@ GO
 -- EXEC usp_ReportingSalaryStructure
 --    @initial_date = '2023-11-30',
 --    @final_date = '2023-11-01'; 
+
+-------------------------------------------------------------------------
+-- Insert Order Details
+-------------------------------------------------------------------------
+
+CREATE OR ALTER PROCEDURE insert_order_detail
+	 @in_order_id INT,
+	 @in_product_id INT,
+	 @in_quantity INT,
+	 @in_price_unit FLOAT,
+	 @in_discount FLOAT
+AS
+BEGIN
+	EXEC ('CALL insert_order_detail(?, ?, ?, ?, ?)', @in_order_id, @in_product_id, @in_quantity, @in_price_unit, @in_discount ) AT [support-sales];
+END;
+GO
+
+-- EXEC insert_order_detail @in_order_id = 1, @in_product_id = 2, @in_quantity = 3, @in_price_unit = 40.00, @in_discount = 15.00
+
+
+
+-------------------------------------------------------------------------
+-- Verify product quantity price
+-------------------------------------------------------------------------
+
+CREATE OR ALTER PROCEDURE calculate_total_price
+	 @productName NVARCHAR(100),  
+	 @in_quantity INT,
+	 @in_discount FLOAT,
+	 @out_total FLOAT
+AS
+BEGIN
+	DECLARE @currentPrice MONEY;
+	DECLARE @currentPriceF FLOAT;
+
+	IF EXISTS (SELECT 1 FROM [cluster].[dbo].[Products] WHERE name = @productName)
+    BEGIN
+        SELECT @currentPrice = Pr.price 
+        FROM
+            [cluster].[dbo].[Products] AS Pr
+        WHERE
+            Pr.name = @productName;
+
+
+		SET @currentPriceF = CAST(@currentPrice AS FLOAT);
+		EXEC ('CALL calculate_total_price(?, ?, ?, ?)', @in_quantity, @currentPriceF, @in_discount, @out_total) AT [support-sales];
+    END
+    ELSE
+    BEGIN
+        DECLARE @ErrorMessage VARCHAR(100) = 'No existe el producto ingresado'
+        RAISERROR (@ErrorMessage, 16, 1);
+        RETURN; 
+    END
+END;
+GO
+
+-- EXEC calculate_total_price @productName = 'Bolitas de queso', @in_quantity = 3,  @in_discount = 0, @out_total = NULL
+
+--------------------------------------------------------------------------------------
+-- Muetsra reporte por fechas que se puede filtrar por producto, categoria y fecha
+-------------------------------------------------------------------------------------
+
+CREATE OR ALTER PROCEDURE viewReport
+    @productName NVARCHAR(30) = NULL,
+	@categoryName NVARCHAR(30) = NULL,
+    @startDate DATE = NULL
+AS
+BEGIN
+    -- Crear una tabla temporal
+    CREATE TABLE #TempProductList (
+        [idProduct] INT,
+        [name] NVARCHAR(30), 
+		[categoryName] NVARCHAR(30)
+    );
+
+    -- Insertar datos en la tabla temporal desde el procedimiento [na-inventory].[inventory].[dbo].[GetAllProducts]
+    INSERT INTO #TempProductList ([idProduct], [name], [categoryName])
+    EXEC [na-inventory].[inventory].[dbo].[GetAllProducts];
+
+    -- Crear o alterar la tabla permanente
+    IF OBJECT_ID('dbo.TempReportResults') IS NULL
+    BEGIN
+        CREATE TABLE dbo.TempReportResults (
+            [clientName] NVARCHAR(255),
+            [clientEmail] NVARCHAR(255),
+            [orderDate] DATE,
+            [productName] NVARCHAR(255),
+            [categoryName] NVARCHAR(255),
+            [quantity] INT,
+            [Total] MONEY
+        );
+    END
+    ELSE
+    BEGIN
+        -- Puedes realizar acciones adicionales si la tabla ya existe, por ejemplo, truncarla
+        TRUNCATE TABLE dbo.TempReportResults;
+    END;
+
+    -- Insertar resultados en la tabla permanente
+    INSERT INTO dbo.TempReportResults ([clientName], [clientEmail], [orderDate], [productName], [categoryName], [quantity], [Total])
+    SELECT
+        vr.[clientName],
+        vr.[clientEmail],
+        vr.[orderDate],
+        p.[name], -- Refiriéndose al nombre obtenido en el JOIN
+        p.[categoryName],
+        vr.[quantity],
+        vr.[lineTotal] AS Total
+    FROM OPENQUERY([support-sales], 'SELECT * FROM public.get_sales_report()') vr
+    LEFT JOIN #TempProductList p ON vr."idProduct" = p."idProduct"
+    WHERE
+        (@productName IS NULL OR p.[name] LIKE '%' + @productName + '%')
+        AND (@startDate IS NULL OR vr.[orderDate] >= @startDate)
+		AND (@categoryName IS NULL OR p.[categoryName] LIKE '%' + @categoryName + '%');
+
+    -- Seleccionar desde la tabla permanente para mostrar los datos
+		SELECT * FROM dbo.TempReportResults;
+
+    -- Eliminar las tablas temporales al finalizar el procedimiento
+    DROP TABLE #TempProductList;
+END;
+
+-- SELECT * FROM dbo.TempReportResults
+-- EXEC viewReport  @productName = 'Bolitas de queso', @categoryName = 'snacks';
+
+
+CREATE OR ALTER PROCEDURE viewSalesReport
+    @productName NVARCHAR(30) = NULL,
+	@categoryName NVARCHAR(30) = NULL,
+    @startDate DATE = NULL
+AS
+BEGIN
+	EXEC viewReport  @productName = @productName , @categoryName = @categoryName, @startDate = @startDate;
+	SELECT * FROM dbo.TempReportResults
+END;
+
+-- EXEC viewSalesReport  @productName = 'Bolitas de queso'
+
+--------------------------------------------------------------------------------------
+-- Crear un ticket de complaint (estoy seguro que esta bien pero no corre, debe haber un error de sintaxis)
+-------------------------------------------------------------------------------------
+
+DROP PROCEDURE insertTicket
+
+CREATE OR ALTER PROCEDURE insertTicket
+    @p_description NVARCHAR(MAX),
+    @p_createdAt DATETIMEOFFSET,
+    @p_updatedAt DATETIMEOFFSET,
+    @p_idTicketType INT,
+    @p_idOrder INT,
+    @p_idClient INT
+AS
+BEGIN
+	EXEC ('CALL InsertTicket(?, ?, ?, ?, ?, ?)', @p_description, @p_createdAt, @p_updatedAt, @p_idTicketType, @p_idOrder, @p_idClient ) AT [support-sales];
+END;
+GO
+
+-- EXEC insertTicket @p_description = 'Descripción del ticket', @p_createdAt = GETDATE(), @p_updatedAt = GETDATE(),  @p_idTicketType = 1,  @p_idOrder = 22,  @p_idClient = 456
+
+CREATE OR ALTER PROCEDURE createOrderDetail
+    @orderid INT,
+    @product varchar(MAX),
+    @quantity INT,
+    @price FLOAT,
+    @discount FLOAT
+AS
+BEGIN
+    DECLARE @idProduct INT;
+
+    -- Obtener el idProduct utilizando una variable local
+    (SELECT TOP 1 @idProduct = idProduct FROM [na-inventory].[inventory].[dbo].[Products] WHERE [name] = @product)
+
+    BEGIN TRY
+        -- Ejecutar el procedimiento almacenado en el servidor remoto
+        EXEC('CALL insert_order_detail(?,?,?,?,?)',
+            @orderid,
+            @idProduct,
+            @quantity,
+            @price,
+            @discount) AT [support-sales]
+    END TRY
+    BEGIN CATCH
+        PRINT 'Error occurred during execution: ' + ERROR_MESSAGE();
+        THROW;  -- Re-throw the caught exception
+    END CATCH
+END;
+
+
+--Query to get the list of consults in sqlserver
+
+CREATE OR ALTER PROCEDURE usp_getConsultsList
+	@name VARCHAR(50) = NULL,
+	@lastName VARCHAR(50) = NULL
+AS 
+BEGIN
+    -- Some variable declarations and initialization
+    DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @CustomError INT
+    DECLARE @Message VARCHAR(200)
+    DECLARE @date DATETIME
+    DECLARE @computer VARCHAR(50)
+    DECLARE @username VARCHAR(50)
+    DECLARE @checksum VARBINARY(150)
+
+    SET @date = GETDATE()
+    SET @computer = 'me'
+    SET @username = 'root'
+    SET @checksum = CHECKSUM(@date, @computer, @username, '12345password')
+
+    DECLARE @InicieTransaccion BIT = 0
+    
+
+    -- Validaci�n de rol_filter si se proporciona
+IF @name IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.name = @name)
+    BEGIN 
+        SET @Message = 'Error - El cliente con nombre especificado no existe en la base de datos.'
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error seg�n tus necesidades
+        SET @CustomError = 50016 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
+        RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+        RETURN
+    END
+END
+
+-- Validaci�n de country_filter si se proporciona
+IF @lastName IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.lastName = @lastName)
+    BEGIN 
+        SET @Message = 'Error - El cliente con apellido especificado no existe en la base de datos.'
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error seg�n tus necesidades
+        SET @CustomError = 50017 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
+        RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+        RETURN
+    END
+END
+  
+
+    -- Verificar si no hay una transacci�n en curso
+    IF @@TRANCOUNT = 0
+    BEGIN
+        SET @InicieTransaccion = 1
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+        BEGIN TRANSACTION
+    END
+
+    -- Inicio de manejo de errores
+    BEGIN TRY
+        SET @CustomError = 2001
+
+		-- Consulta de servicio al cliente
+		SELECT 
+			ti.description,
+			ti.createdAt,
+			ord.invoiceNumber,
+			st.name AS ticketState,
+			tt.name AS inquiryType,
+			cll.date AS callDate,
+			ct.name as callType,
+			ct.description as callDescription
+		FROM [support-sales].[support-sales].[human-resources].Tickets ti
+		INNER JOIN  
+			 [support-sales].[support-sales].[sales].Orders ord ON ord.idOrder = ti.idOrder
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].TicketType tt ON tt.idTicketType = ti.idTicketType
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].Calls cll  ON cll.idTicket = ti.idTicket
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].CallType ct  ON cll.idTicket = ti.idTicket
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].StateType st  ON st.idStateType = cll.idStateType
+		INNER JOIN  
+			[support-sales].[support-sales].sales.Clients cli  ON cli.idClient = ord.idClient
+		WHERE 
+			([support-sales].[support-sales].[human-resources].StateType.name IN ('Open', 'Pending'))
+			AND (@name IS NULL OR  cli.name = @name)
+			AND (@lastName IS NULL OR cli.lastName = @lastName)
+		IF @InicieTransaccion=1 BEGIN
+			COMMIT
+		END
+	END TRY
+	BEGIN CATCH
+		SET @ErrorNumber = ERROR_NUMBER()
+		SET @ErrorSeverity = ERROR_SEVERITY()
+		SET @ErrorState = ERROR_STATE()
+		SET @Message = ERROR_MESSAGE()
+		
+		IF @InicieTransaccion=1 BEGIN
+			ROLLBACK
+		END
+		RAISERROR('%s - Error Number: %i', 
+			@ErrorSeverity, @ErrorState, @Message, @CustomError)
+	END CATCH	
+END
+RETURN 0
+GO
+
+
+
+
+--Query to get the info of a consult in sqlserver
+
+CREATE OR ALTER PROCEDURE usp_getConsultInfo
+AS 
+BEGIN
+    -- Some variable declarations and initialization
+    DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @CustomError INT
+    DECLARE @Message VARCHAR(200)
+    DECLARE @date DATETIME
+    DECLARE @computer VARCHAR(50)
+    DECLARE @username VARCHAR(50)
+    DECLARE @checksum VARBINARY(150)
+
+    SET @date = GETDATE()
+    SET @computer = 'me'
+    SET @username = 'root'
+    SET @checksum = CHECKSUM(@date, @computer, @username, '12345password')
+
+    DECLARE @InicieTransaccion BIT = 0
+    
+
+    -- Validaci�n de rol_filter si se proporciona
+IF @name IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.name = @name)
+    BEGIN 
+        SET @Message = 'Error - El cliente con nombre especificado no existe en la base de datos.'
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error seg�n tus necesidades
+        SET @CustomError = 50016 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
+        RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+        RETURN
+    END
+END
+
+-- Validaci�n de country_filter si se proporciona
+IF @lastName IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.lastName = @lastName)
+    BEGIN 
+        SET @Message = 'Error - El cliente con apellido especificado no existe en la base de datos.'
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error seg�n tus necesidades
+        SET @CustomError = 50017 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
+        RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+        RETURN
+    END
+END
+  
+
+    -- Verificar si no hay una transacci�n en curso
+    IF @@TRANCOUNT = 0
+    BEGIN
+        SET @InicieTransaccion = 1
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+        BEGIN TRANSACTION
+    END
+
+    -- Inicio de manejo de errores
+    BEGIN TRY
+        SET @CustomError = 2001
+
+		-- Consulta de servicio al cliente
+		SELECT 
+			ti.description,
+			ti.createdAt,
+			ord.invoiceNumber,
+			st.name AS ticketState,
+			tt.name AS inquiryType,
+			cll.date AS callDate,
+			ct.name as callType,
+			ct.description as callDescription
+		FROM [support-sales].[support-sales].[human-resources].Tickets ti
+		INNER JOIN  
+			 [support-sales].[support-sales].[sales].Orders ord ON ord.idOrder = ti.idOrder
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].TicketType tt ON tt.idTicketType = ti.idTicketType
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].Calls cll  ON cll.idTicket = ti.idTicket
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].CallType ct  ON cll.idTicket = ti.idTicket
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].StateType st  ON st.idStateType = cll.idStateType
+		INNER JOIN  
+			[support-sales].[support-sales].sales.Clients cli  ON cli.idClient = ord.idClient
+		WHERE 
+			([support-sales].[support-sales].[human-resources].StateType.name IN ('Open', 'Pending'))
+			AND (@name IS NULL OR  cli.name = @name)
+			AND (@lastName IS NULL OR cli.lastName = @lastName)
+		IF @InicieTransaccion=1 BEGIN
+			COMMIT
+		END
+	END TRY
+	BEGIN CATCH
+		SET @ErrorNumber = ERROR_NUMBER()
+		SET @ErrorSeverity = ERROR_SEVERITY()
+		SET @ErrorState = ERROR_STATE()
+		SET @Message = ERROR_MESSAGE()
+		
+		IF @InicieTransaccion=1 BEGIN
+			ROLLBACK
+		END
+		RAISERROR('%s - Error Number: %i', 
+			@ErrorSeverity, @ErrorState, @Message, @CustomError)
+	END CATCH	
+END
+RETURN 0
+GO
+
+
+
+
+
+
+
+
+CREATE OR ALTER PROCEDURE usp_getConsultInfo
+AS 
+BEGIN
+    -- Some variable declarations and initialization
+    DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @CustomError INT
+    DECLARE @Message VARCHAR(200)
+    DECLARE @date DATETIME
+    DECLARE @computer VARCHAR(50)
+    DECLARE @username VARCHAR(50)
+    DECLARE @checksum VARBINARY(150)
+
+    SET @date = GETDATE()
+    SET @computer = 'me'
+    SET @username = 'root'
+    SET @checksum = CHECKSUM(@date, @computer, @username, '12345password')
+
+    DECLARE @InicieTransaccion BIT = 0
+    
+
+    -- Validaci�n de rol_filter si se proporciona
+IF @name IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.name = @name)
+    BEGIN 
+        SET @Message = 'Error - El cliente con nombre especificado no existe en la base de datos.'
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error seg�n tus necesidades
+        SET @CustomError = 50016 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
+        RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+        RETURN
+    END
+END
+
+-- Validaci�n de country_filter si se proporciona
+IF @lastName IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.lastName = @lastName)
+    BEGIN 
+        SET @Message = 'Error - El cliente con apellido especificado no existe en la base de datos.'
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error seg�n tus necesidades
+        SET @CustomError = 50017 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
+        RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+        RETURN
+    END
+END
+  
+
+    -- Verificar si no hay una transacci�n en curso
+    IF @@TRANCOUNT = 0
+    BEGIN
+        SET @InicieTransaccion = 1
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+        BEGIN TRANSACTION
+    END
+
+    -- Inicio de manejo de errores
+    BEGIN TRY
+        SET @CustomError = 2001
+
+		-- Consulta de servicio al cliente
+		SELECT 
+			ti.description,
+			ti.createdAt,
+			ord.invoiceNumber,
+			st.name AS ticketState,
+			tt.name AS inquiryType,
+			cll.date AS callDate,
+			ct.name as callType,
+			ct.description as callDescription
+		FROM [support-sales].[support-sales].[human-resources].Tickets ti
+		INNER JOIN  
+			 [support-sales].[support-sales].[sales].Orders ord ON ord.idOrder = ti.idOrder
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].TicketType tt ON tt.idTicketType = ti.idTicketType
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].Calls cll  ON cll.idTicket = ti.idTicket
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].CallType ct  ON cll.idTicket = ti.idTicket
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].StateType st  ON st.idStateType = cll.idStateType
+		INNER JOIN  
+			[support-sales].[support-sales].sales.Clients cli  ON cli.idClient = ord.idClient
+		WHERE 
+			([support-sales].[support-sales].[human-resources].StateType.name IN ('Open', 'Pending'))
+			AND (@name IS NULL OR  cli.name = @name)
+			AND (@lastName IS NULL OR cli.lastName = @lastName)
+		IF @InicieTransaccion=1 BEGIN
+			COMMIT
+		END
+	END TRY
+	BEGIN CATCH
+		SET @ErrorNumber = ERROR_NUMBER()
+		SET @ErrorSeverity = ERROR_SEVERITY()
+		SET @ErrorState = ERROR_STATE()
+		SET @Message = ERROR_MESSAGE()
+		
+		IF @InicieTransaccion=1 BEGIN
+			ROLLBACK
+		END
+		RAISERROR('%s - Error Number: %i', 
+			@ErrorSeverity, @ErrorState, @Message, @CustomError)
+	END CATCH	
+END
+RETURN 0
+GO
+
+
+
+
+
+--Procedure to get orders by search
+
+CREATE OR ALTER PROCEDURE usp_GetOrdersBySearch
+	@usernameclient VARCHAR(100) = NULL,
+	@email VARCHAR(100) = NULL,
+	@searchparameter VARCHAR(150)
+AS 
+BEGIN
+    -- Variable declarations and initialization
+    DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @CustomError INT
+    DECLARE @Message VARCHAR(200)
+    DECLARE @date DATETIME
+    DECLARE @computer VARCHAR(50)
+    DECLARE @username VARCHAR(50)
+    DECLARE @checksum VARBINARY(150)
+
+    -- Initialize variables
+    SET @date = GETDATE()
+    SET @computer = 'me'
+    SET @username = 'root'
+    SET @checksum = CHECKSUM(@date, @computer, @username, '12345password')
+
+    -- Transaction control variable
+    DECLARE @InicieTransaccion BIT = 0
+    
+    -- Validate provided username
+	IF @usernameclient IS NOT NULL  
+    BEGIN 
+		IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.username = @usernameclient) 
+			BEGIN 
+				SET @Message = 'Error - The specified client does not exist in the database.'
+				SET @ErrorSeverity = 1 -- Adjust the severity level as needed
+				SET @ErrorState = 404 -- Adjust the error state as needed
+				SET @CustomError = 50013 -- Define a custom error number as needed
+				RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+				RETURN
+		END
+	END
+	
+	-- Validate provided email
+	IF @email IS NOT NULL  
+    BEGIN 
+		IF NOT EXISTS (SELECT * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.email = @email) 
+			BEGIN 
+				SET @Message = 'Error - The specified client does not exist in the database.'
+				SET @ErrorSeverity = 1 -- Adjust the severity level as needed
+				SET @ErrorState = 404 -- Adjust the error state as needed
+				SET @CustomError = 50013 -- Define a custom error number as needed
+				RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+				RETURN
+		END
+	END
+	
+    -- Check if there is no ongoing transaction
+    IF @@TRANCOUNT = 0
+    BEGIN
+        SET @InicieTransaccion = 1
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+        BEGIN TRANSACTION
+    END
+
+    -- Error handling block
+    BEGIN TRY
+        -- Custom error code for tracking
+        SET @CustomError = 2001
+
+		-- Query for order details
+	SELECT 
+		ord.idOrder,
+		ord.invoiceNumber, 
+		ord.date AS emissionDate,
+		os.name AS status,
+		CASE WHEN @usernameclient IS NULL THEN cl.name ELSE NULL END AS clientName,
+		CASE WHEN @usernameclient IS NULL THEN cl.lastName ELSE NULL END AS clientLastName,
+		CASE WHEN @usernameclient IS NULL THEN cl.username ELSE NULL END AS clientUsername,
+		CASE WHEN @usernameclient IS NULL THEN sh.kilometers ELSE NULL END AS distance
+	FROM [support-sales].[support-sales].[sales].Orders ord
+		INNER JOIN [support-sales].[support-sales].[sales].OrderStatus os ON os.idOrderStatus = ord.idOrderStatus
+		INNER JOIN [support-sales].[support-sales].[sales].Clients cl ON cl.idClient = ord.idClient
+		INNER JOIN [support-sales].[support-sales].[sales].Shipping sh ON sh.idShipping = ord.idShipping
+	WHERE (@usernameclient IS NULL OR cl.username IN (SELECT TOP 1 username FROM [support-sales].[support-sales].[sales].Clients WHERE username = @usernameclient)) 
+    AND (@email IS NULL OR cl.email IN (SELECT TOP 1 email FROM [support-sales].[support-sales].[sales].Clients WHERE email = @email))
+	AND (
+		@searchparameter IS NULL OR 
+		CONVERT(VARCHAR(50), ord.invoiceNumber) LIKE '%' + @searchparameter + '%' OR
+		os.name LIKE '%' + @searchparameter + '%' OR
+		cl.name LIKE '%' + @searchparameter + '%' OR
+		cl.lastName LIKE '%' + @searchparameter + '%' OR
+		cl.username LIKE '%' + @searchparameter + '%' OR
+		CAST(ord.date AS VARCHAR) LIKE '%' + @searchparameter + '%'
+	)
+	
+	-- Commit transaction if it was initiated
+	IF @InicieTransaccion=1 BEGIN
+		COMMIT
+	END
+	END TRY
+	
+	-- Catch block for handling errors
+	BEGIN CATCH
+		SET @ErrorNumber = ERROR_NUMBER()
+		SET @ErrorSeverity = ERROR_SEVERITY()
+		SET @ErrorState = ERROR_STATE()
+		SET @Message = ERROR_MESSAGE()
+		
+		-- Rollback the transaction if it was initiated
+		IF @InicieTransaccion=1 BEGIN
+			ROLLBACK
+		END
+		
+		-- Raise a custom error
+		RAISERROR('%s - Error Number: %i', 
+			@ErrorSeverity, @ErrorState, @Message, @CustomError)
+	END CATCH	
+END
+
+-- Return 0 to indicate successful execution
+RETURN 0
+GO
+
+
+--procedure to get orders list
+
+CREATE OR ALTER PROCEDURE usp_GetOrdersList
+    @usernameclient VARCHAR(100) = NULL,
+    @email VARCHAR(100) = NULL
+AS 
+BEGIN
+    -- Variable declarations and initialization
+    DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @CustomError INT
+    DECLARE @Message VARCHAR(200)
+    DECLARE @date DATETIME
+    DECLARE @computer VARCHAR(50)
+    DECLARE @username VARCHAR(50)
+    DECLARE @checksum VARBINARY(150)
+
+    -- Initialize variables
+    SET @date = GETDATE()
+    SET @computer = 'me'
+    SET @username = 'root'
+    SET @checksum = CHECKSUM(@date, @computer, @username, '12345password')
+
+    -- Transaction control variable
+    DECLARE @InicieTransaccion BIT = 0
+    
+    -- Validate provided username
+    IF @usernameclient IS NOT NULL  
+    BEGIN 
+        IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.username = @usernameclient) 
+        BEGIN 
+            SET @Message = 'Error - The specified client does not exist in the database.'
+            SET @ErrorSeverity = 1 -- Adjust the severity level as needed
+            SET @ErrorState = 404 -- Adjust the error state as needed
+            SET @CustomError = 50013 -- Define a custom error number as needed
+            RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+            RETURN
+        END
+    END
+    
+    -- Validate provided email
+    IF @email IS NOT NULL  
+    BEGIN 
+        IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales]. [support-sales].[sales].Clients WHERE Clients.email = @email) 
+        BEGIN 
+            SET @Message = 'Error - The specified client does not exist in the database.'
+            SET @ErrorSeverity = 1 -- Adjust the severity level as needed
+            SET @ErrorState = 404 -- Adjust the error state as needed
+            SET @CustomError = 50013 -- Define a custom error number as needed
+            RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+            RETURN
+        END
+    END
+
+    -- Check if there is no ongoing transaction
+    IF @@TRANCOUNT = 0
+    BEGIN
+        SET @InicieTransaccion = 1
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+        BEGIN TRANSACTION
+    END
+
+    -- Error handling block
+    BEGIN TRY
+        SET @CustomError = 2001
+
+        -- Query for order details without OPENQUERY
+        SELECT 
+            ord.idOrder,
+            ord.invoiceNumber, 
+            ord.date AS emissionDate,
+            os.name AS status,
+            CASE WHEN @usernameclient IS NULL THEN cl.name ELSE NULL END AS clientName,
+            CASE WHEN @usernameclient IS NULL THEN cl.lastName ELSE NULL END AS clientLastName,
+            CASE WHEN @usernameclient IS NULL THEN cl.username ELSE NULL END AS clientUsername,
+            CASE WHEN @usernameclient IS NULL THEN sh.kilometers ELSE NULL END AS distance
+        FROM [support-sales].[support-sales].[sales].Orders ord
+            INNER JOIN [support-sales].[support-sales].[sales].OrderStatus os ON os.idOrderStatus = ord.idOrderStatus
+            INNER JOIN [support-sales].[support-sales].[sales].Clients cl ON cl.idClient = ord.idClient
+            INNER JOIN [support-sales].[support-sales].[sales].Shipping sh ON sh.idShipping = ord.idShipping
+        WHERE 
+            (@usernameclient IS NULL OR cl.username IN (SELECT TOP 1 username FROM [support-sales].[support-sales].[sales].Clients WHERE username = @usernameclient)) 
+            AND (@email IS NULL OR cl.email IN (SELECT TOP 1 email FROM [support-sales].[support-sales].[sales].Clients WHERE email = @email))
+
+        IF @InicieTransaccion=1 BEGIN
+            COMMIT
+        END
+    END TRY
+    BEGIN CATCH
+        SET @ErrorNumber = ERROR_NUMBER()
+        SET @ErrorSeverity = ERROR_SEVERITY()
+        SET @ErrorState = ERROR_STATE()
+        SET @Message = ERROR_MESSAGE()
+        
+        IF @InicieTransaccion=1 BEGIN
+            ROLLBACK
+        END
+        RAISERROR('%s - Error Number: %i', 
+            @ErrorSeverity, @ErrorState, @Message, @CustomError)
+    END CATCH    
+END
+RETURN 0
+GO

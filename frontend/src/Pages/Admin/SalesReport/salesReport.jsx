@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form, Button  } from "react-bootstrap";
-import "./performance.css";
+import "./salesReport.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 import { getCountry } from '../../../api/auth';
-import { getRoles, getPerformance} from '../../../api/reporting';
-
-
+import { getProducts, getCategories, getReportVentas} from '../../../api/reporting';
 
 const secciones2 = [
-  {label: "Fecha inicio", placeholder: "AAAA-MM-DD" },
-  {label: "Fecha fin", placeholder: "AAAA-MM-DD"}
+  {label: "Fecha inicio", placeholder: "AAAA-MM-DD" }
 ];
-
-
-
 
 const useBuscarProductos = () => {
   const [filtro, setFiltro] = useState({
     "Fecha inicio": null,
-    "Fecha fin": null,
     "Pais": null,
     "Rol": null
   });
@@ -27,9 +19,6 @@ const useBuscarProductos = () => {
   const handleFiltroChange = (seccion, value) => {
     setFiltro((prevFiltro) => ({ ...prevFiltro, [seccion]: value }));
   };
-
-
-
   return { filtro, handleFiltroChange};
 };
 
@@ -37,7 +26,7 @@ const useBuscarProductos = () => {
 // Has to redirect to the "facturación"
 
 function renderRows(data) {
-  const titles = ["Nombre", "Apellido", "Rating", "Departamento", "Rol", "Pais", "Estado", "Ciudad", "Direccion"];
+  const titles = ["Nombre", "Email", "Fecha de Orden", "nombre producto", "categoria producto", "cantidad", "preciototal"];
   return (
     <>
     {/* Header row with titles */}
@@ -68,10 +57,10 @@ function renderRows(data) {
 }
 
 // Creates the HTML of the page
-const PerformanceReport = () => {
+const SalesReport = () => {
 
-  const [countries, setCountries] = useState([]);
-  const [roles, setRoles] = useState([]);
+  const [countries, setProducts] = useState([]);
+  const [roles, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterdItems, setFilterdItems] = useState([]);
   const { filtro, handleFiltroChange} = useBuscarProductos();
@@ -79,32 +68,32 @@ const PerformanceReport = () => {
 
 
   const secciones = [
-  {label: "Pais", placeholder: "Selecciona el país", values: countries.map((country) => country.name)},
-  {label: "Rol", placeholder: "Selecciona el rol", values: roles.map((role) => role.name)}
+  {label: "Nombre producto: ", placeholder: "Selecciona el producto (opcinonal)", values: countries.map((country) => country.name)},
+  {label: "Categoria producto: ", placeholder: "Selecciona la categoria (opcional)", values: roles.map((role) => role.name)}
   ];
 
 
   useEffect(() => {
     // Call the endpoint to get all the roles and all the countries
-    const fetchCountry = async () => {
+    const fectchProducts = async () => {
       try {
-        const response = await getCountry();
-        setCountries(response.data);
+        const response = await getProducts();
+        setProducts(response.data);
       } catch (error) {
         console.log(error);
       }
     };
   
-    const fetchRole = async () => {
+    const fetchCategory = async () => {
       try {
-        const roleResponse = await getRoles();
-        setRoles(roleResponse.data);
+        const roleResponse = await getCategories();
+        setCategories(roleResponse.data);
       } catch (error) {
         console.log(error);
       }
     }
-    fetchCountry();
-    fetchRole();
+    fectchProducts();
+    fetchCategory();
   }, []);
 
 
@@ -114,17 +103,15 @@ const PerformanceReport = () => {
 
 
   const handleBuscarClick = async () => {
-    if (filtro["Fecha inicio"] === "") {
+    if (filtro["Fecha inicio"] == "") {
       filtro["Fecha inicio"] = null;
     }
-    if (filtro["Fecha fin"] === "") {
-      filtro["Fecha fin"] = null;
+
+    if (filtro["Producto"] == "Selecciona el país") {
+      filtro["Producto"] = null;
     }
-    if (filtro["Pais"] === "Selecciona el país") {
-      filtro["Pais"] = null;
-    }
-    if (filtro["Rol"] === "Selecciona el rol") {
-      filtro["Rol"] = null;
+    if (filtro["Categoria"] == "Selecciona el rol") {
+      filtro["Categoria"] = null;
     }
 
     try {
@@ -176,7 +163,7 @@ const PerformanceReport = () => {
     <PaginaBase>
       <Container className="background7">
         <Container fluid className="mainPage">
-          <p className="title2">Registro performance</p>
+          <p className="title2">Sales Report</p>
           <input
             type="text"
             placeholder="Buscar en performance..."
@@ -239,4 +226,4 @@ const PerformanceReport = () => {
   );
 };
 
-export default PerformanceReport;
+export default SalesReport;

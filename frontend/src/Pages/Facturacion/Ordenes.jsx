@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from "react-bootstrap";
 import "./Ordenes.css";
@@ -24,20 +24,19 @@ const dataObject = [
 // Works for redirecting to other page like this /productDetail/0"
 // Has to redirect to the "facturación"
 function renderRows(data) {
+  const titles = ["Pais", "sucursal", "Description", "moneda", "odd"];
   return data.map((row, index) => (
-    <Link key={index} to={`/productDetail/${index}`} style={{ color: 'black' , textDecoration: 'none' }}>
-      <Row className={index % 2 === 0 ? "even-row" : "odd-row"}>
-        <Col className="columnaOrden" data-index={index}>
-          {row.columns[0]}
+    <Row key={index} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+      {row.columns.map((key, columnIndex) => (
+        <Col
+          key={columnIndex}
+          className="columnaOrden"
+          data-index={columnIndex}
+        >
+          {index === 0 ? `${titles[columnIndex]}: ` : ''} {key}
         </Col>
-        <Col className="columnaOrden">
-          {row.columns[1]}
-        </Col>
-        <Col className="columnaOrden">
-          {row.columns[2]}
-        </Col>
-      </Row>
-    </Link>
+      ))}
+    </Row>
   ));
 }
 
