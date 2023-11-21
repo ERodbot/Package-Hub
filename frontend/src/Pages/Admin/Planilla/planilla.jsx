@@ -6,7 +6,7 @@ import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
 // Elements that will be shown in the table
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["Name", "LastName ","department","employeeRole",  "Country ","startDate","EndDate", "GrossSalary","NetSalary","Reduction","Percentage"]},
+  { rowClass: "no-gutters", columns: ["Name", "LastNam","department","employeeRole",  "Country ","startDate","EndDate", "GrossSalary","NetSalary","Reduction","Percentage"]},
   { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
   { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
   { rowClass: "no-gutters", columns: ["Name", "LastName", "department","employeeRole", "Country", "startDate","EndDate", "GrossSalary", "NetSalary", "Reduction", "Percentage"] },
