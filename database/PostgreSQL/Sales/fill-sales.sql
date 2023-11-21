@@ -39,6 +39,7 @@ INSERT INTO sales."Clients" (email, username, name, "lastName", "idAddress", "id
 ('client2@example.com', 'client2', 'Jane', 'Smith', 2, 2, 'password2', 1),
 ('client3@example.com', 'client3', 'Bob', 'Johnson', 3, 3, 'password3', 1);
 
+
 -- Order Data
 INSERT INTO sales."Orders" ("idClient", date, total, status, "idEmployee", "idOrderStatus", "idShipping", enabled, "invoiceNumber", "idPayStatus", "idPayType") VALUES
 (1, '2023-11-14', 100.50, 1, 1, 1, 1, 1, '123e4567-e89b-12d3-a456-426614174001', 1, 1),
@@ -80,7 +81,9 @@ INSERT INTO sales."OrderDetails" ("idOrder", "idProduct", quantity, "priceUnit",
 
 
 -- BranchOffice Data
-INSERT INTO sales."BranchOffice" ("idCountry", "idLocation", "description", "opens", "closes", "idCurrency", "idManager")
+INSERT INTO sales."BranchOffice" ("idBranchOffice","idCountry", "branchName", "locationBranch", "description", "opens", "closes", "idCurrency", "idManager")
 VALUES 
-(1, 1, 'branch store in EEUU', '08:00:00', '18:00:00', 1, 2),
-(1, 1, 'branch store in Spain main', '010:00:00', '20:00:00', 2, 1);
+(1, 1, 'branch store in EEUU', 'Houston Texas', 'Store in Houston Texas', '08:00:00', '18:00:00', 1, 2),
+(2, 1, 'branch store in Spain main', 'Madrid', 'Store in Madrid', '10:00:00', '20:00:00', 2, 1);
+
+

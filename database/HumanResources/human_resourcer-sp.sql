@@ -294,12 +294,14 @@ BEGIN
 END //
 DELIMITER ;
 
-
-DELIMITER // CREATE PROCEDURE InsertNewContactInfo(
+DELIMITER // 
+CREATE PROCEDURE InsertNewContactInfo(
     IN phone VARCHAR(45),
     IN email VARCHAR(80),
     IN idContactType INT
 ) BEGIN
+
 INSERT INTO `ContactInfo` (`phone`, `email`, `idContactType`, `enabled`)
 VALUES (phone, email, idContactType, 1);
-END // DELIMITER;
+END // 
+DELIMITER;

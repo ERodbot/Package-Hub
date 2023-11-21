@@ -147,6 +147,7 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
     }
     try:
         user = db.execute(query, params).fetchone()
+        return user
         pwd_db = user[0]
         email = user[1]
         if pwd_db:
