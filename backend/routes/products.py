@@ -65,7 +65,7 @@ def getProductPerCategory(category: str, db: db_dependency):
         products = []
         for row in result:
             product = {
-                "name": row.ProductName,
+                "name": row.ProductName.strip(),
                 "price": row.price,
                 "image": base64.b64encode(row.ImagePath).decode() if row.ImagePath else None,
             }
@@ -89,7 +89,7 @@ def getProductDetails(name: str, db: db_dependency):
             raise HTTPException(status_code=404, detail="Product not found")
         else:
             product = {
-                "name": result.ProductName,
+                "name": result.ProductName.strip(),
                 "description": result.Description,
                 "brand": result.Brand,
                 "color": result.Color,

@@ -7,14 +7,14 @@ import PaginaBase from "../../General/PaginaBase/PaginaBase";
 
 
 const secciones = [
-  { label: "Fecha inicio", placeholder: "AAAA-MM-DD", values: ["Uno", "Two", "Three"] },
-  { label: "Fecha fin", placeholder: "AAAA-MM-DD", values: ["A", "B", "C"] }
+  { label: "Fecha inicio", placeholder: "AAAA-MM-DD"},
+  { label: "Fecha fin", placeholder: "AAAA-MM-DD"}
 ];
 
 const useBuscarProductos = () => {
   const [filtro, setFiltro] = useState({
-    "Fecha inicio": "",
-    "Fecha fin": "",
+    "Fecha inicio": null,
+    "Fecha fin": null,
   });
 
   const handleFiltroChange = (seccion, value) => {
@@ -79,75 +79,8 @@ const Planilla = () => {
     }
 
     try {
-      const handleBuscarClick = async () => {
-        if (filtro["Fecha inicio"] === "") {
-          filtro["Fecha inicio"] = null;
-        }
-        if (filtro["Fecha fin"] === "") {
-          filtro["Fecha fin"] = null;
-        }
-
-        try {
-          const response = await getPayroll(); // Assuming getPayroll is an async function that returns a promise
-          const reporting = response.data.map((element) => ({
-            rowClass: "no-gutters",
-            columns: [
-              element.name,
-              element.lastName,
-              element.department,
-              element.role,
-              element.country,
-              element.startDate,
-              element.endDate,
-              element.grossSalary,
-              element.netSalary,
-              element.deductions,
-              element.percentage
-            ],
-          }));
-
-          setReportingData(reporting);
-          console.log(reporting)
-
-        } catch (error) {
-          console.log(error);
-        }
-      };
-        if (filtro["Fecha inicio"] === "") {
-          filtro["Fecha inicio"] = null;
-        }
-        if (filtro["Fecha fin"] === "") {
-          filtro["Fecha fin"] = null;
-        }
-
-        try {
-          const response = await getPayroll(filtro["Fecha inicio"], filtro["Fecha fin"]);
-          console.log(response.data);
-
-          const reporting = response.data.map((element) => ({
-            rowClass: "no-gutters",
-            columns: [
-              element.name,
-              element.lastName,
-              element.department,
-              element.role,
-              element.country,
-              element.startDate,
-              element.endDate,
-              element.grossSalary,
-              element.netSalary,
-              element.deductions,
-              element.percentage
-            ],
-          }));
-
-          setReportingData(reporting);
-          console.log(reporting)
-
-        } catch (error) {
-          console.log(error);
-        }
-      };
+      const response = await getPayroll(filtro["Fecha inicio"], filtro["Fecha fin"]);
+      console.log(response.data);
 
       const reporting = response.data.map((element) => ({
         rowClass: "no-gutters",
@@ -167,15 +100,14 @@ const Planilla = () => {
       }));
 
       setReportingData(reporting);
-      console.log(reporting);
+      console.log(reporting)
 
-    try {
-      // Your code for handling the error goes here
     } catch (error) {
       console.log(error);
-    }
+      }
+    
 
-    // Logic for searching products with the selected filters
+
     // Lógica para buscar productos con los filtros seleccionados
     console.log("Buscar productos con filtro:", filtro);
     // Aca se puede acceder al array o se puede ver en la termianl
@@ -189,14 +121,6 @@ const Planilla = () => {
     setFilterdItems(reportingData);
   }, []);
 
-  useEffect(() => {
-    const filteredData = reportingData.filter((item) =>
-      item.columns.some((column) =>
-        column.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-    setFilterdItems(filteredData);
-  }, [searchTerm]);
 
 
   // Does the search bar work
@@ -247,7 +171,7 @@ const Planilla = () => {
             </Form>
 
           <div className="vertical-scroll-container">
-            {renderRows(filterdItems)}
+            {renderRows(filteredData)}
           </div>
         </Container>
       </Container>

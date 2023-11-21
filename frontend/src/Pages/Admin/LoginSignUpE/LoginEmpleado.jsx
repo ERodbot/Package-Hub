@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import './LoginEmpleadoE.css';
 import trevolImage from '../../../assets/Decorations/trevol_skate.png';
 import trevolImage2 from '../../../assets/Logos/logotype.svg';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/auth";
 
 const LoginEmpleado = () => {
+
+  const { isAuthenticated, iniciarSesionEmpleado } = useAuth();
+
   // Function to save information of the complaint answers
   const [formData, setFormData] = useState({
     username: "",
@@ -25,6 +30,7 @@ const LoginEmpleado = () => {
     e.preventDefault();
     // Acces the console form data
     console.log(formData);
+    iniciarSesionEmpleado(formData);
  
   };
   // Renders the component in the page
@@ -61,7 +67,7 @@ const LoginEmpleado = () => {
             </button>
           </Link>
         </div>
-        <Link to="/registroCliente" className="registrarLink">
+        <Link to="/registroEmpleado" className="registrarLink">
         Registrarse
         </Link>
       </form>

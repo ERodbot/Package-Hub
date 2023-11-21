@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
-import { loginRequest, verifyToken } from "../api/auth";
+import { loginRequest, verifyToken, loginEmployee } from "../api/auth";
 import { useNavigate } from "react-router";
 
 const AuthContext = createContext();
@@ -27,6 +27,16 @@ export const AuthProvider = ({ children }) => {
       console.log(err);
     }
   };
+
+  const iniciarSesionEmpleado = async (formData) => {
+    try {
+      const res = await loginEmployee(formData);
+      setUser(res.data);
+      setIsAuthenticated(true);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const logout = () => {
     Cookies.remove("token");
@@ -69,6 +79,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         logout,
         loading,
+        iniciarSesionEmpleado
       }}
     >
       {children}

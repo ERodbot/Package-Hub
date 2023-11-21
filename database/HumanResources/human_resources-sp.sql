@@ -30,3 +30,22 @@ END //
 
 DELIMITER // 
 
+DELIMITER $$
+
+CREATE PROCEDURE registerEmployee(
+	IN name VARCHAR(45),
+    IN lastName VARCHAR(45),
+    IN username VARCHAR(45),
+    IN idRole INT,
+    IN idContactInfo INT,
+    IN idPayHourPerEmployee INT,
+    IN enabled INT,
+    IN idAddress INT,
+    IN password VARCHAR(200),
+    IN email VARCHAR(80)
+)
+BEGIN
+    INSERT INTO Employee (name, lastName, username, idRole, idContactInfo, idPayHourPerEmployee, enabled, idAddress, password, email)
+	VALUES (name, lastName, username, idRole, idContactInfo, idPayHourPerEmployee, enabled, idAddress, password, email);
+END $$
+
