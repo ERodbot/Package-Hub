@@ -221,8 +221,9 @@ def getEmployeeOrders(db: db_dependency, usernameclient: str | None = None, emai
                 'emissionDate': order[2], 
                 'status': order[3], 
                 'clientName': order[4],
-                'clientUsername': order[5], 
-                'distance': order[6]
+                'clientLastname': order[5],
+                'clientUsername': order[6], 
+                'distance': order[7]
             })
 
     except DBAPIError as e:

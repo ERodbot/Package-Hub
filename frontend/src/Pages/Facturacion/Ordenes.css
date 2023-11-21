@@ -101,3 +101,36 @@
 .row-link:hover {
   color: blue !important;
 }
+
+.respuesta-container {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: #bbbbbb;
+  height: fit-content;
+  text-align: left;
+  align-items: center;
+  font-size: 24px;
+  padding: 15px;
+}
+
+.answerRows {
+  margin-bottom: 10px;
+}
+
+.respuesta-container .answerRows {
+  display: flex;
+  align-items: center; /* Centers vertically the elements */
+}
+
+.buscarBtn {
+  background-color: #eb9f0b;
+  width: 15%;
+  color: black;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.buscarBtn:hover {
+  background-color: #b77c08;
+  color: black;
+}
+

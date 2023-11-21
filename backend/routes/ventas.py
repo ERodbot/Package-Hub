@@ -43,3 +43,20 @@ def registerVentaDetail(db: db_dependency, orderid: int, product: str, quantity:
     except DBAPIError as e:
         error_message = e.args[0]
         return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+    
+    
+@ventas.post("/updateEstadoOrder")
+def updateEstadoOrder(db: db_dependency, order_id: int, new_status_id: int):
+    query = text("""(f"EXEC ('CALL updateOrderStatusWithLog({order_id}, {new_status_id})') AT [support-sales];")""")
+    params = {
+        'order_id': order_id,
+        'new_status_id': new_status_id  
+    }
+    try:
+        order = db.execute(query, params).fetchone()
+        return order[0]
+    except DBAPIError as e:
+        error_message = e.args[0]
+        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+    
+    return ordedMisc

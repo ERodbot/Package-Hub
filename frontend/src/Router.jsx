@@ -40,13 +40,14 @@ function Router() {
   return (
     <AuthProvider>
       <CarritoProvider>
+        <Route path="/productDetail" element={<ProductDetails />}></Route>
+
         <BrowserRouter>
           <Routes>
             <Route path="/registroCliente" element={<SignC />}></Route>
             <Route path="/inicioSesionCliente" element={<LoginC />}></Route>
             <Route path="/inicioSesionEmpleado" element={<LoginE />}></Route>
             <Route path="/registroEmpleado" element={<SignE />}></Route>
-            <Route path="/productDetail" element={<ProductDetails />}></Route>
             <Route path="/Busqueda" element={<Busqueda />}></Route>
             <Route path="/snacks" element={<Snacks />}></Route>
             <Route path="/answerComplaints" element={<Complaints />}></Route>
