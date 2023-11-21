@@ -138,6 +138,10 @@ CREATE OR ALTER PROCEDURE [dbo].[GetProductsByCategory]
     @categoryId INT
 AS
 BEGIN
+    -- declarar tablass temporales
+    -- guardar los datos del query en una tabla temporal
+    -- hacer UNION de las tablas
+
     EXEC ('EXEC [inventory].[dbo].GetProductsByCategory @categoryId = ?', @categoryId) AT [na-inventory];
 
 END;
