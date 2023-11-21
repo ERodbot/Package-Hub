@@ -250,3 +250,27 @@ def getEmployeeOrders(db: db_dependency, usernameclient: str | None = None, emai
     
     return orders_dict
 
+
+@reporting.get("/getClientOrders")
+def getClientOrders(db: db_dependency, usernameclient: str | None = None, email: str | None = None):
+    query = text("""EXEC usp_GetOrdersListClient @usernameclient=:usernameclient, @email=:email""")
+    params = {
+        'usernameclient': usernameclient,
+        'email': email
+    }
+    try:
+        ordersC = db.execute(query, params).fetchall()
+        ordersC_dict = []
+        for order in ordersC:
+            ordersC_dict.append({
+                'invoiceNumber': order[0], 
+                'emissionDate': order[1], 
+                'status': order[2], 
+                'distance': order[3]
+            })
+
+    except DBAPIError as e:
+        error_message = e.args[0]
+        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+    
+    return ordersC_dict

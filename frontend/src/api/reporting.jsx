@@ -18,6 +18,9 @@ const getTickets = () => axios.get(`/getTickets`);
 const getEmployeeOrders = (usernameclient, email) => axios.get(`/getEmployeeOrders`,
 { params: {'usernameclient': usernameclient, 'email': email}});
 
+const getClientOrders = (usernameclient, email) => axios.get(`/getClientOrders`,
+{ params: {'usernameclient': usernameclient, 'email': email}});
+
 export {
     getRoles,
     getProducts,
@@ -27,5 +30,6 @@ export {
     getReportVentas,
     getVentas,
     getTickets, 
-    getEmployeeOrders
+    getEmployeeOrders,
+    getClientOrders
 }
