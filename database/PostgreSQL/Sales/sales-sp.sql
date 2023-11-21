@@ -310,10 +310,10 @@ END;
 $$;
 
 -- Call the registerShipping stored procedure with specific parameters
-CALL registerShipping(2.5, 10);
+--CALL registerShipping(2.5, 10);
 
 -- Select all records from the "Shipping" table in the "sales" schema
-SELECT * FROM "sales"."Shipping";
+--SELECT * FROM "sales"."Shipping";
 
 
 -- Sp to insert orders in sqlserver

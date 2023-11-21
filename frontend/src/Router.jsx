@@ -30,7 +30,8 @@ import PerformanceReport from "./Pages/Admin/Performance/performance.jsx";
 import { AuthProvider } from "./contexts/auth.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
-import Branches from "./Pages/User/Branches/Branches.jsx";
+import Branches from "./Pages/Admin/Branches/Branches.jsx";
+import BranchesAdministration from "./Pages/Admin/BranchesAdministration/BranchesAdministrarion.jsx";
 
 function Router() {
   return (
@@ -71,6 +72,10 @@ function Router() {
           <Route path="/Buying" element={<BuyingPage />}></Route>
           <Route path="/shoppingCart" element={<ShoppingCart />}></Route>
           <Route path="/Branches" element={<Branches />}></Route>
+          <Route
+            path="/BranchesAdministration"
+            element={<BranchesAdministration />}
+          ></Route>
           <Route
             path="/SalesReport"
             element={<SalesFormReportConsult />}
