@@ -27,6 +27,38 @@ const useBuscarProductos = () => {
 
 function renderRows(data) {
   const titles = ["Nombre", "Email", "Fecha de Orden", "nombre producto", "categoria producto", "cantidad", "preciototal"];
+  const filteredData = data.filter(row => row.columns[3] != "Bolitas de queso");
+  const condicion = true
+
+  const filtroFinal = []; // Nuevo diccionario
+
+
+  for (let i = 0; i < data.length; i++) {
+    const row = data[i];
+    const columnValue = row.columns[3];
+    console.log((`${columnValue}`).toLowerCase().trim());
+
+    if (columnValue === "bolitas de queso") {
+      console.log("La condición es verdadera. ¡Este bloque se ejecutará!");
+    } else {
+      console.log("La condición es falsa. ¡Este bloque se ejecutará!");
+      filtroFinal.push(row); // Añade la fila al diccionario "Filtro final"
+    }
+  }
+  
+  // for (let i = 0; i < data.length; i++) {
+  //   const row = data[i];
+
+  //   // Render row
+
+  //   for (let columnIndex = 0; columnIndex < row.columns.length; columnIndex++) {
+
+  //     // Print the value of the current column
+  //     const columnValue = row.columns[3];
+  //     console.log(`${columnValue}`);
+  //   }
+  // }
+
   return (
     <>
     {/* Header row with titles */}
@@ -39,7 +71,7 @@ function renderRows(data) {
     </Row>
 
     {/* Data rows */}
-    {data.map((row, index) => (
+    {filtroFinal.map((row, index) => (
     <Row key={index} className={index % 2 === 0 ? "even-row" : "odd-row"}>
       {row.columns.map((key, columnIndex) => (
         <Col

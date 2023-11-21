@@ -28,7 +28,7 @@ def getRoles(db: db_dependency):
 
 @reporting.get("/getProducts")
 def getProducts(db: db_dependency):
-    query = text("""    """)
+    query = text("""SELECT name FROM [na-inventory].[inventory].[dbo].Products""")
     try:
         products = db.execute(query).fetchall()
 
@@ -221,4 +221,32 @@ def getTickets(db: db_dependency):
 
     return reporteTickets
 
+
+
+@reporting.get("/getEmployeeOrders")
+def getEmployeeOrders(db: db_dependency, usernameclient: str | None = None, email: str | None = None):
+    query = text("""EXEC usp_GetOrdersList @usernameclient=:usernameclient, @email=:email""")
+    params = {
+        'usernameclient': usernameclient,
+        'email': email
+    }
+    try:
+        ordersE = db.execute(query, params).fetchall()
+        orders_dict = []
+        for order in ordersE:
+            orders_dict.append({
+                'idOrder': order[0], 
+                'invoiceNumber': order[1], 
+                'emissionDate': order[2], 
+                'status': order[3], 
+                'clientName': order[4],
+                'clientUsername': order[5], 
+                'distance': order[6]
+            })
+
+    except DBAPIError as e:
+        error_message = e.args[0]
+        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+    
+    return orders_dict
 
