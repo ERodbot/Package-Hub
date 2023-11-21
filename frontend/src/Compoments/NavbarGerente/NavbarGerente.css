@@ -1,0 +1,48 @@
+#custom-navbar {
+    background-color: white;
+    height: 12vh;
+    border: #BBBBBB;
+    padding: 0; /* Elimina el padding */
+    margin:0;
+}
+
+#custom-container{
+    padding: 0;
+    margin: 0;
+}
+#custom-brand {
+    width: 5rem;
+    height: 5rem;
+    margin: 0; /* Elimina el margen */
+}
+
+#custom-img {
+    height: 4rem;
+    margin: 0; /* Elimina el margen */
+}
+
+#custom-navlink {
+    font-family: 'Sedgwick Ave Display', cursive;
+    font-size: 3.5vh;
+    margin: 0; /* Elimina el margen */
+}
+
+#custom-button {
+    font-family: 'Sedgwick Ave Display', cursive;
+    font-size: 3.5vh;
+    margin: 0; /* Elimina el margen */
+}
+
+#custom-searchbar {
+    border-radius: 5rem;
+    width: 80vh;
+    height: auto;
+    border: 3px solid black;
+    margin-left: 1rem;
+    margin-left: 1rem;
+}
+
+#custom-dropdown {
+    margin-right: 15%;
+    margin-top:100%;
+}

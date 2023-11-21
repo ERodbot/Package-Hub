@@ -126,7 +126,7 @@ def getPayroll(db: db_dependency, start_date: str | None = None, end_date: str |
                 'grossSalary': row[6],
                 'netSalary': row[7],
                 'deductions': row[8],
-                'percentage': row[9],
+                'percentage': row[9]
             })
         
     except DBAPIError as e:
@@ -135,45 +135,26 @@ def getPayroll(db: db_dependency, start_date: str | None = None, end_date: str |
     
     return payroll_dict
 
-@reporting.get("/getReportVentas")
-def getReportVentas(db: db_dependency, productName: str | None = None, categoryName: str | None = None, startDate: str | None = None):
 
-    query = text("""EXEC viewReport @productName=:productName, @categoryName=:categoryName, @startDate=:startDate""")
+@reporting.get("/getVentas")
+def getVentas(db: db_dependency, productName: str | None = None, categoryName: str | None = None, startDate: str | None = None):
+
+    query = text("""EXEC viewReport""")
+    try:
+        ventas = db.execute(query)
+    except DBAPIError as e:
+        error_message = e.args[0]
+        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+    query = text("""SELECT * FROM dbo.TempReportResults WHERE (:productName IS NULL OR productName LIKE :productName) AND (:categoryName IS NULL OR categoryName LIKE :categoryName) AND (:startDate IS NULL OR orderDate >= :startDate)""")
     params = {
         'productName': productName,
         'categoryName': categoryName,
-        'startDate': startDate,
+        'startDate': startDate
     }
-    try:
-        reportVentas = db.execute(query, params).fetchall()
-
-        # Make the dictionary to return
-        reportSales = []
-        for rowS in reportVentas:
-            reportSales.append({
-                'clientName': rowS[0],
-                'clientEmail': rowS[1],
-                'orderDate': rowS[2],
-                'productName': rowS[3],
-                'categoryName': rowS[4],
-                'quantity': rowS[5],
-                'Total': rowS[6]
-            })
-        
-
-    except DBAPIError as e:
-        error_message = e.args[0]   
-        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
-
-    return reportSales
-
-
-@reporting.get("/getVentas")
-def getVentas(db: db_dependency):
-    query = text("""SELECT * FROM dbo.TempReportResults""")
 
     try:
-        rVentas = db.execute(query).fetchall()
+        rVentas = db.execute(query, params).fetchall()
 
         # Make the dictionary to return
         reporteVentas = []

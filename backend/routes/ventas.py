@@ -26,12 +26,15 @@ def registerVenta(db: db_dependency, email: str, totalPrice: float, payType: str
         return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
     
 @ventas.post("/createOrderDetail")
-def registerVentaDetail(db: db_dependency, idOrder: int, idProduct: int, quantity: int):
-    query = text("""EXEC createOrderDetail @idOrder=:idOrder, @idProduct=:idProduct, @quantity=:quantity""")
+def registerVentaDetail(db: db_dependency, orderid: int, product: str, quantity: int, price: float, discount: float):
+
+    query = text("""EXEC createOrderDetail @orderid=:orderid, @product=:product, @quantity=:quantity, @price=:price, @discount=:discount""")
     params = {
-        'idOrder': idOrder,
-        'idProduct': idProduct,
-        'quantity': quantity
+        'orderid': orderid,
+        'product': product,
+        'quantity': quantity,
+        'price': price,
+        'discount': discount
     }
 
     try:

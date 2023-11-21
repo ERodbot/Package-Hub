@@ -15,6 +15,7 @@ from config.auth import ALGORITHM, SECRET_KEY
 from sqlalchemy import text
 from sqlalchemy.exc import DBAPIError
 from typing import List, Dict
+from schemas.Employee import Employee
 
 auth = APIRouter(
     tags=["auth"],
@@ -146,7 +147,6 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
     }
     try:
         user = db.execute(query, params).fetchone()
-        return user
         pwd_db = user[0]
         email = user[1]
         if pwd_db:
@@ -157,6 +157,7 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
                     username=client_dict['username'],  # Ajusta esto según tu modelo de datos
                     expires_delta=timedelta(minutes=20)
                 )
+                
                 # Devuelve el token en lugar del usuario
                 response.set_cookie(key="token", value=access_token, httponly=False)
                 return {'status': status.HTTP_200_OK, 'data': {'email': email}}
@@ -172,8 +173,94 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Wrong password')
         else:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=error_message)
-        
 
+@auth.post("/registerEmpleado")
+def createEmpleado(employee: Employee, db: db_dependency):
+    employee_dict = employee.model_dump()
+
+    # hash the password
+    hashed_password = bcrypt.hash(employee_dict['password'])
+    employee_dict['password'] = hashed_password
+    # check if the password is the same as hashed
+    # print(bcrypt.verify(employee_dict['password'], hashed_password))
+
+    query = text("""
+                EXEC registerEmployee
+                @name=:name,  
+                @lastName=:lastname, 
+                @username=:username, 
+                @email=:email,
+                @phone=:phone,
+                @address=:address, 
+                @city=:city, 
+                @country=:country, 
+                @postalCode=:postal_code, 
+                @password=:password,
+                @role=:rol""")
+    params = {
+                'name': employee_dict['name'], 
+                'lastname': employee_dict['lastname'], 
+                'username': employee_dict['username'], 
+                'email': employee_dict['email'],
+                'phone': employee_dict['phone'],
+                'address': employee_dict['street'], 
+                'city': employee_dict['city'], 
+                'country': employee_dict['country'], 
+                'postal_code': employee_dict['postal_code'], 
+                'password': employee_dict['password'],
+                'rol': employee_dict['rol']
+              }
+
+    try:
+        db.execute(query, params)
+    except DBAPIError as e:
+        error_message = e.args[0]
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+
+    return employee_dict
+
+@auth.post("/loginEmpleado")
+def loginEmpleado(employee: ClientLogin, response: Response, db: db_dependency):
+    employee_dict = employee.model_dump()
+    query = text("""SELECT Employee.password Password, Employee.email Email, Role.name as Role FROM hr.[human-resources]..Employee as Employee 
+                    INNER JOIN hr.[human-resources]..Role as Role ON Employee.idRole = Role.idRole
+                    WHERE Employee.username = :username""")
+    params = {
+        'username': employee_dict['username'],
+    }
+    try:
+        user = db.execute(query, params).fetchone()
+        pwd_db = user[0]
+        email = user[1]
+        role = user[2]
+        if pwd_db:
+            validate = bcrypt.verify(employee_dict['password'], pwd_db)
+            if validate:
+                # El usuario y contraseña son válidos, procede con la creación del token
+                access_token = create_access_token(
+                    username=employee_dict['username'],
+                    email=email,
+                    role= role,
+                    # Ajusta esto según tu modelo de datos
+                    expires_delta=timedelta(minutes=20)
+                )
+                # Devuelve el token en lugar del usuario
+                response.set_cookie(key="token", value=access_token, httponly=False)
+                return {'status': status.HTTP_200_OK, 'data': {'email': email, 'role': role}}
+            
+        # Si no se encontró el usuario, se levanta una excepción
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+
+    except DBAPIError as e:
+        error_message = e.args[0]
+        if 'User does not exist' in error_message:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User does not exist')
+        elif 'Wrong password' in error_message:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Wrong password')
+        else:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=error_message)
+    
 # username = "xd"
 #     query = text("""SELECT password FROM [support-sales].[support-sales].[sales].Clients WHERE username = :username""")
 #     params = {"username": username}
@@ -195,8 +282,11 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
 #     else:
 #         raise HTTPException(status_code=200 , detail="Password is incorrect")
 
-def create_access_token(username: str, expires_delta: timedelta = None):
-    encode = {"sub" : username}
+def create_access_token(username: str, email: str, role = str | None, expires_delta: timedelta = None):
+    encode = {"sub" : username,
+              "email": email,
+              "role": role}
+
     expires = datetime.utcnow() + timedelta(minutes=20)
     encode.update({"exp": expires})
 
@@ -232,8 +322,10 @@ async def get_current_user(token: Optional[str] = Depends(get_token_from_cookie)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
+        email: str = payload.get("email")
+        role: str = payload.get("role")
         if username is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
-        return {"username": username}
+        return {"username": username, "email": email, "role": role }
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")

@@ -563,14 +563,14 @@ CREATE OR ALTER PROCEDURE viewReport
 AS
 BEGIN
     -- Crear una tabla temporal
-    CREATE TABLE #TempProductList (
+    CREATE TABLE TempProductList (
         [idProduct] INT,
         [name] NVARCHAR(30), 
 		[categoryName] NVARCHAR(30)
     );
 
     -- Insertar datos en la tabla temporal desde el procedimiento [na-inventory].[inventory].[dbo].[GetAllProducts]
-    INSERT INTO #TempProductList ([idProduct], [name], [categoryName])
+    INSERT INTO TempProductList ([idProduct], [name], [categoryName])
     EXEC [na-inventory].[inventory].[dbo].[GetAllProducts];
 
     -- Crear o alterar la tabla permanente
@@ -603,7 +603,7 @@ BEGIN
         vr.[quantity],
         vr.[lineTotal] AS Total
     FROM OPENQUERY([support-sales], 'SELECT * FROM public.get_sales_report()') vr
-    LEFT JOIN #TempProductList p ON vr."idProduct" = p."idProduct"
+    LEFT JOIN TempProductList p ON vr."idProduct" = p."idProduct"
     WHERE
         (@productName IS NULL OR p.[name] LIKE '%' + @productName + '%')
         AND (@startDate IS NULL OR vr.[orderDate] >= @startDate)
@@ -613,7 +613,7 @@ BEGIN
 		SELECT * FROM dbo.TempReportResults;
 
     -- Eliminar las tablas temporales al finalizar el procedimiento
-    DROP TABLE #TempProductList;
+    DROP TABLE dbo.TempProductList;
 END;
 
 -- SELECT * FROM dbo.TempReportResults
@@ -905,6 +905,122 @@ CREATE OR ALTER PROCEDURE usp_getConsultInfo
 
 
 
+
+
+
+
+
+CREATE OR ALTER PROCEDURE usp_getConsultInfo
+AS 
+BEGIN
+    -- Some variable declarations and initialization
+    DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @CustomError INT
+    DECLARE @Message VARCHAR(200)
+    DECLARE @date DATETIME
+    DECLARE @computer VARCHAR(50)
+    DECLARE @username VARCHAR(50)
+    DECLARE @checksum VARBINARY(150)
+
+    SET @date = GETDATE()
+    SET @computer = 'me'
+    SET @username = 'root'
+    SET @checksum = CHECKSUM(@date, @computer, @username, '12345password')
+
+    DECLARE @InicieTransaccion BIT = 0
+    
+
+    -- Validaci�n de rol_filter si se proporciona
+IF @name IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.name = @name)
+    BEGIN 
+        SET @Message = 'Error - El cliente con nombre especificado no existe en la base de datos.'
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error seg�n tus necesidades
+        SET @CustomError = 50016 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
+        RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+        RETURN
+    END
+END
+
+-- Validaci�n de country_filter si se proporciona
+IF @lastName IS NOT NULL
+BEGIN
+    IF NOT EXISTS (SELECT TOP 1 * FROM [support-sales].[support-sales].[sales].Clients WHERE Clients.lastName = @lastName)
+    BEGIN 
+        SET @Message = 'Error - El cliente con apellido especificado no existe en la base de datos.'
+        SET @ErrorSeverity = 2 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
+        SET @ErrorState = 2 -- Puedes ajustar el estado de error seg�n tus necesidades
+        SET @CustomError = 50017 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
+        RAISERROR('%s - Error Number: %i', @ErrorSeverity, @ErrorState, @Message, @CustomError)
+        RETURN
+    END
+END
+  
+
+    -- Verificar si no hay una transacci�n en curso
+    IF @@TRANCOUNT = 0
+    BEGIN
+        SET @InicieTransaccion = 1
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+        BEGIN TRANSACTION
+    END
+
+    -- Inicio de manejo de errores
+    BEGIN TRY
+        SET @CustomError = 2001
+
+		-- Consulta de servicio al cliente
+		SELECT 
+			ti.description,
+			ti.createdAt,
+			ord.invoiceNumber,
+			st.name AS ticketState,
+			tt.name AS inquiryType,
+			cll.date AS callDate,
+			ct.name as callType,
+			ct.description as callDescription
+		FROM [support-sales].[support-sales].[human-resources].Tickets ti
+		INNER JOIN  
+			 [support-sales].[support-sales].[sales].Orders ord ON ord.idOrder = ti.idOrder
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].TicketType tt ON tt.idTicketType = ti.idTicketType
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].Calls cll  ON cll.idTicket = ti.idTicket
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].CallType ct  ON cll.idTicket = ti.idTicket
+		INNER JOIN  
+			[support-sales].[support-sales].[human-resources].StateType st  ON st.idStateType = cll.idStateType
+		INNER JOIN  
+			[support-sales].[support-sales].sales.Clients cli  ON cli.idClient = ord.idClient
+		WHERE 
+			([support-sales].[support-sales].[human-resources].StateType.name IN ('Open', 'Pending'))
+			AND (@name IS NULL OR  cli.name = @name)
+			AND (@lastName IS NULL OR cli.lastName = @lastName)
+		IF @InicieTransaccion=1 BEGIN
+			COMMIT
+		END
+	END TRY
+	BEGIN CATCH
+		SET @ErrorNumber = ERROR_NUMBER()
+		SET @ErrorSeverity = ERROR_SEVERITY()
+		SET @ErrorState = ERROR_STATE()
+		SET @Message = ERROR_MESSAGE()
+		
+		IF @InicieTransaccion=1 BEGIN
+			ROLLBACK
+		END
+		RAISERROR('%s - Error Number: %i', 
+			@ErrorSeverity, @ErrorState, @Message, @CustomError)
+	END CATCH	
+END
+RETURN 0
+GO
+
+
+
+
+
 --Procedure to get orders by search
 
 CREATE OR ALTER PROCEDURE usp_GetOrdersBySearch
@@ -1153,28 +1269,66 @@ END;
 
 
 
-
-
 CREATE OR ALTER PROCEDURE usp_GetBranchList
 AS 
 BEGIN
    SELECT bo.branchName,
-		  bo.locationBranch,
+		  
 		  bo.opens,
 		  bo.closes,
 		  co.name AS country,
 		  cu.name AS currency,
-		  cl.name AS client
+		  emp.name AS clientName,
+		  emp.lastName AS clientLastName,
+
 	FROM [support-sales].[support-sales].[sales].BranchOffice bo
 	INNER JOIN [hr].[human-resources]..Country as co ON co.idCountry = bo.idCountry
 	INNER JOIN [hr].[human-resources]..Currency as cu ON cu.idCurrency = bo.idCurrency
-	INNER JOIN [support-sales].[support-sales].[sales].Clients as cl ON cl.idClient = bo.idManager
+	INNER JOIN [hr].[human-resources]..Employee as cl ON emp.idClient = bo.idManager
 END
 RETURN 0
 GO
 
--- EXEC GetAllInventoryProducts
+ EXEC usp_GetBranchList
 
+
+
+
+CREATE OR ALTER PROCEDURE usp_updateBranchData
+    @branchNameNew NVARCHAR(MAX),
+    @branchNameOld NVARCHAR(MAX),
+    @opens NVARCHAR(MAX),
+    @closes NVARCHAR(MAX),
+    @description NVARCHAR(MAX),
+    @currency NVARCHAR(MAX),
+    @managerName NVARCHAR(MAX),
+	@managerLastName NVARCHAR(MAX),
+    @country NVARCHAR(MAX)
+AS 
+BEGIN
+    DECLARE @idCountry INT;
+    DECLARE @idManager INT;
+    DECLARE @idCurrency INT;
+
+    SELECT @idCountry = idCountry FROM [hr].[human-resources]..Country WHERE name = @country;
+    SELECT @idManager = idEmployee FROM [hr].[human-resources]..Employee WHERE name = @managerName AND lastName = @managerLastName;
+    SELECT @idCurrency = idCurrency FROM [hr].[human-resources]..Currency WHERE name = @currency;
+
+    UPDATE [support-sales].[support-sales].[sales].BranchOffice
+    SET idCountry = @idCountry,
+        idManager = @idManager,
+        idCurrency = @idCurrency,
+        opens = @opens,
+        closes = @closes,
+        description = @description,
+        branchName = @branchNameNew
+    WHERE branchName = @branchNameOld;
+
+    RETURN 0;
+END;
+
+
+	
 ------------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE createOrder
     @email VARCHAR(MAX),
@@ -1277,7 +1431,6 @@ BEGIN
 
 END;
 
-
 CREATE OR ALTER PROCEDURE usp_GetOrdersListClient
     @usernameclient VARCHAR(100) = NULL,
     @email VARCHAR(100) = NULL
@@ -1366,3 +1519,227 @@ GO
 
 -- EXEC usp_GetOrdersListClient
 
+
+
+CREATE OR ALTER PROCEDURE createOrder
+    @email VARCHAR(MAX),
+    @totalPrice FLOAT,
+    @PayType VARCHAR(50)
+AS
+BEGIN
+    -- Variable for error messages
+    DECLARE @ErrorMessage NVARCHAR(200);
+
+    -- Check if the specified payment type exists
+    IF NOT EXISTS (SELECT name FROM [support-sales].[support-sales].[sales].PayType WHERE name = @PayType)
+    BEGIN
+        SET @ErrorMessage = 'Payment type is not supported or does not exist';
+        RAISERROR(@ErrorMessage, 5, 1);
+        RETURN;
+    END
+
+    -- Check if the total price is valid
+    IF @totalPrice < 0
+    BEGIN
+        SET @ErrorMessage = 'Price cannot be lower than 0';
+        RAISERROR(@ErrorMessage, 5, 1);
+        RETURN;
+    END
+
+    -- Declare variables for stored procedure use
+    DECLARE @statusActual VARCHAR(MAX);
+    DECLARE @idEmployee INT;
+    DECLARE @idClient INT;
+    DECLARE @idOrderStatus INT;
+    DECLARE @idShipping INT;
+    DECLARE @isEnabled INT;
+    DECLARE @idPayStatus INT;
+    DECLARE @idPayType INT;
+    DECLARE @idOrder INT;
+
+
+    -- Get the order status for processing
+    SELECT @statusActual = idOrderStatus FROM [support-sales].[support-sales].[sales].OrderStatus WHERE name = 'Processing';
+
+    -- Get a random employee ID
+    SELECT TOP 1 @idEmployee = idEmployee FROM hr.[human-resources]..Employee ORDER BY NEWID();
+
+    -- Get the last inserted client ID based on the specified email
+    SELECT TOP 1 @idClient = idClient FROM [support-sales].[support-sales].[sales].Clients WHERE email = @email;
+
+    -- Get the order status for processing
+    SELECT @idOrderStatus = idOrderStatus FROM [support-sales].[support-sales].[sales].OrderStatus WHERE name = 'Processing';
+
+	
+    -- Call registerShipping to get the shipping information
+    BEGIN TRY
+        EXEC ('CALL registerShipping(?, ?)',
+            2.1,
+            1120
+        ) AT [support-sales];
+    END TRY
+    BEGIN CATCH
+        PRINT 'Error occurred during execution: ';
+        THROW;  -- Re-throw the caught exception
+    END CATCH
+
+
+	SELECT  TOP 1 @idShipping = idShipping FROM [support-sales].[support-sales].[sales].Shipping ORDER BY idShipping DESC;
+
+    -- Set the order as enabled
+    SET @isEnabled = 1;
+
+    -- Get the payment status for 'Paid'
+    SELECT @idPayStatus = idPayStatus FROM [support-sales].[support-sales].[sales].PayStatus WHERE name = 'Paid';
+
+    -- Get the payment type ID based on the specified PayType
+    SELECT @idPayType = idPayType FROM [support-sales].[support-sales].[sales].PayType WHERE name = @PayType;
+
+
+    -- Insert a new order into the Orders table
+    BEGIN TRY
+        EXEC ('CALL registerOrder(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            @idClient,
+            @totalPrice,
+            @statusActual,
+            @idEmployee,
+            @idOrderStatus,
+            @idShipping,
+            @isEnabled,
+            @idPayStatus,
+            @idPayType
+        ) AT [support-sales];
+    END TRY
+    BEGIN CATCH
+        PRINT 'Error occurred during execution: dickcock';
+        THROW;  -- Re-throw the caught exception
+    END CATCH
+
+	SELECT TOP 1 @idOrder = idOrder FROM [support-sales].[support-sales].[sales].Orders ORDER BY idOrder DESC;
+
+    -- Now, @idOrder contains the idOrder value returned from registerOrder
+    SELECT @idOrder;
+
+END;
+
+--procedure to get register employee
+
+CREATE or alter PROCEDURE [dbo].[registerEmployee]
+	@name nvarchar(50),
+    @lastName nvarchar(50),
+    @username nvarchar(50),
+    @email nvarchar(50),
+    @phone nvarchar(50),
+    @address nvarchar(80),
+    @city nvarchar(45),
+    @country nvarchar(45),
+    @postalCode int,
+    @password nvarchar(MAX),
+	@role nvarchar(200)
+AS
+BEGIN
+    -- Check if the user already exists
+    IF EXISTS (SELECT email FROM hr.[human-resources]..Employee WHERE email = @email)
+    BEGIN
+        DECLARE @ErrorMessage NVARCHAR(200) = 'User already exists';
+        RAISERROR(@ErrorMessage, 16, 1);
+        RETURN;
+    END
+
+	-- Declare variables for stored procedure use
+    DECLARE @idAddress int;
+    DECLARE @idContact int;
+    DECLARE @idCity int;
+    DECLARE @idAddressType int;
+    DECLARE @idContactType int;
+	DECLARE @idRole int;
+	DECLARE @idEmployee int;
+	DECLARE @idGeoposition int;
+	DECLARE @spQuery NVARCHAR(MAX);
+	DECLARE @idPayHourPerEmployee INT;
+
+
+    -- Get id for the AddressType and ContactType
+    SELECT @idAddressType = idAddressType FROM hr.[human-resources]..AddressType WHERE name = 'Personal';
+    SELECT @idContactType = idContactType FROM hr.[human-resources]..ContactType WHERE name = 'Personal';
+
+
+    -- Get id for City
+    SELECT @idCity = idCity FROM hr.[human-resources]..City WHERE name = @city;
+	SELECT @idRole = idRole FROM hr.[human-resources]..Role WHERE name = @role;
+	
+	-- Get the last id inserted into Clients
+	SELECT TOP 1 @idEmployee = idEmployee FROM hr.[human-resources]..Employee ORDER BY idEmployee DESC;
+
+	-- First 2 numbers should be replaced with something logical, not random numbers, third number should be idClient
+	-- Insert into LocationXClient
+	SET @idEmployee += 1;
+
+	SET @idGeoposition = 1
+
+    -- Insert new Address into Address table
+	-- Constructing the SQL query
+	SET @spQuery = N'CALL InsertNewAddress(' + 
+             dbo.ConcatString(@address) + ', ' +  -- Address with single quotes escaped
+             dbo.ConcatInteger(@postalCode) + ', ' +  -- Postal Code
+             dbo.ConcatInteger(@idAddressType) + ', ' +  -- Address Type ID
+             dbo.ConcatInteger(@idCity) + ', ' +  -- City ID
+             dbo.ConcatInteger(@idGeoposition) + ')';  -- Geoposition ID
+
+
+-- Executing the query on the linked server
+	BEGIN TRY
+		EXEC (@spQuery) AT [hr];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ' + @spQuery;
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
+
+    -- Get newly inserted Address id
+    SELECT TOP 1 @idAddress = idAddress FROM hr.[human-resources]..Address ORDER BY idAddress DESC;
+	
+    -- Insert new Contact into Contact table
+	SET @spQuery = N'CALL InsertNewContactInfo(' +
+				dbo.ConcatString(@phone) + ', ' +
+				dbo.ConcatString(@email) + ', ' +
+				dbo.ConcatInteger(@idContactType) + ')';
+
+
+	BEGIN TRY
+		EXEC (@spQuery) AT [hr];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ' + @spQuery;
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
+
+    -- Get newly inserted Contact id
+    SELECT TOP 1 @idContact = idContactInfo FROM hr.[human-resources]..ContactInfo ORDER BY idContactInfo DESC;
+	
+	SET @idPayHourPerEmployee = 1;
+	
+	SELECT @name, @lastName, @username, @idRole, @idContact, @idPayHourPerEmployee, @idAddress, @password, @email;
+
+	SET	@spQuery = N'CALL registerEmployee(' +
+				dbo.ConcatString(@name) + ', ' +
+				dbo.ConcatString(@lastName) + ', ' +
+				dbo.ConcatString(@username) + ', ' +
+				dbo.ConcatInteger(@idRole) + ', ' +
+				dbo.ConcatInteger(@idContact) + ', ' +
+				dbo.ConcatInteger(@idPayHourPerEmployee) + ', ' +
+				dbo.ConcatInteger(1) + ', ' +
+				dbo.ConcatInteger(@idAddress) + ', ' +
+				dbo.ConcatString(@password) + ', ' +
+				dbo.ConcatString(@email) + ')';
+
+    -- Insert new Client into Client table
+	BEGIN TRY
+		EXEC (@spQuery) AT [hr];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ';
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
+
+END;
