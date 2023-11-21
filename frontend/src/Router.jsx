@@ -67,7 +67,7 @@ function Router() {
             <Route path="/performance" element={<PerformanceReport />}></Route>
             <Route path="/Consulta" element={<LayoutConsulta />}></Route>
             <Route path="/ReportSales" element={<SalesReport />}></Route>
-
+            <Route path="/Branches" element={<Branches />}></Route>
             {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/main" element={<MainPage />}>
               {" "}

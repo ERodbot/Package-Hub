@@ -141,10 +141,6 @@ CREATE OR ALTER PROCEDURE [dbo].[GetProductsByCategory]
     @categoryId INT
 AS
 BEGIN
-    -- declarar tablass temporales
-    -- guardar los datos del query en una tabla temporal
-    -- hacer UNION de las tablas
-
     EXEC ('EXEC [inventory].[dbo].GetProductsByCategory @categoryId = ?', @categoryId) AT [na-inventory];
 
 END;
@@ -1133,53 +1129,49 @@ RETURN 0
 GO
 
 
-CREATE OR ALTER PROCEDURE GetAllInventoryProducts
+
+
+--procedure to getReceipt
+
+CREATE OR ALTER PROCEDURE getReceipt
+    @invoiceNumber VARCHAR(100)  
 AS
 BEGIN
-    -- Seleccionar columnas específicas de la primera tabla
-    SELECT 
-        P.[name],
-        P.[description],
-		B.[name] AS NombreMarca,
-		P.[idLocation],
-        P.[quantity],
-        P.[price],
-		'NA-Inventory' AS bodega
-    FROM [na-inventory].[inventory].[dbo].[products] P
-	INNER JOIN [na-inventory].[inventory].[dbo].[Brands] B ON P.[idBrand] = B.[idBrand]
+	SELECT cl.name,
+		   cl.lastName,
+		   cl.email,
+		   ord.invoiceNumber,
+		   ord.total,
+		   ordd.lineTotal,
+		   prod.name
+	FROM [support-sales].[support-sales].[sales].Clients cl
+		INNER JOIN [support-sales].[support-sales].[sales].Orders ord ON ord.idClient = cl.idClient 
+		INNER JOIN [support-sales].[support-sales].[sales].OrderDetails ordd ON ordd.idOrder = ord.idOrder
+		INNER JOIN [na-inventory].[inventory].[dbo].Products prod ON prod.idProduct = ordd.idProduct 
+	WHERE ord.invoiceNumber = @invoiceNumber
+END;
 
 
 
-    -- Agregar los resultados de la segunda tabla
-    UNION ALL
-
-    SELECT 
-        P.[name],
-        P.[description],
-		B.[name] AS NombreMarca,
-		P.[idLocation],
-        P.[quantity],
-        P.[price],
-		'SA-Inventory' AS bodega
-    FROM [sa-inventory].[inventory].[dbo].[products] P 
-	INNER JOIN [sa-inventory].[inventory].[dbo].[Brands] B ON P.[idBrand] = B.[idBrand]
 
 
-    -- Agregar los resultados de la tercera tabla
-    UNION ALL
-
-    SELECT 
-        P.[name],
-        P.[description],
-		B.[name] AS NombreMarca,
-		P.[idLocation],
-        P.[quantity],
-        P.[price],
-		'caribbean-Inventory' AS bodega
-
-    FROM [caribbean-inventory].[inventory].[dbo].[products] P
-	INNER JOIN [caribbean-inventory].[inventory].[dbo].[Brands] B ON P.[idBrand] = B.[idBrand]
+CREATE OR ALTER PROCEDURE usp_GetBranchList
+AS 
+BEGIN
+   SELECT bo.branchName,
+		  bo.locationBranch,
+		  bo.opens,
+		  bo.closes,
+		  co.name AS country,
+		  cu.name AS currency,
+		  cl.name AS client
+	FROM [support-sales].[support-sales].[sales].BranchOffice bo
+	INNER JOIN [hr].[human-resources]..Country as co ON co.idCountry = bo.idCountry
+	INNER JOIN [hr].[human-resources]..Currency as cu ON cu.idCurrency = bo.idCurrency
+	INNER JOIN [support-sales].[support-sales].[sales].Clients as cl ON cl.idClient = bo.idManager
 END
+RETURN 0
+GO
 
 -- EXEC GetAllInventoryProducts
 
