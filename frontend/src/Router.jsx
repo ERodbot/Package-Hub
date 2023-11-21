@@ -68,6 +68,10 @@ function Router() {
             <Route path="/Consulta" element={<LayoutConsulta />}></Route>
             <Route path="/ReportSales" element={<SalesReport />}></Route>
             <Route path="/Branches" element={<Branches />}></Route>
+            <Route
+              path="/BranchesAdministration"
+              element={<BranchesAdministration />}
+            ></Route>
             {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/main" element={<MainPage />}>
               {" "}

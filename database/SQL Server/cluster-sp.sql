@@ -1153,29 +1153,171 @@ END;
 
 
 
-
-
 CREATE OR ALTER PROCEDURE usp_GetBranchList
 AS 
 BEGIN
    SELECT bo.branchName,
-		  bo.locationBranch,
+		  
 		  bo.opens,
 		  bo.closes,
 		  co.name AS country,
 		  cu.name AS currency,
-		  cl.name AS client
+		  emp.name AS clientName,
+		  emp.lastName AS clientLastName,
+
 	FROM [support-sales].[support-sales].[sales].BranchOffice bo
 	INNER JOIN [hr].[human-resources]..Country as co ON co.idCountry = bo.idCountry
 	INNER JOIN [hr].[human-resources]..Currency as cu ON cu.idCurrency = bo.idCurrency
-	INNER JOIN [support-sales].[support-sales].[sales].Clients as cl ON cl.idClient = bo.idManager
+	INNER JOIN [hr].[human-resources]..Employee as cl ON emp.idClient = bo.idManager
 END
 RETURN 0
 GO
 
--- EXEC GetAllInventoryProducts
+ EXEC usp_GetBranchList
 
+
+
+
+CREATE OR ALTER PROCEDURE usp_updateBranchData
+    @branchNameNew NVARCHAR(MAX),
+    @branchNameOld NVARCHAR(MAX),
+    @opens NVARCHAR(MAX),
+    @closes NVARCHAR(MAX),
+    @description NVARCHAR(MAX),
+    @currency NVARCHAR(MAX),
+    @managerName NVARCHAR(MAX),
+	@managerLastName NVARCHAR(MAX),
+    @country NVARCHAR(MAX)
+AS 
+BEGIN
+    DECLARE @idCountry INT;
+    DECLARE @idManager INT;
+    DECLARE @idCurrency INT;
+
+    SELECT @idCountry = idCountry FROM [hr].[human-resources]..Country WHERE name = @country;
+    SELECT @idManager = idEmployee FROM [hr].[human-resources]..Employee WHERE name = @managerName AND lastName = @managerLastName;
+    SELECT @idCurrency = idCurrency FROM [hr].[human-resources]..Currency WHERE name = @currency;
+
+    UPDATE [support-sales].[support-sales].[sales].BranchOffice
+    SET idCountry = @idCountry,
+        idManager = @idManager,
+        idCurrency = @idCurrency,
+        opens = @opens,
+        closes = @closes,
+        description = @description,
+        branchName = @branchNameNew
+    WHERE branchName = @branchNameOld;
+
+    RETURN 0;
+END;
+
+
+	
 ------------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE createOrder
+    @email VARCHAR(MAX),
+    @totalPrice FLOAT,
+    @PayType VARCHAR(50)
+AS
+BEGIN
+    -- Variable for error messages
+    DECLARE @ErrorMessage NVARCHAR(200);
+
+    -- Check if the specified payment type exists
+    IF NOT EXISTS (SELECT name FROM [support-sales].[support-sales].[sales].PayType WHERE name = @PayType)
+    BEGIN
+        SET @ErrorMessage = 'Payment type is not supported or does not exist';
+        RAISERROR(@ErrorMessage, 5, 1);
+        RETURN;
+    END
+
+    -- Check if the total price is valid
+    IF @totalPrice < 0
+    BEGIN
+        SET @ErrorMessage = 'Price cannot be lower than 0';
+        RAISERROR(@ErrorMessage, 5, 1);
+        RETURN;
+    END
+
+    -- Declare variables for stored procedure use
+    DECLARE @statusActual VARCHAR(MAX);
+    DECLARE @idEmployee INT;
+    DECLARE @idClient INT;
+    DECLARE @idOrderStatus INT;
+    DECLARE @idShipping INT;
+    DECLARE @isEnabled INT;
+    DECLARE @idPayStatus INT;
+    DECLARE @idPayType INT;
+    DECLARE @idOrder INT;
+
+
+    -- Get the order status for processing
+    SELECT @statusActual = idOrderStatus FROM [support-sales].[support-sales].[sales].OrderStatus WHERE name = 'Processing';
+
+    -- Get a random employee ID
+    SELECT TOP 1 @idEmployee = idEmployee FROM hr.[human-resources]..Employee ORDER BY NEWID();
+
+    -- Get the last inserted client ID based on the specified email
+    SELECT TOP 1 @idClient = idClient FROM [support-sales].[support-sales].[sales].Clients WHERE email = @email;
+
+    -- Get the order status for processing
+    SELECT @idOrderStatus = idOrderStatus FROM [support-sales].[support-sales].[sales].OrderStatus WHERE name = 'Processing';
+
+	
+    -- Call registerShipping to get the shipping information
+    BEGIN TRY
+        EXEC ('CALL registerShipping(?, ?)',
+            2.1,
+            1120
+        ) AT [support-sales];
+    END TRY
+    BEGIN CATCH
+        PRINT 'Error occurred during execution: ';
+        THROW;  -- Re-throw the caught exception
+    END CATCH
+
+
+	SELECT  TOP 1 @idShipping = idShipping FROM [support-sales].[support-sales].[sales].Shipping ORDER BY idShipping DESC;
+
+    -- Set the order as enabled
+    SET @isEnabled = 1;
+
+    -- Get the payment status for 'Paid'
+    SELECT @idPayStatus = idPayStatus FROM [support-sales].[support-sales].[sales].PayStatus WHERE name = 'Paid';
+
+    -- Get the payment type ID based on the specified PayType
+    SELECT @idPayType = idPayType FROM [support-sales].[support-sales].[sales].PayType WHERE name = @PayType;
+
+
+    -- Insert a new order into the Orders table
+    BEGIN TRY
+        EXEC ('CALL registerOrder(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            @idClient,
+            @totalPrice,
+            @statusActual,
+            @idEmployee,
+            @idOrderStatus,
+            @idShipping,
+            @isEnabled,
+            @idPayStatus,
+            @idPayType
+        ) AT [support-sales];
+    END TRY
+    BEGIN CATCH
+        PRINT 'Error occurred during execution: dickcock';
+        THROW;  -- Re-throw the caught exception
+    END CATCH
+
+	SELECT TOP 1 @idOrder = idOrder FROM [support-sales].[support-sales].[sales].Orders ORDER BY idOrder DESC;
+
+    -- Now, @idOrder contains the idOrder value returned from registerOrder
+    SELECT @idOrder;
+
+END;
+
+
+
+
 CREATE OR ALTER PROCEDURE createOrder
     @email VARCHAR(MAX),
     @totalPrice FLOAT,
