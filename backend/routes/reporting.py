@@ -28,7 +28,7 @@ def getRoles(db: db_dependency):
 
 @reporting.get("/getProducts")
 def getProducts(db: db_dependency):
-    query = text("""SELECT name FROM [na-inventory].[inventory].[dbo].[Products]""")
+    query = text("""    """)
     try:
         products = db.execute(query).fetchall()
 
@@ -162,7 +162,7 @@ def getReportVentas(db: db_dependency, productName: str | None = None, categoryN
         
 
     except DBAPIError as e:
-        error_message = e.args[0]
+        error_message = e.args[0]   
         return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
 
     return reportSales

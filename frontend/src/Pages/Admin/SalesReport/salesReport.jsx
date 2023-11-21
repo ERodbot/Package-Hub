@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Button  } from "react-bootstrap";
 import "./salesReport.css";
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
 import { getCountry } from '../../../api/auth';
-import { getProducts, getCategories, getReportVentas} from '../../../api/reporting';
+import { getProducts, getCategories, getVentas} from '../../../api/reporting';
 
 const secciones2 = [
   {label: "Fecha inicio", placeholder: "AAAA-MM-DD" }
@@ -12,8 +12,8 @@ const secciones2 = [
 const useBuscarProductos = () => {
   const [filtro, setFiltro] = useState({
     "Fecha inicio": null,
-    "Pais": null,
-    "Rol": null
+    "Nombre producto": null, 
+    "Categorria producto": null
   });
 
   const handleFiltroChange = (seccion, value) => {
@@ -62,9 +62,10 @@ const SalesReport = () => {
   const [countries, setProducts] = useState([]);
   const [roles, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterdItems, setFilterdItems] = useState([]);
-  const { filtro, handleFiltroChange} = useBuscarProductos();
-  const [reportingData, setReportingData] = useState([]);
+  const [filteredData, setFilterdItems] = useState([]);
+  const [reporting, setReportingData] = useState([]);
+  const {filtro, handleFiltroChange} = useBuscarProductos();
+
 
 
   const secciones = [
@@ -98,64 +99,58 @@ const SalesReport = () => {
 
 
   useEffect(() => {
-    setFilterdItems(reportingData);
-  }, []);
+    setFilterdItems(reporting);
+  }, [reporting]);
 
 
   const handleBuscarClick = async () => {
     if (filtro["Fecha inicio"] == "") {
       filtro["Fecha inicio"] = null;
     }
-
-    if (filtro["Producto"] == "Selecciona el país") {
-      filtro["Producto"] = null;
+  
+    if (filtro["Nombre producto"] == "Selecciona el producto") {
+      filtro["Nombre producto"] = null;
     }
+
     if (filtro["Categoria"] == "Selecciona el rol") {
       filtro["Categoria"] = null;
     }
-
+  
     try {
-      const response = await getPerformance(filtro["Fecha inicio"], filtro["Fecha fin"], filtro["Rol"], filtro["Pais"]);
+      const response = await getVentas();
       console.log(response.data);
-      
+  
       const reporting = response.data.map((element) => ({
         rowClass: "no-gutters",
         columns: [
-          element.name, 
-          element.last_name, 
-          element.rating, 
-          element.department, 
-          element.role, 
-          element.country, 
-          element.state, 
-          element.city, 
-          element.address
+          element.clientName,  // Reemplazar con la propiedad correcta
+          element.clientEmail,  // Reemplazar con la propiedad correcta
+          element.orderDate,  // Reemplazar con la propiedad correcta
+          element.productName,  // Reemplazar con la propiedad correcta
+          element.categoryName,  // Reemplazar con la propiedad correcta
+          element.quantity,  // Reemplazar con la propiedad correcta
+          element.Total,  // Reemplazar con la propiedad correcta
         ]
       }));
+
+      const nombreProductoFiltro = filtro["Nombre producto"] ? filtro["Nombre producto"].toLowerCase().trim() : null; 
+
+      const filteredRows = reporting.filter((element) =>
+      !filtro["Nombre producto"] || (element.columns[3] && element.columns[3].toLowerCase().trim() === filtro["Nombre producto"].toLowerCase().trim())
+     );
       
-      setReportingData(reporting);
+      console.log(filteredRows);
 
-      console.log(reporting);
+      setReportingData(filteredRows);
 
-    } catch (error) {
-      console.log(error);
-    }
+      setFilterdItems(filteredRows);
 
-
-      // Lógica para buscar productos con los filtros seleccionados
-      console.log("Buscar productos con filtro:", filtro);
-      // Aca se puede acceder al array o se puede ver en la termianl
-    
-  };
-
-  const filteredData = reportingData.filter(item =>
-    item.columns.some(column => {
-      // Convert column to string if it's not already a string
-      const columnStr = column.toString().toLowerCase();
-      return columnStr.includes(searchTerm.toLowerCase());
-    })
-  );
+  } catch (error) {
+    console.log(error);
+  }
   
+    console.log("Buscar productos con filtro:", filtro);
+  };
 
 
   // Renders the page
