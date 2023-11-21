@@ -79,8 +79,75 @@ const Planilla = () => {
     }
 
     try {
-      const response = await getPayroll(filtro["Fecha inicio"], filtro["Fecha fin"]);
-      console.log(response.data);
+      const handleBuscarClick = async () => {
+        if (filtro["Fecha inicio"] === "") {
+          filtro["Fecha inicio"] = null;
+        }
+        if (filtro["Fecha fin"] === "") {
+          filtro["Fecha fin"] = null;
+        }
+
+        try {
+          const response = await getPayroll(); // Assuming getPayroll is an async function that returns a promise
+          const reporting = response.data.map((element) => ({
+            rowClass: "no-gutters",
+            columns: [
+              element.name,
+              element.lastName,
+              element.department,
+              element.role,
+              element.country,
+              element.startDate,
+              element.endDate,
+              element.grossSalary,
+              element.netSalary,
+              element.deductions,
+              element.percentage
+            ],
+          }));
+
+          setReportingData(reporting);
+          console.log(reporting)
+
+        } catch (error) {
+          console.log(error);
+        }
+      };
+        if (filtro["Fecha inicio"] === "") {
+          filtro["Fecha inicio"] = null;
+        }
+        if (filtro["Fecha fin"] === "") {
+          filtro["Fecha fin"] = null;
+        }
+
+        try {
+          const response = await getPayroll(filtro["Fecha inicio"], filtro["Fecha fin"]);
+          console.log(response.data);
+
+          const reporting = response.data.map((element) => ({
+            rowClass: "no-gutters",
+            columns: [
+              element.name,
+              element.lastName,
+              element.department,
+              element.role,
+              element.country,
+              element.startDate,
+              element.endDate,
+              element.grossSalary,
+              element.netSalary,
+              element.deductions,
+              element.percentage
+            ],
+          }));
+
+          setReportingData(reporting);
+          console.log(reporting)
+
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
       const reporting = response.data.map((element) => ({
         rowClass: "no-gutters",
@@ -100,14 +167,15 @@ const Planilla = () => {
       }));
 
       setReportingData(reporting);
-      console.log(reporting)
+      console.log(reporting);
 
+    try {
+      // Your code for handling the error goes here
     } catch (error) {
       console.log(error);
-      }
-    
+    }
 
-
+    // Logic for searching products with the selected filters
     // Lógica para buscar productos con los filtros seleccionados
     console.log("Buscar productos con filtro:", filtro);
     // Aca se puede acceder al array o se puede ver en la termianl

@@ -3,6 +3,8 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './AnswerComplaints.css';
 import PaginaBase from "../../General/PaginaBase/PaginaBase";
+import { getTickets } from '../../../api/reporting';
+
 
 // Element list for mapping
 const dataObject = [
@@ -26,8 +28,20 @@ const dataObject = [
 // For the redirection of the page can be donde like this: /productDetail/0"
 // This function renders the rows of the table
 function renderRows(data) {
-  const titles = ["Orden", "usuario", "problema", "correo"];
-  return data.map((row, index) => (
+  const titles = ["idTicket", "descripcion", "createdAt", "updatedAt", "idTicketType", "idOrder", "clientName"];
+  return (
+    <>
+    {/* Header row with titles */}
+    <Row className="header-row">
+      {titles.map((title, index) => (
+        <Col key={index} className="column-header">
+          {title}
+        </Col>
+      ))}
+    </Row>
+
+    {/* Data rows */}
+    {data.map((row, index) => (
     <Row key={index} className={index % 2 === 0 ? "even-row" : "odd-row"}>
       {row.columns.map((key, columnIndex) => (
         <Col
@@ -35,25 +49,50 @@ function renderRows(data) {
           className="columnaOrden"
           data-index={columnIndex}
         >
-          {index === 0 ? `${titles[columnIndex]}: ` : ''} {key}
+          {key}
         </Col>
       ))}
     </Row>
-  ));
+  ))}
+  </>
+  );
 }
 
 // Function to save information of the complaint answers
 const AnswerComplaints = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
-  const [respuestaTexto, setRespuestaTexto] = useState(null);
+  const [filterdItems, setFilterdItems] = useState([]);
+  const [reportingData, setProductData] = useState([]);
 
-  // Makes the search bar work
-  const filteredData = dataObject.filter(item =>
-    item.columns.some(column =>
-      column.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getTickets();
+        const products = response.data.map((element) => ({
+          rowClass: 'no-gutters',
+          columns: [
+            element.idTicket,
+            element.description,
+            element.createdAt,
+            element.updateAt,
+            element.idTicketType,
+            element.idOrder,
+            element.clientName,
+          ],
+        }));
+        setProductData(products);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []); // Se ejecuta solo al montar el componente
+
+  useEffect(() => {
+    setFilterdItems(reportingData);
+  }, [reportingData]);
 
   const handleBuscarClick = () => {
     // Obtains the selected valie in the Form.Select
@@ -91,7 +130,7 @@ const AnswerComplaints = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className="vertical-scroll-container">
-            {renderRows(filteredData)}
+            {renderRows(filterdItems)}
           </div>
 
           <div className="respuesta-container">
