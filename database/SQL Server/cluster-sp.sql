@@ -1534,3 +1534,125 @@ BEGIN
     SELECT @idOrder;
 
 END;
+
+--procedure to get register employee
+
+CREATE or alter PROCEDURE [dbo].[registerEmployee]
+	@name nvarchar(50),
+    @lastName nvarchar(50),
+    @username nvarchar(50),
+    @email nvarchar(50),
+    @phone nvarchar(50),
+    @address nvarchar(80),
+    @city nvarchar(45),
+    @country nvarchar(45),
+    @postalCode int,
+    @password nvarchar(MAX),
+	@role nvarchar(200)
+AS
+BEGIN
+    -- Check if the user already exists
+    IF EXISTS (SELECT email FROM hr.[human-resources]..Employee WHERE email = @email)
+    BEGIN
+        DECLARE @ErrorMessage NVARCHAR(200) = 'User already exists';
+        RAISERROR(@ErrorMessage, 16, 1);
+        RETURN;
+    END
+
+	-- Declare variables for stored procedure use
+    DECLARE @idAddress int;
+    DECLARE @idContact int;
+    DECLARE @idCity int;
+    DECLARE @idAddressType int;
+    DECLARE @idContactType int;
+	DECLARE @idRole int;
+	DECLARE @idEmployee int;
+	DECLARE @idGeoposition int;
+	DECLARE @spQuery NVARCHAR(MAX);
+	DECLARE @idPayHourPerEmployee INT;
+
+
+    -- Get id for the AddressType and ContactType
+    SELECT @idAddressType = idAddressType FROM hr.[human-resources]..AddressType WHERE name = 'Personal';
+    SELECT @idContactType = idContactType FROM hr.[human-resources]..ContactType WHERE name = 'Personal';
+
+
+    -- Get id for City
+    SELECT @idCity = idCity FROM hr.[human-resources]..City WHERE name = @city;
+	SELECT @idRole = idRole FROM hr.[human-resources]..Role WHERE name = @role;
+	
+	-- Get the last id inserted into Clients
+	SELECT TOP 1 @idEmployee = idEmployee FROM hr.[human-resources]..Employee ORDER BY idEmployee DESC;
+
+	-- First 2 numbers should be replaced with something logical, not random numbers, third number should be idClient
+	-- Insert into LocationXClient
+	SET @idEmployee += 1;
+
+	SET @idGeoposition = 1
+
+    -- Insert new Address into Address table
+	-- Constructing the SQL query
+	SET @spQuery = N'CALL InsertNewAddress(' + 
+             dbo.ConcatString(@address) + ', ' +  -- Address with single quotes escaped
+             dbo.ConcatInteger(@postalCode) + ', ' +  -- Postal Code
+             dbo.ConcatInteger(@idAddressType) + ', ' +  -- Address Type ID
+             dbo.ConcatInteger(@idCity) + ', ' +  -- City ID
+             dbo.ConcatInteger(@idGeoposition) + ')';  -- Geoposition ID
+
+
+-- Executing the query on the linked server
+	BEGIN TRY
+		EXEC (@spQuery) AT [hr];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ' + @spQuery;
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
+
+    -- Get newly inserted Address id
+    SELECT TOP 1 @idAddress = idAddress FROM hr.[human-resources]..Address ORDER BY idAddress DESC;
+	
+    -- Insert new Contact into Contact table
+	SET @spQuery = N'CALL InsertNewContactInfo(' +
+				dbo.ConcatString(@phone) + ', ' +
+				dbo.ConcatString(@email) + ', ' +
+				dbo.ConcatInteger(@idContactType) + ')';
+
+
+	BEGIN TRY
+		EXEC (@spQuery) AT [hr];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ' + @spQuery;
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
+
+    -- Get newly inserted Contact id
+    SELECT TOP 1 @idContact = idContactInfo FROM hr.[human-resources]..ContactInfo ORDER BY idContactInfo DESC;
+	
+	SET @idPayHourPerEmployee = 1;
+	
+	SELECT @name, @lastName, @username, @idRole, @idContact, @idPayHourPerEmployee, @idAddress, @password, @email;
+
+	SET	@spQuery = N'CALL registerEmployee(' +
+				dbo.ConcatString(@name) + ', ' +
+				dbo.ConcatString(@lastName) + ', ' +
+				dbo.ConcatString(@username) + ', ' +
+				dbo.ConcatInteger(@idRole) + ', ' +
+				dbo.ConcatInteger(@idContact) + ', ' +
+				dbo.ConcatInteger(@idPayHourPerEmployee) + ', ' +
+				dbo.ConcatInteger(1) + ', ' +
+				dbo.ConcatInteger(@idAddress) + ', ' +
+				dbo.ConcatString(@password) + ', ' +
+				dbo.ConcatString(@email) + ')';
+
+    -- Insert new Client into Client table
+	BEGIN TRY
+		EXEC (@spQuery) AT [hr];
+	END TRY
+	BEGIN CATCH
+		PRINT 'Error occurred during execution: ';
+		THROW;  -- Re-throw the caught exception
+	END CATCH 
+
+END;
