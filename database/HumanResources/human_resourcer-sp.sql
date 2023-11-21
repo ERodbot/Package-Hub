@@ -294,9 +294,6 @@ BEGIN
 END //
 DELIMITER ;
 
-DROP PROCEDURE InsertNewContactInfo
-DELIMITER // 
-
 DELIMITER // 
 CREATE PROCEDURE InsertNewContactInfo(
     IN phone VARCHAR(45),
