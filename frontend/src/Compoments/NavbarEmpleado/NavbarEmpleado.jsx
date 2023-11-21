@@ -22,7 +22,7 @@ import cr from "../../assets/Links/cr.jpg";
 import { useAuth } from "../../contexts/auth";
 
 // Functional component definition
-const NavbarPage = () => {
+const NavbarEmpleado = () => {
 
   const navigate = useNavigate();
   // State for search term input
@@ -129,4 +129,4 @@ const NavbarPage = () => {
 };
 
 // Exporting the NavbarPage component
-export default NavbarPage;
+export default NavbarEmpleado;

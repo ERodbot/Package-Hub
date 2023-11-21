@@ -223,7 +223,9 @@ def createEmpleado(employee: Employee, db: db_dependency):
 @auth.post("/loginEmpleado")
 def loginEmpleado(employee: ClientLogin, response: Response, db: db_dependency):
     employee_dict = employee.model_dump()
-    query = text("""SELECT password, email FROM hr.[human-resources]..Employees WHERE username = :username""")
+    query = text("""SELECT Employee.password Password, Employee.email Email, Role.name as Role FROM hr.[human-resources]..Employee as Employee 
+                    INNER JOIN hr.[human-resources]..Role as Role ON Employee.idRole = Role.idRole
+                    WHERE Employee.username = :username""")
     params = {
         'username': employee_dict['username'],
     }
@@ -231,17 +233,21 @@ def loginEmpleado(employee: ClientLogin, response: Response, db: db_dependency):
         user = db.execute(query, params).fetchone()
         pwd_db = user[0]
         email = user[1]
+        role = user[2]
         if pwd_db:
             validate = bcrypt.verify(employee_dict['password'], pwd_db)
             if validate:
                 # El usuario y contraseña son válidos, procede con la creación del token
                 access_token = create_access_token(
-                    username=employee_dict['username'],  # Ajusta esto según tu modelo de datos
+                    username=employee_dict['username'],
+                    email=email,
+                    role= role,
+                    # Ajusta esto según tu modelo de datos
                     expires_delta=timedelta(minutes=20)
                 )
                 # Devuelve el token en lugar del usuario
                 response.set_cookie(key="token", value=access_token, httponly=False)
-                return {'status': status.HTTP_200_OK, 'data': {'email': email, 'role': employee_dict['role']}}
+                return {'status': status.HTTP_200_OK, 'data': {'email': email, 'role': role}}
             
         # Si no se encontró el usuario, se levanta una excepción
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
@@ -276,8 +282,11 @@ def loginEmpleado(employee: ClientLogin, response: Response, db: db_dependency):
 #     else:
 #         raise HTTPException(status_code=200 , detail="Password is incorrect")
 
-def create_access_token(username: str, expires_delta: timedelta = None):
-    encode = {"sub" : username}
+def create_access_token(username: str, email: str, role = str | None, expires_delta: timedelta = None):
+    encode = {"sub" : username,
+              "email": email,
+              "role": role}
+
     expires = datetime.utcnow() + timedelta(minutes=20)
     encode.update({"exp": expires})
 
@@ -313,8 +322,10 @@ async def get_current_user(token: Optional[str] = Depends(get_token_from_cookie)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
+        email: str = payload.get("email")
+        role: str = payload.get("role")
         if username is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
-        return {"username": username}
+        return {"username": username, "email": email, "role": role }
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
