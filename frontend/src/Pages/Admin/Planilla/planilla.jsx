@@ -70,7 +70,7 @@ const Planilla = () => {
 
 
 
-  const handleBuscarClick = () => {
+  const handleBuscarClick = async () => {
     if (filtro["Fecha inicio"] === "") {
       filtro["Fecha inicio"] = null;
     }
@@ -186,11 +186,11 @@ const Planilla = () => {
 
 
   useEffect(() => {
-    setFilterdItems(dataObject);
+    setFilterdItems(reportingData);
   }, []);
 
   useEffect(() => {
-    const filteredData = dataObject.filter((item) =>
+    const filteredData = reportingData.filter((item) =>
       item.columns.some((column) =>
         column.toLowerCase().includes(searchTerm.toLowerCase())
       )

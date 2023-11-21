@@ -195,4 +195,30 @@ def getVentas(db: db_dependency):
 
     return reporteVentas
 
+@reporting.get("/getTickets")
+def getTickets(db: db_dependency):
+    query = text("""SELECT * FROM OPENQUERY([support-sales], 'SELECT * FROM public.getTicketInfo()')""")
+
+    try:
+        responseTickets = db.execute(query).fetchall()
+
+        # Make the dictionary to return
+        reporteTickets = []
+        for row in responseTickets:
+            reporteTickets.append({
+                'idTicket': row[0],
+                'description': row[1],
+                'createdAt': row[2],
+                'updateAt': row[3],
+                'idTicketType': row[4],
+                'idOrder': row[5],
+                'clientName': row[6]
+            })
+        
+    except DBAPIError as e:
+        error_message = e.args[0]
+        return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
+
+    return reporteTickets
+
 

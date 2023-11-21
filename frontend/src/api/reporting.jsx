@@ -13,6 +13,8 @@ const getReportVentas = (productName, categoryName, startDate) => axios.get(`/ge
 
 const getVentas = () => axios.get(`/getVentas`);
 
+const getTickets = () => axios.get(`/getTickets`);
+
 export {
     getRoles,
     getProducts,
@@ -20,5 +22,6 @@ export {
     getPerformance,
     getPayroll,
     getReportVentas,
-    getVentas
+    getVentas,
+    getTickets
 }
