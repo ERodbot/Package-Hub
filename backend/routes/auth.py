@@ -146,7 +146,6 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
     }
     try:
         user = db.execute(query, params).fetchone()
-        return user
         pwd_db = user[0]
         email = user[1]
         if pwd_db:
@@ -157,6 +156,7 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
                     username=client_dict['username'],  # Ajusta esto según tu modelo de datos
                     expires_delta=timedelta(minutes=20)
                 )
+                
                 # Devuelve el token en lugar del usuario
                 response.set_cookie(key="token", value=access_token, httponly=False)
                 return {'status': status.HTTP_200_OK, 'data': {'email': email}}

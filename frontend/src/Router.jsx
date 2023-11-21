@@ -24,7 +24,7 @@ import CustomService from "./Pages/User/CustomerService/CustomService.jsx";
 import Complaints from "./Pages/Admin/CustomerService/AnswerComplaints.jsx";
 import Busqueda from "./Pages/User/FiltroBusqueda/busqueda.jsx";
 import BusquedaEmpleado from "./Pages/Admin/FindEmployee/FindEmployee.jsx";
-// import Planilla from "./Pages/Admin/Planilla/planilla.jsx";
+import Planilla from "./Pages/Admin/Planilla/planilla.jsx";
 import InventoryManager from "./Pages/Admin/InventoryManager/InventoryManager.jsx";
 import PerformanceReport from "./Pages/Admin/Performance/performance.jsx";
 import SalesReport from "./Pages/Admin/SalesReport/salesReport.jsx";
@@ -59,7 +59,7 @@ function Router() {
               element={<OrdenesEmpleado />}
             ></Route>
             <Route path="/ordenesCliente" element={<Ordenes />}></Route>
-            {/* <Route path="/planillaEmployee" element={<Planilla />}></Route> */}
+            <Route path="/planillaEmployee" element={<Planilla />}></Route>
             <Route
               path="/inventoryManager"
               element={<InventoryManager />}

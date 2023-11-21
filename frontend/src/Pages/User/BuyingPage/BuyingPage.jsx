@@ -46,9 +46,10 @@ const BuyingPage = () => {
     try {
       console.log(user.data.email, total)
       const orden = await createOrder(user.data.email, total, "Credit Card");
-      console.log(orden)
+      console.log("Orden:", orden)
       for (let i = 0; i < products.length; i++) {
-        await createOrderDetail(orden, products[i].name, products[i].unitsPurchased, products[i].price, 0);
+
+        await createOrderDetail(orden.data, products[i].name, products[i].unitsPurchased, products[i].price, 0);
       }
     } catch (error) {
       console.log(error);
