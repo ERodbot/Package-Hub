@@ -58,14 +58,12 @@ function renderRows(data) {
 
 // Creates the HTML of the page
 const SalesReport = () => {
-
   const [countries, setProducts] = useState([]);
   const [roles, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilterdItems] = useState([]);
   const [reporting, setReportingData] = useState([]);
   const {filtro, handleFiltroChange} = useBuscarProductos();
-
 
 
   const secciones = [
