@@ -52,7 +52,7 @@ IF @country_filter IS NOT NULL
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM hr.[human-resources]..Country WHERE Country.name = @country_filter)
     BEGIN 
-        SET @Message = 'Error - El pas especificado no existe en la base de datos.'
+        SET @Message = 'Error - El país especificado no existe en la base de datos.'
         SET @ErrorSeverity = 16 -- Puedes ajustar el nivel de severidad seg�n tus necesidades
         SET @ErrorState = 3 -- Puedes ajustar el estado de error seg�n tus necesidades
         SET @CustomError = 50002 -- Puedes definir un n�mero de error personalizado seg�n tus necesidades
@@ -294,13 +294,13 @@ BEGIN
 END //
 DELIMITER ;
 
-
 DELIMITER // 
 CREATE PROCEDURE InsertNewContactInfo(
     IN phone VARCHAR(45),
     IN email VARCHAR(80),
     IN idContactType INT
 ) BEGIN
+
 INSERT INTO `ContactInfo` (`phone`, `email`, `idContactType`, `enabled`)
 VALUES (phone, email, idContactType, 1);
 END // 

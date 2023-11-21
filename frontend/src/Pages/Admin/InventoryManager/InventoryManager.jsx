@@ -105,3 +105,4 @@ const managerInventory = () => {
 };
 
 export default managerInventory;
+

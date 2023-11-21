@@ -79,12 +79,14 @@ INSERT INTO Address (idAddress, street, postalCode, idAddressType, idCity, enabl
 (3, '789 Calle Sucursal', 3152787, 3, 3, 1, 1),
 (4, '012 Calle Remota', 100-0001, 4, 4, 1, 1);
 
+SELECT * FROM Employee
 -- Llenado de datos dummy para la tabla Employee
-INSERT INTO Employee (idEmployee, name, lastName, lastName2, idRole, idContactInfo, idPayHourPerEmployee, enabled, idAddress) VALUES
-(1, 'John', 'Doe', 'null', 1, 1, 1, 1, 1),
-(2, 'Maria', 'García', 'null', 2, 2, 2, 1, 2),
-(3, 'Michael', 'Smith', 'null', 5, 3, 3, 1, 3),
-(4, 'Sakura', 'Tanaka', 'null', 6, 4, 4, 1, 4);
+INSERT INTO Employee (idEmployee, name, lastName, username, password, idRole, idContactInfo, idPayHourPerEmployee, enabled, idAddress, email) VALUES
+(1, 'John', 'Doe', 'john.doe', 'contraseña1', 1, 1, 1, 1, 1, 'emailexample1.com'),
+(2, 'Maria', 'García', 'maria.garcia', 'contraseña2', 2, 2, 2, 1, 2, 'emailexample2.com'),
+(3, 'Michael', 'Smith', 'michael.smith', 'contraseña3', 5, 3, 3, 1, 3, 'emailexample3.com'),
+(4, 'Sakura', 'Tanaka', 'sakura.tanaka', 'contraseña4', 6, 4, 4, 1, 4,'emailexample4.com');
+
 
 -- Llenado de datos dummy para la tabla Payroll
 INSERT INTO Payroll (idPayroll, hours, date, idEmployee) VALUES
@@ -141,6 +143,3 @@ INSERT INTO PaymentLog (idPaymentLog, posttime, description, checksum, paymentid
 (2, NOW(), 'Pago de salario a Maria García', 'checksum6', 2),
 (3, NOW(), 'Pago de salario a Michael Smith', 'checksum7', 3),
 (4, NOW(), 'Pago de salario a Sakura Tanaka', 'checksum8', 4);
-
-
-
