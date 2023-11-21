@@ -71,7 +71,7 @@ function Router() {
             <Route path="/SalesReport" element={<SalesFormReportConsult />}></Route>
             <Route path="/CustomService" element={<CustomService />}></Route>
               
-            {/* </Route> */}
+            {/* </Route>  */}
           </Routes>
         </BrowserRouter>
       </CarritoProvider>

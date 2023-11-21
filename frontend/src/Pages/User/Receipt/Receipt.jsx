@@ -88,9 +88,9 @@ const Receipt = () => {
                       >{`${item.articulo}: $${item.precio}.`}</p>
                     ))}
                     <h3 className="text-center custom-text-h3">
-                      Método de pago
+                      Pago
                     </h3>
-                    <p className="custom-text-p">{`Método de pago: Credit Card.`}</p>
+                    <p className="custom-text-p">{`Tarjeta de crédito o débito`}</p>
                     <h3 className="text-center custom-text-h3">{`Subtotal: $${subtotal}`}</h3>
                     <h3 className="custom-text-h3">{`Total: $${total}`}</h3>
                   </Col>
