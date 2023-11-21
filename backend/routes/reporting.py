@@ -103,7 +103,7 @@ def getPerformance(db: db_dependency, start_date: str | None = None, end_date: s
 
 
 @reporting.get("/getPayroll")
-def getPayroll(db: db_dependency, start_date: str | None = None, end_date: str | None = None)
+def getPayroll(db: db_dependency, start_date: str | None = None, end_date: str | None = None):
 
     query = text("""usp_ReportingSalaryStructure @initial_date=:start_date, @final_date=:end_date""")
     params = {
