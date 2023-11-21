@@ -86,11 +86,11 @@ const NavbarPage = () => {
               <NavDropdown.Item href="/ordenesCliente">
                 Ordenes
               </NavDropdown.Item>
-              <NavDropdown.Item href="/receipt">Facturas</NavDropdown.Item>
-              <NavDropdown.Item href="/servicioCliente">
+              <NavDropdown.Item onClick={()=> navigate("/receipt")}>Facturas</NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/servicioCliente")}>
                 Servicio al Cliente
               </NavDropdown.Item>
-              <NavDropdown.Item href="/inicioSesionCliente">
+              <NavDropdown.Item onClick={()=> navigate("/inicioSesionCliente")}>
                 Salir
               </NavDropdown.Item>
             </NavDropdown>

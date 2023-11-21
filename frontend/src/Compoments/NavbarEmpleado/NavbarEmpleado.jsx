@@ -83,10 +83,10 @@ const NavbarEmpleado = () => {
             ))}
             {/* Dropdown menu for additional links */}
             <NavDropdown id="custom-dropdown">
-              <NavDropdown.Item href="/answerComplaints"> Responder quejas </NavDropdown.Item>
-              <NavDropdown.Item href="/invetoryManager">Inventario</NavDropdown.Item>
-              <NavDropdown.Item href="/ReportSales"> Reporte ventas </NavDropdown.Item>
-              <NavDropdown.Item href="/ordenesEmpleado"> Ordenes Empleado </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/answerComplaints")}> Responder quejas </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/invetoryManager")}>Inventario</NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/ReportSales")}> Reporte ventas </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/ordenesEmpleado")}> Ordenes Empleado </NavDropdown.Item>
             </NavDropdown>
             {/* Search input */}
             <InputGroup className="search-input mt-4">
