@@ -1231,3 +1231,54 @@ BEGIN
 END
 RETURN 0
 GO
+
+
+CREATE OR ALTER PROCEDURE GetAllInventoryProducts
+AS
+BEGIN
+    -- Seleccionar columnas específicas de la primera tabla
+    SELECT 
+        P.[name],
+        P.[description],
+		B.[name] AS NombreMarca,
+		P.[idLocation],
+        P.[quantity],
+        P.[price],
+		'NA-Inventory' AS bodega
+    FROM [na-inventory].[inventory].[dbo].[products] P
+	INNER JOIN [na-inventory].[inventory].[dbo].[Brands] B ON P.[idBrand] = B.[idBrand]
+
+
+
+    -- Agregar los resultados de la segunda tabla
+    UNION ALL
+
+    SELECT 
+        P.[name],
+        P.[description],
+		B.[name] AS NombreMarca,
+		P.[idLocation],
+        P.[quantity],
+        P.[price],
+		'SA-Inventory' AS bodega
+    FROM [sa-inventory].[inventory].[dbo].[products] P 
+	INNER JOIN [sa-inventory].[inventory].[dbo].[Brands] B ON P.[idBrand] = B.[idBrand]
+
+
+    -- Agregar los resultados de la tercera tabla
+    UNION ALL
+
+    SELECT 
+        P.[name],
+        P.[description],
+		B.[name] AS NombreMarca,
+		P.[idLocation],
+        P.[quantity],
+        P.[price],
+		'caribbean-Inventory' AS bodega
+
+    FROM [caribbean-inventory].[inventory].[dbo].[products] P
+	INNER JOIN [caribbean-inventory].[inventory].[dbo].[Brands] B ON P.[idBrand] = B.[idBrand]
+END
+
+-- EXEC GetAllInventoryProducts

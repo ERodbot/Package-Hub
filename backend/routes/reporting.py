@@ -28,7 +28,7 @@ def getRoles(db: db_dependency):
 
 @reporting.get("/getProducts")
 def getProducts(db: db_dependency):
-    query = text("""SELECT name FROM [na-inventory].[inventory].[dbo].[Products]""")
+    query = text("""    """)
     try:
         products = db.execute(query).fetchall()
 
@@ -103,7 +103,7 @@ def getPerformance(db: db_dependency, start_date: str | None = None, end_date: s
 
 
 @reporting.get("/getPayroll")
-def getPayroll(db: db_dependency, start_date: str | None = None, end_date: str | None = None)
+def getPayroll(db: db_dependency, start_date: str | None = None, end_date: str | None = None):
 
     query = text("""usp_ReportingSalaryStructure @initial_date=:start_date, @final_date=:end_date""")
     params = {
@@ -162,7 +162,7 @@ def getReportVentas(db: db_dependency, productName: str | None = None, categoryN
         
 
     except DBAPIError as e:
-        error_message = e.args[0]
+        error_message = e.args[0]   
         return HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=error_message)
 
     return reportSales
