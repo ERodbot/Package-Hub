@@ -63,7 +63,7 @@ const NavbarPage = () => {
     >
       <Container id="custom-container">
         {/* Brand logo */}
-        <Navbar.Brand href="/main">
+        <Navbar.Brand onClick={()=> navigate("/main")}>
           <img src={logo} alt="Logo marca" id="custom-brand" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -83,14 +83,14 @@ const NavbarPage = () => {
             ))}
             {/* Dropdown menu for additional links */}
             <NavDropdown id="custom-dropdown">
-              <NavDropdown.Item href="/ordenesCliente">
+              <NavDropdown.Item onClick={()=> navigate("/ordenesCliente")}>
                 Ordenes
               </NavDropdown.Item>
-              <NavDropdown.Item href="/receipt">Facturas</NavDropdown.Item>
-              <NavDropdown.Item href="/servicioCliente">
+              <NavDropdown.Item onClick={()=> navigate("/receipt")}>Facturas</NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/servicioCliente")}>
                 Servicio al Cliente
               </NavDropdown.Item>
-              <NavDropdown.Item href="/inicioSesionCliente">
+              <NavDropdown.Item onClick={()=> navigate("/inicioSesionCliente")}>
                 Salir
               </NavDropdown.Item>
             </NavDropdown>

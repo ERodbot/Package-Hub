@@ -63,7 +63,7 @@ const NavbarGerente = () => {
     >
       <Container id="custom-container">
         {/* Brand logo */}
-        <Navbar.Brand href="/main">
+        <Navbar.Brand onClick={()=> navigate("/main")}>
           <img src={logo} alt="Logo marca" id="custom-brand" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -83,13 +83,13 @@ const NavbarGerente = () => {
             ))}
             {/* Dropdown menu for additional links */}
             <NavDropdown id="custom-dropdown">
-              <NavDropdown.Item href="/answerComplaints"> Responder quejas </NavDropdown.Item>
-              <NavDropdown.Item href="/invetoryManager">Inventario</NavDropdown.Item>
-              <NavDropdown.Item href="/ReportSales"> Reporte ventas </NavDropdown.Item>
-              <NavDropdown.Item href="/ordenesEmpleado"> Ordenes empleado </NavDropdown.Item>
-              <NavDropdown.Item href="/busquedaEmpleado"> Busqueda empleados </NavDropdown.Item>
-              <NavDropdown.Item href="/perfomance"> Rendimiento </NavDropdown.Item>
-              <NavDropdown.Item href="/planillaEmployee"> Planilla </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/answerComplaints")}> Responder quejas </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/invetoryManager")}>Inventario</NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/ReportSales")}> Reporte ventas </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/ordenesEmpleado")}> Ordenes empleado </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/busquedaEmpleado")}> Busqueda empleados </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/perfomance")}> Rendimiento </NavDropdown.Item>
+              <NavDropdown.Item onClick={()=> navigate("/planillaEmployee")}> Planilla </NavDropdown.Item>
             </NavDropdown>
             {/* Search input */}
             <InputGroup className="search-input mt-4">

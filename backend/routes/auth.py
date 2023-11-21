@@ -154,7 +154,9 @@ def loginClient(client: ClientLogin, response: Response, db: db_dependency):
             if validate:
                 # El usuario y contraseña son válidos, procede con la creación del token
                 access_token = create_access_token(
-                    username=client_dict['username'],  # Ajusta esto según tu modelo de datos
+                    username=client_dict['username'],
+                    email=email,
+                    role=None,                       # Ajusta esto según tu modelo de datos
                     expires_delta=timedelta(minutes=20)
                 )
                 

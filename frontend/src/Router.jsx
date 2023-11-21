@@ -40,14 +40,13 @@ function Router() {
   return (
     <AuthProvider>
       <CarritoProvider>
-        <Route path="/productDetail" element={<ProductDetails />}></Route>
-
         <BrowserRouter>
           <Routes>
             <Route path="/registroCliente" element={<SignC />}></Route>
             <Route path="/inicioSesionCliente" element={<LoginC />}></Route>
             <Route path="/inicioSesionEmpleado" element={<LoginE />}></Route>
             <Route path="/registroEmpleado" element={<SignE />}></Route>
+            <Route path="/productDetail" element={<ProductDetails />}></Route>
             <Route path="/Busqueda" element={<Busqueda />}></Route>
             <Route path="/snacks" element={<Snacks />}></Route>
             <Route path="/answerComplaints" element={<Complaints />}></Route>
@@ -62,7 +61,7 @@ function Router() {
             <Route path="/ordenesCliente" element={<Ordenes />}></Route>
             <Route path="/planillaEmployee" element={<Planilla />}></Route>
             <Route
-              path="/inventoryManager"
+              path="/invetoryManager"
               element={<InventoryManager />}
             ></Route>
             <Route path="/performance" element={<PerformanceReport />}></Route>
@@ -85,6 +84,7 @@ function Router() {
             <Route path="/skate" element={<Skate />}></Route>
             <Route path="/Buying" element={<BuyingPage />}></Route>
             <Route path="/shoppingCart" element={<ShoppingCart />}></Route>
+            <Route path="/perfomance" element={<PerformanceReport />}></Route>
             <Route
               path="/SalesReport"
               element={<SalesFormReportConsult />}
