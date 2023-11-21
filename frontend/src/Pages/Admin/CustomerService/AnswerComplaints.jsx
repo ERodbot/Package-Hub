@@ -8,17 +8,6 @@ import { getTickets } from '../../../api/reporting';
 
 // Element list for mapping
 const dataObject = [
-  { rowClass: "no-gutters", columns: ["#7473-8273", "usuario", "I know a Little bout love", "nombre@estudiantec.cr     fs"] },
-  { rowClass: "no-gutters", columns: ["#4473-8273", "usuario", "problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#4473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#4473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#4473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#8473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#8473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#8473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#8473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#1473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
-  { rowClass: "no-gutters", columns: ["#7473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
   { rowClass: "no-gutters", columns: ["#1473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
   { rowClass: "no-gutters", columns: ["#1473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },
   { rowClass: "no-gutters", columns: ["#7473-8273", "usuario","problema...", "nombre@estudiantec.cr"] },

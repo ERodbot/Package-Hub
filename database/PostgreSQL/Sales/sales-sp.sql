@@ -187,3 +187,49 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- SELECT * FROM get_sales_report();
+
+CREATE OR REPLACE PROCEDURE sales.updateOrderStatusWithLog(
+    IN order_id integer,
+    IN new_status_id integer
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_client_id integer;
+    v_amount money;
+    v_description text;
+BEGIN
+    -- Obtener el ID del cliente y otros detalles necesarios de la orden antes de la actualización
+    SELECT "idClient", total, 'Order shipped' 
+    INTO v_client_id, v_amount, v_description
+    FROM sales."Orders"
+    WHERE "idOrder" = order_id;
+
+    -- Realizar el update en "Orders"
+    UPDATE sales."Orders"
+    SET "idOrderStatus" = new_status_id
+    WHERE "idOrder" = order_id;
+
+    -- Insertar un registro en "TransactionLog" con operationType igual a 3
+    INSERT INTO sales."TransactionLog" ("idClient", "idOrder", posttime, "idOperationType", amount, description, checksum)
+    VALUES (v_client_id, order_id, CURRENT_TIMESTAMP, 3, v_amount::numeric::integer, v_description, 'checksum_value');
+    
+    EXCEPTION
+        -- Manejar cualquier error y hacer rollback si es necesario
+        WHEN OTHERS THEN
+            -- Hacer rollback en caso de error
+            RAISE;
+END;
+$$;
+
+-- SQl  EXEC ('CALL updateOrderStatusWithLog(?, ?)', 2,  1) AT [support-sales];
+
+	
+CREATE OR REPLACE PROCEDURE getOrdersInfo()
+AS $$
+BEGIN
+    SELECT Orders."idOrder", Clients.name as clientName, Orders.date, Orders.total, Orders.status, Orders."idEmployee", Orders."idOrderStatus", Orders."idShipping", Orders.enabled, Orders."invoiceNumber", Orders."idPayStatus", Orders."idPayType"
+    FROM sales."Orders" as Orders
+    JOIN sales."Clients" as Clients ON Orders."idClient" = Clients."idClient";
+END;
+$$ LANGUAGE plpgsql;
